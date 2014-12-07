@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- From: file:/C:/Users/Maarten/Documents/AndroidStudio/Android-Bluetooth-App-master-2014-12-04/Android-Bluetooth-App-master/app/src/main/res/values-w820dp/dimens.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values-w820dp/dimens.xml -->
     <eat-comment />
 
     <dimen name="activity_horizontal_margin">64dp</dimen>

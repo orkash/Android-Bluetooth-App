@@ -2,10 +2,10 @@
 <merger version="2" >
 
     <dataSet config="main" >
-        <source path="C:\Users\Maarten\Documents\AndroidStudio\Android-Bluetooth-App-master-2014-12-04\Android-Bluetooth-App-master\app\src\main\assets" />
+        <source path="C:\Users\Maarten\Documents\GitHub\Android-Bluetooth-App\app\src\main\assets" />
     </dataSet>
     <dataSet config="debug" >
-        <source path="C:\Users\Maarten\Documents\AndroidStudio\Android-Bluetooth-App-master-2014-12-04\Android-Bluetooth-App-master\app\src\debug\assets" />
+        <source path="C:\Users\Maarten\Documents\GitHub\Android-Bluetooth-App\app\src\debug\assets" />
     </dataSet>
 
 </merger>

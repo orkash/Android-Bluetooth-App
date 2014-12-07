@@ -5,5 +5,9 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never" />
+    <item android:id="@+id/developers"
+        android:title="@string/menu_developers"
+        android:orderInCategory="110"
+        android:showAsAction="never" />
 </menu>
-<!-- From: file:/C:/Users/Maarten/Documents/AndroidStudio/Android-Bluetooth-App-master-2014-12-04/Android-Bluetooth-App-master/app/src/main/res/menu/main.xml -->
+<!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/menu/main.xml -->
