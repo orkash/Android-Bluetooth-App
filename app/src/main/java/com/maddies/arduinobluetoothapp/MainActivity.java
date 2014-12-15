@@ -20,25 +20,33 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent discoverableIntent = new
-                Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-        startActivity(discoverableIntent);
+        Button searchButton = (Button) findViewById(R.id.search_button);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        Button button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View v) {
-                                          if (bluetoothThread.connectedThread.isAlive()) {
-                                              Intent intent = new Intent(MainActivity.this, FileExplore.class);
-                                              startActivity(intent);
-                                          }
-                                      }
-                                  }
-        );
+                Intent discoverableIntent = new
+                        Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+                discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+                startActivity(discoverableIntent);
 
-        bluetoothThread = new ConnectThread();
-        bluetoothThread.start();
+                bluetoothThread = new ConnectThread();
+                bluetoothThread.start();
+            }
+        });
+
+        Button selectFileButton = (Button) findViewById(R.id.select_file_button);
+        selectFileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (bluetoothThread.connectedThread.isAlive()) {
+                    Intent intent = new Intent(MainActivity.this, FileExplore.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
+
 
     }
 
@@ -56,9 +64,7 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
         if (id == R.id.developers) {
             Toast toast = Toast.makeText(getApplicationContext(), "By Matthijs & Maarten", Toast.LENGTH_SHORT);
             toast.show();
