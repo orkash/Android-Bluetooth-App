@@ -3,8 +3,12 @@ package com.maddies.arduinobluetoothapp;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +17,10 @@ import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
+
+    public static final String LOG = "Bluetooth App";
+
+    private static final int REQUEST_ENABLE_BT = 1;
     public static ConnectThread bluetoothThread;
 
     @Override
@@ -20,13 +28,44 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // sets up broadcast receiver for bluetooth state
+        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(mReceiver, filter);
+
         Button searchButton = (Button) findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent discoverableIntent = new
-                        Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+                BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                if (mBluetoothAdapter == null) {
+                    // Device does not support Bluetooth
+                } else {
+                    // Device supports bluetooth
+                    Log.i(LOG, "Wow you have bluetooth");
+
+
+                    if (!mBluetoothAdapter.isEnabled()) {
+                        // bluetooth is not enabled
+                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                        Log.i(LOG, "Enabling Bluetooth");
+
+                    } else {
+                        Log.i(LOG, "Bluetooth is enabled");
+                    }
+                }
+
+
+            }
+        });
+
+
+        Button makeError = (Button) findViewById(R.id.error_button);
+        makeError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                 discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
                 startActivity(discoverableIntent);
 
@@ -34,6 +73,8 @@ public class MainActivity extends Activity {
                 bluetoothThread.start();
             }
         });
+
+
 
         Button selectFileButton = (Button) findViewById(R.id.select_file_button);
         selectFileButton.setOnClickListener(new View.OnClickListener() {
@@ -45,11 +86,60 @@ public class MainActivity extends Activity {
                 }
             }
         });
-
-
-
     }
 
+    // gets result after enabling bluetooth
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+//                String result=data.getStringExtra("result");
+                Log.i(LOG, "Wow good job");
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Write your code if there's no result
+                Log.i(LOG, "Wow youre bad");
+            }
+        }
+    }
+
+    // listens if user disables bluetooth
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                        BluetoothAdapter.ERROR);
+                switch (state) {
+                    case BluetoothAdapter.STATE_OFF:
+                        Log.i(LOG, "User turned Bluetooth off");
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        Log.i(LOG, " User is turning bluetooth off...");
+                        break;
+                    case BluetoothAdapter.STATE_ON:
+                        Log.i(LOG, "User switched bluetooth on");
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_ON:
+                        Log.i(LOG, "User is turning bluetooth on");
+                        break;
+                    default:
+                        Log.i(LOG, "what happened?");
+                }
+            }
+        }
+    };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // closes the broadcast receiver
+        unregisterReceiver(mReceiver);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,11 +155,14 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.developers) {
-            Toast toast = Toast.makeText(getApplicationContext(), "By Matthijs & Maarten", Toast.LENGTH_SHORT);
-            toast.show();
-            return true;
+        switch (id){
+            case R.id.developers:
+                Toast toast = Toast.makeText(getApplicationContext(), "By Matthijs & Maarten", Toast.LENGTH_SHORT);
+                toast.show();
+                return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
+
 }
