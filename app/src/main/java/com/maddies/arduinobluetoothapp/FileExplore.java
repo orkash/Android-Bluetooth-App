@@ -198,11 +198,13 @@ public class FileExplore extends Activity {
                         else {
                             Log.e("Banana!", "FILE PICKED  " + path.getAbsolutePath());
                             try {
+
                                 MainActivity.bluetoothThread.connectedThread.write(readFile(sel));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
+
 
                     }
                 });
@@ -215,13 +217,13 @@ public class FileExplore extends Activity {
 
     public static byte[] readFile(File file) throws IOException {
         // Open file
-    
+
         RandomAccessFile f = new RandomAccessFile(file, "r");
         try {
             if(state == 1){
-                ddfdfdf 
+                ddfdfdf
             } else if (state == 2){
-                
+
             }
             else if(state == 3){
                 // Get and check length
@@ -239,4 +241,5 @@ public class FileExplore extends Activity {
             f.close();
         }
     }
+
 }
