@@ -33,34 +33,24 @@ class ConnectedThread extends Thread {
         }
     }
 
-
+	int state = 1;
+	
     public void write(byte[] bytes) {
-        try {
-            Log.e("Banana", "Byte Array Length: " + bytes.length);
-            for (int i = 0; i < bytes.length; i += 64) {
-                for (int j = i * 64; j < 64 * (i + 1); j++) {
-                    if (j > bytes.length - 1)
-                        break;
-                    mmOutStream.write(bytes[j]);
-                    Log.e("Output", "" + bytes[j]);
-                }
+        try 
+        	{
+            mmOutStream.write(bytes[j]);
             }
         } catch (IOException e) {
             Log.e("Oh oh", "ERROR");
         }
-        Log.e("Banana", "FILE SENT");
     }
-
-    byte[] b = new byte[64];
 
     public byte[] read() {
         try {
-            mmInStream.read(b);
+            state = mmInStream.read();
+            if(state == -1)
+            	state = 0;
         } catch (IOException e) {
-        }
-        Log.e("Banana", "FILE RECEIVED");
-        for (byte bite : b) {
-            Log.e("Banana", "" + bite);
         }
         return b;
     }
