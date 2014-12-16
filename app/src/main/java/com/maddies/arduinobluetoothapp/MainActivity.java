@@ -31,15 +31,32 @@ public class MainActivity extends Activity {
         // sets up broadcast receiver for bluetooth state
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
-
+        
+        
+        // searches for arduino devices
         Button searchButton = (Button) findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                
+                // does device have bluetooth
                 BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 if (mBluetoothAdapter == null) {
+                    
                     // Device does not support Bluetooth
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Your device has no bluetooth")
+                        .setCancelable(false)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                onDestroy();
+                            }
+                        });
+                    
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    
                 } else {
                     // Device supports bluetooth
                     Log.i(LOG, "Wow you have bluetooth");
@@ -60,7 +77,7 @@ public class MainActivity extends Activity {
             }
         });
 
-
+        // madgijs button, does nothign except crash
         Button makeError = (Button) findViewById(R.id.error_button);
         makeError.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +92,7 @@ public class MainActivity extends Activity {
         });
 
 
-
+        // open the file explorer
         Button selectFileButton = (Button) findViewById(R.id.select_file_button);
         selectFileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,22 +105,23 @@ public class MainActivity extends Activity {
         });
     }
 
-    // gets result after enabling bluetooth
+    // Gets result after enabling bluetooth
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
-//                String result=data.getStringExtra("result");
-                Log.i(LOG, "Wow good job");
+                // User succesfully enabled bluetooth
+//              String result=data.getStringExtra("result");
+                Log.i(LOG, "User succesfully enabled bluetooth");
             }
             if (resultCode == RESULT_CANCELED) {
-                //Write your code if there's no result
-                Log.i(LOG, "Wow youre bad");
+                // User stops the bluetooth enabling process
+                Log.i(LOG, "User stops the bluetooth enabling process");
             }
         }
     }
 
-    // listens if user disables bluetooth
+    // listens if user manually disables bluetooth
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -154,8 +172,9 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        
         switch (id){
+            // developer button is pressed
             case R.id.developers:
                 Toast toast = Toast.makeText(getApplicationContext(), "By Matthijs & Maarten", Toast.LENGTH_SHORT);
                 toast.show();
