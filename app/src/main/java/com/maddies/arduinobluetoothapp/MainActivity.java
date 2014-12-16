@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
 
         // madgijs button, does nothign except crash, very stupid don't try
         Button makeError = (Button) findViewById(R.id.error_button);
-        /*makeError.setOnClickListener(new View.OnClickListener() {
+        makeError.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -95,11 +95,11 @@ public class MainActivity extends Activity {
                 bluetoothThread = new ConnectThread();
                 bluetoothThread.start();
             }
-        });*/
+        });
 
 
         // open the file explorer
-       /* Button selectFileButton = (Button) findViewById(R.id.select_file_button);
+        Button selectFileButton = (Button) findViewById(R.id.select_file_button);
         selectFileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
                     startActivity(intent);
                 }
             }
-        });*/
+        });
 
         connectButton = (Button) findViewById(R.id.search_button);
         connectButton.setOnClickListener(new View.OnClickListener() {
@@ -180,7 +180,7 @@ public class MainActivity extends Activity {
                 // Add the name and address to an array adapter to show in a ListView
                 mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
 
-                if (device.getAddress() == "what is the adrress?") {
+                if (device.getAddress().equals("what is the adrress?")) {
                     mBluetoothAdapter.cancelDiscovery();
                     connectButton.setVisibility(View.VISIBLE);
                 }
