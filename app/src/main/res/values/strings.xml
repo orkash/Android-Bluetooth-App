@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, FileExplore!</string>
-    <string name="app_name">File Explore</string>
+    <string name="app_name">[Product] app </string>
     <string name="hello_world">Hello World</string>
     <string name="action_settings">Settings</string>
     <string name="menu_developers">Developers</string>
