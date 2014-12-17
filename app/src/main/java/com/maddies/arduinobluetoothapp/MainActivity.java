@@ -13,6 +13,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +38,7 @@ public class MainActivity extends Activity {
     Spinner bluetoothSpinner;
     Button connectButton;
 
-    //public static ConnectThread bluetoothThread;
+    public static ConnectThread bluetoothThread;
 
     private static final int REQUEST_ENABLE_BT = 1;
 
@@ -143,7 +144,6 @@ public class MainActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "Welcome back", Toast.LENGTH_SHORT).show();
                 }
             }
-
         }
 
         if (mBluetoothAdapter.startDiscovery()){
@@ -162,7 +162,7 @@ public class MainActivity extends Activity {
             }
             if (resultCode == RESULT_CANCELED) {
                 // User stops the bluetooth enabling process
-                closeApplication("The application works only with Bluetooth enabled");
+                closeApplication("This application works only with Bluetooth enabled.");
             }
         }
     }
@@ -227,7 +227,7 @@ public class MainActivity extends Activity {
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        closeApplication("The application works only with Bluetooth enabled");
+                                        closeApplication("The application works only with Bluetooth enabled.");
                                     }
                                 });
 
