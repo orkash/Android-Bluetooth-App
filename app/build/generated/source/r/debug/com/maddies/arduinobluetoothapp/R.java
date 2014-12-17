@@ -22,11 +22,12 @@ public final class R {
         public static final int icon=0x7f020004;
     }
     public static final class id {
-        public static final int developers=0x7f080004;
-        public static final int error_button=0x7f080003;
+        public static final int connect_button=0x7f080002;
+        public static final int developers=0x7f080005;
+        public static final int error_button=0x7f080004;
         public static final int search_button=0x7f080000;
-        public static final int select_file_button=0x7f080001;
-        public static final int spinner=0x7f080002;
+        public static final int select_file_button=0x7f080003;
+        public static final int spinner=0x7f080001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

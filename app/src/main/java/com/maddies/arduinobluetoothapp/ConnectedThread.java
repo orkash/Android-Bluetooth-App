@@ -29,30 +29,33 @@ class ConnectedThread extends Thread {
 
     public void run() {
         while (true) {
-            read();
+            readState();
         }
     }
 
-	int state = 1;
-	
+
     public void write(byte[] bytes) {
-        try 
-        	{
-            mmOutStream.write(bytes[j]);
-            }
+        if (bytes == null)
+            return;
+        try {
+            Log.i("TAG", "Working");
+            mmOutStream.write(bytes);
         } catch (IOException e) {
             Log.e("Oh oh", "ERROR");
         }
+
     }
 
-    public byte[] read() {
+    public void readState() {
         try {
-            state = mmInStream.read();
-            if(state == -1)
-            	state = 0;
+            MainActivity.state = mmInStream.read();
+            Log.i("TAG", "Reading " + MainActivity.state);
+
+            if (MainActivity.state == -1)
+                MainActivity.state = 1;
         } catch (IOException e) {
+
         }
-        return b;
     }
 
     public void cancel() {
