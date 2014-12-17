@@ -9,8 +9,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.nfc.Tag;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,23 +28,30 @@ import java.util.Set;
 public class MainActivity extends Activity {
 
     public static final String TAG = "Bluetooth App";
-    private static final int REQUEST_ENABLE_BT = 1;
-    private BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-    Spinner spinner;
-    ArrayAdapter<String> mArrayAdapter;
+
+    public BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+    public ArrayAdapter<String> mArrayAdapter;
+
+    Spinner bluetoothSpinner;
     Button connectButton;
 
-    public static ConnectThread bluetoothThread;
+    //public static ConnectThread bluetoothThread;
+
+    private static final int REQUEST_ENABLE_BT = 1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
-        spinner =(Spinner) findViewById(R.id.spinner);
+        bluetoothSpinner =(Spinner) findViewById(R.id.spinner);
 
         // sets up broadcast receiver for bluetooth state
         IntentFilter bluetoothStateFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -129,7 +138,7 @@ public class MainActivity extends Activity {
         // have you connected to another bluetooth device once?
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
-                if (device.getName() == "TP-SPEAKER" || device.getAddress() == "TP-SPEAKER" ) {
+                if (device.getName() == "TP-SPEAKER") {
                     // you have already met this arduino
                     Toast.makeText(getApplicationContext(), "Welcome back", Toast.LENGTH_SHORT).show();
                 }
@@ -159,7 +168,7 @@ public class MainActivity extends Activity {
     }
 
     // enables bluetooth
-    private void enableBluetooth() {
+    public void enableBluetooth() {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
     }
@@ -167,12 +176,21 @@ public class MainActivity extends Activity {
 
 
     // listens if user manually disables bluetooth
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+    public final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+
+                SharedPreferences sharedPreferences =
+                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+                String deviceName = sharedPreferences.getString("pref_bluetooth_mac_address", "");
+                String bluetoothDeviceName = sharedPreferences.getString("pref_bluetooth_device_name", "");
+
+
 
                 Log.d("TAG", "new Device yeahhhh");
                 // Get the BluetoothDevice object from the Intent
@@ -180,12 +198,13 @@ public class MainActivity extends Activity {
                 // Add the name and address to an array adapter to show in a ListView
                 mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
 
-                if (device.getAddress().equals("what is the adrress?")) {
+                if (device.getAddress().equals(deviceName)
+                        || device.getName().equals(bluetoothDeviceName)) {
                     mBluetoothAdapter.cancelDiscovery();
                     connectButton.setVisibility(View.VISIBLE);
                 }
 
-                spinner.setAdapter(mArrayAdapter);
+                bluetoothSpinner.setAdapter(mArrayAdapter);
             }
 
 
@@ -234,7 +253,7 @@ public class MainActivity extends Activity {
     };
 
     // will exit application but not close if user has bluetooth problems
-    private void closeApplication(String message) {
+    public void closeApplication(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(message + " The application will no close.")
                 .setCancelable(false)
@@ -278,11 +297,15 @@ public class MainActivity extends Activity {
 
         switch (id){
             // developer button is pressed
-            case R.id.developers:
+            case R.id.action_bar_developers:
                 Toast toast = Toast.makeText(getApplicationContext(), "By Matthijs & Maarten", Toast.LENGTH_SHORT);
                 toast.show();
                 return true;
+            case R.id.action_bar_settings:
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
         }
+
 
         return super.onOptionsItemSelected(item);
     }
