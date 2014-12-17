@@ -27,6 +27,8 @@ import java.util.Set;
 
 
 public class MainActivity extends Activity {
+    public static int state = 1;
+
 
     public static final String TAG = "Bluetooth App";
 
@@ -99,7 +101,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-                discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+                discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 6);
                 startActivity(discoverableIntent);
 
                 bluetoothThread = new ConnectThread();

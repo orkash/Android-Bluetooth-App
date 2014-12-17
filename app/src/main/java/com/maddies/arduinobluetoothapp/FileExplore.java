@@ -14,6 +14,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 public class FileExplore extends Activity {
@@ -198,8 +199,7 @@ public class FileExplore extends Activity {
                         else {
                             Log.e("Banana!", "FILE PICKED  " + path.getAbsolutePath());
                             try {
-
-                                MainActivity.bluetoothThread.connectedThread.write(readFile(sel));
+                                sendFile(sel);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -215,25 +215,43 @@ public class FileExplore extends Activity {
     }
 
 
-    public static byte[] readFile(File file) throws IOException {
-        // Open file
+    public static void sendFile(File file) throws IOException {
+        fileSent = false;
+        tempState = 0;
+        while (!fileSent)
+            MainActivity.bluetoothThread.connectedThread.write(readFile(file));
+    }
 
+    static int tempState = 0;
+    static boolean fileSent = false;
+
+    private static byte[] readFile(File file) throws IOException {
+        // Open file
         RandomAccessFile f = new RandomAccessFile(file, "r");
         try {
-            if(state == 1){
-                ddfdfdf
-            } else if (state == 2){
+            if (MainActivity.state == 1 && tempState != 1) {
+                tempState = 1;
+                Log.i("TAG", "Working1");
 
-            }
-            else if(state == 3){
+                return ByteBuffer.allocate(8).putLong(file.length()).array();
+            } else if (MainActivity.state == 2 && tempState != 2) {
+                tempState = 2;
+                Log.i("TAG", "Working2");
+
+                return file.getName().getBytes();
+            } else if (MainActivity.state == 3 && tempState != 3) {
+                tempState = 3;
                 // Get and check length
-                long longlength = f.length();
-                int length = (int) longlength;
-                if (length != longlength)
+                long longLength = f.length();
+                int length = (int) longLength;
+                if (length != longLength)
                     throw new IOException("File size >= 2 GB");
                 // Read file and return data
                 byte[] data = new byte[length];
                 f.readFully(data);
+                fileSent = true;
+                Log.i("TAG", "Working3");
+
                 return data;
             }
             return null;
