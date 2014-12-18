@@ -48,9 +48,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
         super.onCreate(savedInstanceState);
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.activity_main);
 
         mArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
@@ -94,21 +94,6 @@ public class MainActivity extends Activity {
 
             }
         });
-
-        // madgijs button, does nothign except crash, very stupid don't try
-        Button makeError = (Button) findViewById(R.id.error_button);
-        makeError.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-                discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 6);
-                startActivity(discoverableIntent);
-
-                bluetoothThread = new ConnectThread();
-                bluetoothThread.start();
-            }
-        });
-
 
         // open the file explorer
         Button selectFileButton = (Button) findViewById(R.id.select_file_button);
