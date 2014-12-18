@@ -27,21 +27,13 @@
         android:layout_height="wrap_content"
         android:text="Connect"
         android:id="@+id/connect_button"
-        android:layout_gravity="center_horizontal"
-        android:visibility="invisible"/>
+        android:layout_gravity="center_horizontal" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select File"
         android:id="@+id/select_file_button"
-        android:layout_gravity="center_horizontal"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Press for error or if you're madgijs and have an arduino"
-        android:id="@+id/error_button"
         android:layout_gravity="center_horizontal"/>
 
 </LinearLayout>

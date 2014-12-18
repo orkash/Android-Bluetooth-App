@@ -28,18 +28,17 @@ import java.util.Set;
 public class MainActivity extends Activity {
     public static int state = 1;
 
+    public static final boolean DEBUG_MODE = true;
 
     public static final String TAG = "Bluetooth App";
 
-
-    public BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    public BluetoothAdapter mBluetoothAdapter;
 
     public ArrayAdapter<String> mArrayAdapter;
 
     Spinner bluetoothSpinner;
-    Button connectButton;
 
-    //public static ConnectThread bluetoothThread;
+    public static ConnectThread bluetoothThread;
 
     private static final int REQUEST_ENABLE_BT = 1;
 
@@ -52,34 +51,37 @@ public class MainActivity extends Activity {
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         setContentView(R.layout.activity_main);
 
+
         mArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
+
+
         bluetoothSpinner =(Spinner) findViewById(R.id.spinner);
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         // sets up broadcast receiver for bluetooth state
         IntentFilter bluetoothStateFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, bluetoothStateFilter);
 
-
         // Register the BroadcastReceiver
         IntentFilter bluetoothDeviceFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, bluetoothDeviceFilter);
 
-
         // searches for arduino devices
         Button searchButton = (Button) findViewById(R.id.search_button);
+
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // does device have bluetooth
 
                 if (mBluetoothAdapter == null) {
                     // Device does not support Bluetooth
                     closeApplication("Your device doesn't support Bluetooth.");
 
+
                 } else {
                     // Device supports bluetooth
-
                     if (!mBluetoothAdapter.isEnabled()) {
                         // bluetooth is not enabled
                         enableBluetooth();
@@ -99,6 +101,8 @@ public class MainActivity extends Activity {
         selectFileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(bluetoothThread == null)
+                    Log.d(TAG, "SJFHGDFJHGDUFHGDFOj");
                 if (bluetoothThread.connectedThread.isAlive()) {
                     Intent intent = new Intent(MainActivity.this, FileExplore.class);
                     startActivity(intent);
@@ -106,7 +110,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        connectButton = (Button) findViewById(R.id.search_button);
+       Button connectButton = (Button) findViewById(R.id.connect_button);
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,10 +127,15 @@ public class MainActivity extends Activity {
     private void lookForArduino() {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         // have you connected to another bluetooth device once?
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        String deviceName = sharedPreferences.getString("pref_bluetooth_mac_address", "");
+        String bluetoothDeviceName = sharedPreferences.getString("pref_bluetooth_device_name", "");
+
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
-                if (device.getName() == "TP-SPEAKER") {
-                    // you have already met this arduino
+                if (device.getName() == deviceName || device.getAddress() == bluetoothDeviceName) {
                     Toast.makeText(getApplicationContext(), "Welcome back", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -187,8 +196,6 @@ public class MainActivity extends Activity {
 
                 if (device.getAddress().equals(deviceName)
                         || device.getName().equals(bluetoothDeviceName)) {
-                    mBluetoothAdapter.cancelDiscovery();
-                    connectButton.setVisibility(View.VISIBLE);
                 }
 
                 bluetoothSpinner.setAdapter(mArrayAdapter);

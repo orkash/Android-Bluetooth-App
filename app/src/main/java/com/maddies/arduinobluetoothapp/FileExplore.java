@@ -197,7 +197,7 @@ public class FileExplore extends Activity {
                         }
                         // File picked
                         else {
-                            Log.e("Banana!", "FILE PICKED  " + path.getAbsolutePath());
+                            Log.e(MainActivity.TAG, "FILE PICKED  " + path.getAbsolutePath());
                             try {
                                 sendFile(sel);
                             } catch (IOException e) {
@@ -231,12 +231,12 @@ public class FileExplore extends Activity {
         try {
             if (MainActivity.state == 1 && tempState != 1) {
                 tempState = 1;
-                Log.i("TAG", "Working1");
+                Log.i(MainActivity.TAG, "Working1");
 
                 return ByteBuffer.allocate(8).putLong(file.length()).array();
             } else if (MainActivity.state == 2 && tempState != 2) {
                 tempState = 2;
-                Log.i("TAG", "Working2");
+                Log.i(MainActivity.TAG, "Working2");
 
                 return file.getName().getBytes();
             } else if (MainActivity.state == 3 && tempState != 3) {
@@ -250,7 +250,7 @@ public class FileExplore extends Activity {
                 byte[] data = new byte[length];
                 f.readFully(data);
                 fileSent = true;
-                Log.i("TAG", "Working3");
+                Log.i(MainActivity.TAG, "Working3");
 
                 return data;
             }

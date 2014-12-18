@@ -3,6 +3,7 @@ package com.maddies.arduinobluetoothapp;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.Set;
@@ -22,8 +23,8 @@ class ConnectThread extends Thread {
         Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
         if (devices != null) {
             for (BluetoothDevice device : devices) {
-                if (device.getName().equals("HC-06")) ;
-                mmDevice = device;
+                if (device.getName().equals("HC-06"))
+                    mmDevice = device;
             }
         }
 
@@ -41,6 +42,7 @@ class ConnectThread extends Thread {
 
         try {
             mmSocket.connect();
+            Log.d(MainActivity.TAG, "is connected");
         } catch (IOException connectException) {
             try {
                 mmSocket.close();
@@ -51,5 +53,7 @@ class ConnectThread extends Thread {
 
         connectedThread = new ConnectedThread(mmSocket);
         connectedThread.start();
+        Log.d(MainActivity.TAG, "establishing connection thread");
+
     }
 }

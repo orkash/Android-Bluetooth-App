@@ -33,12 +33,16 @@ class ConnectedThread extends Thread {
         }
     }
 
+    static int counter = 0;
 
     public void write(byte[] bytes) {
-        if (bytes == null)
+        if (bytes == null) {
+            Log.d(MainActivity.TAG, "Sent Empty File " + counter);
+            counter++;
             return;
+        }
         try {
-            Log.i("TAG", "Working");
+            Log.i(MainActivity.TAG, "Working");
             mmOutStream.write(bytes);
         } catch (IOException e) {
             Log.e("Oh oh", "ERROR");
@@ -49,7 +53,7 @@ class ConnectedThread extends Thread {
     public void readState() {
         try {
             MainActivity.state = mmInStream.read();
-            Log.i("TAG", "Reading " + MainActivity.state);
+            Log.d(MainActivity.TAG, "Reading " + MainActivity.state);
 
             if (MainActivity.state == -1)
                 MainActivity.state = 1;

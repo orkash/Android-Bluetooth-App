@@ -22,10 +22,9 @@ public final class R {
         public static final int icon=0x7f020004;
     }
     public static final class id {
-        public static final int action_bar_developers=0x7f090006;
-        public static final int action_bar_settings=0x7f090005;
+        public static final int action_bar_developers=0x7f090005;
+        public static final int action_bar_settings=0x7f090004;
         public static final int connect_button=0x7f090002;
-        public static final int error_button=0x7f090004;
         public static final int search_button=0x7f090000;
         public static final int select_file_button=0x7f090003;
         public static final int spinner=0x7f090001;
