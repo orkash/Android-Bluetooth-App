@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -26,20 +26,14 @@ import java.util.Set;
 
 
 public class MainActivity extends Activity {
+    
     public static int state = 1;
-
     public static final boolean DEBUG_MODE = true;
-
     public static final String TAG = "Bluetooth App";
-
     public BluetoothAdapter mBluetoothAdapter;
-
-    public ArrayAdapter<String> mArrayAdapter;
-
-    Spinner bluetoothSpinner;
-
+    public ArrayAdapter<String> bluetoothDeviceArrayAdapter;
     public static ConnectThread bluetoothThread;
-
+    Spinner bluetoothSpinner;
     private static final int REQUEST_ENABLE_BT = 1;
 
 
@@ -47,17 +41,16 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        
+        // has the user already set the settings once?
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        setContentView(R.layout.activity_main);
-
-
-        mArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
-
-
-        bluetoothSpinner =(Spinner) findViewById(R.id.spinner);
+        
+        setContentView(R.layout.activity_main);        
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        bluetoothDeviceArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
+        bluetoothSpinner = (Spinner) findViewById(R.id.spinner);
 
         // sets up broadcast receiver for bluetooth state
         IntentFilter bluetoothStateFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -102,7 +95,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(bluetoothThread == null)
-                    Log.d(TAG, "SJFHGDFJHGDUFHGDFOj");
+                    Log.d(TAG, "");
                 if (bluetoothThread.connectedThread.isAlive()) {
                     Intent intent = new Intent(MainActivity.this, FileExplore.class);
                     startActivity(intent);
@@ -111,11 +104,10 @@ public class MainActivity extends Activity {
         });
 
        Button connectButton = (Button) findViewById(R.id.connect_button);
-        connectButton.setOnClickListener(new View.OnClickListener() {
+       connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bluetoothThread = new ConnectThread();
-                bluetoothThread.start();
+                askMakeConnection("", bluetoothSpinner.getSelectedItem().toString());
             }
         });
 
@@ -131,15 +123,14 @@ public class MainActivity extends Activity {
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         String deviceName = sharedPreferences.getString("pref_bluetooth_mac_address", "");
-        String bluetoothDeviceName = sharedPreferences.getString("pref_bluetooth_device_name", "");
-
+        String bluetoothDeviceName = sharedPreferences.getString("pref_bluetooth_device_name", ""); 
+        
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
                 if (device.getName() == deviceName || device.getAddress() == bluetoothDeviceName) {
                     Toast.makeText(getApplicationContext(), "Welcome back", Toast.LENGTH_SHORT).show();
                 }
             }
-
         }
 
         if (mBluetoothAdapter.startDiscovery()){
@@ -158,7 +149,7 @@ public class MainActivity extends Activity {
             }
             if (resultCode == RESULT_CANCELED) {
                 // User stops the bluetooth enabling process
-                closeApplication("The application works only with Bluetooth enabled");
+                closeApplication("The application works only with Bluetooth enabled. ");
             }
         }
     }
@@ -180,25 +171,37 @@ public class MainActivity extends Activity {
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 
+                Log.d(TAG, "new device found");
+
                 SharedPreferences sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-                String deviceName = sharedPreferences.getString("pref_bluetooth_mac_address", "");
-                String bluetoothDeviceName = sharedPreferences.getString("pref_bluetooth_device_name", "");
-
-
-
-                Log.d("TAG", "new Device yeahhhh");
+                String prefBluetoothMacAddress = sharedPreferences.getString("pref_bluetooth_mac_address", "");
+                String prefBluetoothDeviceName = sharedPreferences.getString("pref_bluetooth_device_name", "");
+                
+                
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 // Add the name and address to an array adapter to show in a ListView
-                mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+                bluetoothDeviceArrayAdapter.add(device.getName() + " " + device.getAddress());
 
-                if (device.getAddress().equals(deviceName)
-                        || device.getName().equals(bluetoothDeviceName)) {
+                String stringDevice = device.getName() + " " + device.getAddress();
+
+
+                Log.d(TAG, "name: " + device.getName() + "-- address : " + device.getAddress());
+                Log.d(TAG, "PREFERENCES -- name: " + prefBluetoothDeviceName + "-- address : " + prefBluetoothMacAddress);
+
+                if (device.getAddress().equals(prefBluetoothMacAddress)) {
+                    askMakeConnection("A device matched your preferred MAC Address.", stringDevice);
+                    Log.d(TAG, "connecting because of Mac address");
+                                       
+                } else if (device.getName().equals(prefBluetoothDeviceName)) {
+                    askMakeConnection("A device matched your preferred Name.", stringDevice);
+                    Log.d(TAG, "connecting because of Device name");
+
                 }
 
-                bluetoothSpinner.setAdapter(mArrayAdapter);
+                bluetoothSpinner.setAdapter(bluetoothDeviceArrayAdapter);
             }
 
 
@@ -246,10 +249,32 @@ public class MainActivity extends Activity {
         }
     };
 
+    private void askMakeConnection(final String message, final String device) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage(message + " Do you want to connect to: " + device +  "?")
+                .setCancelable(true)
+                .setTitle("Make Connection?")
+                .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        bluetoothThread = new ConnectThread(device);
+                        bluetoothThread.start();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
     // will exit application but not close if user has bluetooth problems
     public void closeApplication(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage(message + " The application will no close.")
+        builder.setMessage(message + " The application will now close.")
                 .setCancelable(false)
                 .setTitle("Error")
                 .setIcon(android.R.drawable.ic_dialog_alert)

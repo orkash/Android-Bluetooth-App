@@ -16,18 +16,33 @@ class ConnectThread extends Thread {
     public ConnectedThread connectedThread;
 
 
-    public ConnectThread() {
+    public ConnectThread(String deviceNameAndAddress) {
         BluetoothSocket tmp;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
         if (devices != null) {
             for (BluetoothDevice device : devices) {
+                String nameAndAddress = device.getName() + " " + device.getAddress();
+
+                Log.d(MainActivity.TAG, "loop: " +nameAndAddress);
+                Log.d(MainActivity.TAG, "trying to find: " + deviceNameAndAddress);
+
+
+                if (nameAndAddress.equals(deviceNameAndAddress))
+                    mmDevice = device;
+                    Log.d(MainActivity.TAG, "Found the bonded device with same address and name");
+            }
+        }
+
+        /*Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
+        if (devices != null) {
+            for (BluetoothDevice device : devices) {
                 if (device.getName().equals("HC-06"))
                     mmDevice = device;
             }
         }
-
+*/
 
         try {
             UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
