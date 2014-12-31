@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Preferred Device Name-->
     <EditTextPreference
         android:key="pref_bluetooth_device_name"
         android:title="Change Arduino Device Name"
-        android:defaultValue="HC-06" />
+        android:defaultValue="-" />
 
-
+    <!-- Preferred Mac Address-->
     <EditTextPreference
         android:key="pref_bluetooth_mac_address"
         android:title="Change Arduino Device MAC Address"
-        android:defaultValue="unknown" />
+        android:defaultValue="-" />
 
-    <Preference android:title="Check our website" >
+    <!-- Maybe Donations?-->
+    <Preference android:title="Give Donation" >
         <intent android:action="android.intent.action.VIEW"
                 android:data="http://www.google.com" />
     </Preference>
-
-
-
 
 </PreferenceScreen>
