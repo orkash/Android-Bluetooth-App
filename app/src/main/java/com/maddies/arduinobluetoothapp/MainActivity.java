@@ -80,7 +80,9 @@ public class MainActivity extends Activity {
 
                     } else {
                         // bluetooth is enabled
-                        lookForArduino();
+                        if (mBluetoothAdapter.startDiscovery()){
+                            Log.d(TAG, "you have started searching");
+                        };
                     }
                 }
 
@@ -120,28 +122,6 @@ public class MainActivity extends Activity {
 
 
 
-    // tries to find an arduino
-    private void lookForArduino() {
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        // have you connected to another bluetooth device once?
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        String deviceName = sharedPreferences.getString("pref_bluetooth_mac_address", "");
-        String bluetoothDeviceName = sharedPreferences.getString("pref_bluetooth_device_name", ""); 
-        
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                if (device.getName() == deviceName || device.getAddress() == bluetoothDeviceName) {
-                    Toast.makeText(getApplicationContext(), "Welcome back", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-
-        if (mBluetoothAdapter.startDiscovery()){
-            Log.d(TAG, "you have started searching");
-        };
-    }
 
 
     // Gets result after enabling bluetooth
@@ -150,7 +130,9 @@ public class MainActivity extends Activity {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
                 // User succesfully enabled bluetooth
-                lookForArduino();
+                if (mBluetoothAdapter.startDiscovery()){
+                    Log.d(TAG, "you have started searching");
+                };
             }
             if (resultCode == RESULT_CANCELED) {
                 // User stops the bluetooth enabling process
