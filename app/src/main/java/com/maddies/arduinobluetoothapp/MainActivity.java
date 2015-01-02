@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,7 @@ import android.widget.Toast;
 import java.util.Set;
 
 public class MainActivity extends Activity {
-    
+
     public static int state = 1;
     public static final boolean DEBUG_MODE = true;
     public static final String TAG = "Bluetooth App";
@@ -39,12 +40,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        
+
         // restores previously stored preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // sets the layout
-        setContentView(R.layout.activity_main);        
+        setContentView(R.layout.activity_main);
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -80,9 +81,8 @@ public class MainActivity extends Activity {
 
                     } else {
                         // bluetooth is enabled
-                        if (mBluetoothAdapter.startDiscovery()){
-                            Log.d(TAG, "you have started searching");
-                        };
+                        startBluetooth();
+
                     }
                 }
 
@@ -90,38 +90,33 @@ public class MainActivity extends Activity {
             }
         });
 
-        // When the select file button is open the file explorer
-        Button selectFileButton = (Button) findViewById(R.id.select_file_button);
-        selectFileButton.setOnClickListener(new View.OnClickListener() {
+        Button connectButton = (Button) findViewById(R.id.connect_button);
+        connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // checks if there is  a bluetooth connection with an Arduino
-                if (bluetoothThread.connectedThread.isAlive()) {
-                    // there is a connection
-                    // open the explorer
-                    Intent intent = new Intent(MainActivity.this, FileExplore.class);
-                    startActivity(intent);
-                } else {
-                    // there is no connection
-                    // display message to user that there is no connection
-                    Toast.makeText(getApplicationContext(), 
-                            "Before selecting a file you need to be connected", Toast.LENGTH_SHORT).show();
-                }
+                try {
+                    askMakeConnection("", bluetoothSpinner.getSelectedItem().toString());
+                } catch (NullPointerException e) {
+                    makeToast("There are no bluetooth devices");
             }
-        });
 
-       Button connectButton = (Button) findViewById(R.id.connect_button);
-       connectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                askMakeConnection("", bluetoothSpinner.getSelectedItem().toString());
-            }
-        });
+
+        }
+    });
+
+}
+
+    private void makeToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 
     }
 
-
-
+    private void startBluetooth() {
+        if (mBluetoothAdapter.startDiscovery()){
+            Log.d(TAG, "you have started searching");
+            findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+        };
+    }
 
 
     // Gets result after enabling bluetooth
@@ -130,9 +125,7 @@ public class MainActivity extends Activity {
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
                 // User succesfully enabled bluetooth
-                if (mBluetoothAdapter.startDiscovery()){
-                    Log.d(TAG, "you have started searching");
-                };
+                startBluetooth();
             }
             if (resultCode == RESULT_CANCELED) {
                 // User stops the bluetooth enabling process
@@ -149,92 +142,92 @@ public class MainActivity extends Activity {
 
 
 
-    // listens if user manually disables bluetooth
-    public final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+// listens if user manually disables bluetooth
+public final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
 
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+        if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 
-                Log.d(TAG, "new device found");
+            Log.d(TAG, "new device found");
 
-                SharedPreferences sharedPreferences =
-                         PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences sharedPreferences =
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-                String prefBluetoothMacAddress = sharedPreferences.getString("pref_bluetooth_mac_address", "");
-                String prefBluetoothDeviceName = sharedPreferences.getString("pref_bluetooth_device_name", "");
-                
-                
-                // Get the BluetoothDevice object from the Intent
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                // Add the name and address to an array adapter to show in a ListView
-                bluetoothDeviceArrayAdapter.add(device.getName() + " " + device.getAddress());
-
-                String stringDevice = device.getName() + " " + device.getAddress();
+            String prefBluetoothMacAddress = sharedPreferences.getString("pref_bluetooth_mac_address", "");
+            String prefBluetoothDeviceName = sharedPreferences.getString("pref_bluetooth_device_name", "");
 
 
-                Log.d(TAG, "name: " + device.getName() + "-- address : " + device.getAddress());
-                Log.d(TAG, "PREFERENCES -- name: " + prefBluetoothDeviceName + "-- address : " + prefBluetoothMacAddress);
+            // Get the BluetoothDevice object from the Intent
+            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            // Add the name and address to an array adapter to show in a ListView
+            bluetoothDeviceArrayAdapter.add(device.getName() + " " + device.getAddress());
 
-                if (device.getAddress().equals(prefBluetoothMacAddress)) {
-                    askMakeConnection("A device matched your preferred MAC Address.", stringDevice);
-                    Log.d(TAG, "connecting because of Mac address");
-                                       
-                } else if (device.getName().equals(prefBluetoothDeviceName)) {
-                    askMakeConnection("A device matched your preferred Name.", stringDevice);
-                    Log.d(TAG, "connecting because of Device name");
+            String stringDevice = device.getName() + " " + device.getAddress();
 
-                }
 
-                bluetoothSpinner.setAdapter(bluetoothDeviceArrayAdapter);
+            Log.d(TAG, "name: " + device.getName() + "-- address : " + device.getAddress());
+            Log.d(TAG, "PREFERENCES -- name: " + prefBluetoothDeviceName + "-- address : " + prefBluetoothMacAddress);
+
+            if (device.getAddress().equals(prefBluetoothMacAddress)) {
+                askMakeConnection("A device matched your preferred MAC Address.", stringDevice);
+                Log.d(TAG, "connecting because of Mac address");
+
+            } else if (device.getName().equals(prefBluetoothDeviceName)) {
+                askMakeConnection("A device matched your preferred Name.", stringDevice);
+                Log.d(TAG, "connecting because of Device name");
+
             }
 
+            bluetoothSpinner.setAdapter(bluetoothDeviceArrayAdapter);
+        }
 
-            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
-                        BluetoothAdapter.ERROR);
-                switch (state) {
-                    case BluetoothAdapter.STATE_OFF:
-                        Log.d(TAG, "User turned Bluetooth off");
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage("Bluetooth was disabled. Do you want to enable it?")
-                                .setCancelable(false)
-                                .setTitle("Error")
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        enableBluetooth();
-                                    }
-                                })
-                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        closeApplication("The application works only with Bluetooth enabled");
-                                    }
-                                });
+        if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+            final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                    BluetoothAdapter.ERROR);
+            switch (state) {
+                case BluetoothAdapter.STATE_OFF:
+                    Log.d(TAG, "User turned Bluetooth off");
 
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage("Bluetooth was disabled. Do you want to enable it?")
+                            .setCancelable(false)
+                            .setTitle("Error")
+                            .setIcon(R.drawable.ic_alert)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    enableBluetooth();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    closeApplication("The application works only with Bluetooth enabled");
+                                }
+                            });
 
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_OFF:
-                        Log.d(TAG, " User is turning bluetooth off...");
-                        break;
-                    case BluetoothAdapter.STATE_ON:
-                        Log.d(TAG, "User switched bluetooth on");
-                        mBluetoothAdapter.cancelDiscovery();
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_ON:
-                        Log.d(TAG, "User is turning bluetooth on");
-                        break;
-                    default:
-                        Log.d(TAG, "what happened?");
-                }
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+                    break;
+                case BluetoothAdapter.STATE_TURNING_OFF:
+                    Log.d(TAG, " User is turning bluetooth off...");
+                    break;
+                case BluetoothAdapter.STATE_ON:
+                    Log.d(TAG, "User switched bluetooth on");
+                    mBluetoothAdapter.cancelDiscovery();
+                    break;
+                case BluetoothAdapter.STATE_TURNING_ON:
+                    Log.d(TAG, "User is turning bluetooth on");
+                    break;
+                default:
+                    Log.d(TAG, "what happened?");
             }
         }
-    };
+    }
+};
 
     private void askMakeConnection(final String message, final String device) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -245,11 +238,17 @@ public class MainActivity extends Activity {
                     public void onClick(DialogInterface dialog, int id) {
                         bluetoothThread = new ConnectThread(device);
                         bluetoothThread.start();
+
+                        Intent startPostGet = new Intent(MainActivity.this, PostGetActivity.class);
+                        startPostGet.putExtra("device name and address", device);
+                        startActivity(startPostGet);
+
+                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        // no action required
                     }
                 });
 
@@ -264,7 +263,7 @@ public class MainActivity extends Activity {
         builder.setMessage(message + " The application will now close.")
                 .setCancelable(false)
                 .setTitle("Error")
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(R.drawable.ic_alert)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -304,8 +303,7 @@ public class MainActivity extends Activity {
         switch (id){
             // developer button is pressed
             case R.id.action_bar_developers:
-                Toast toast = Toast.makeText(getApplicationContext(), "By Matthijs & Maarten", Toast.LENGTH_SHORT);
-                toast.show();
+                makeToast("Developed by Matthijs & Maarten");
                 return true;
             case R.id.action_bar_settings:
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);

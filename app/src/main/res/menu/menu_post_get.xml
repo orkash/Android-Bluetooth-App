@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.maddies.arduinobluetoothapp.PostGetActivity">
+
+    <item android:id="@+id/action_bar_developers"
+          android:title="@string/action_bar_developers"
+          android:orderInCategory="110"
+          android:showAsAction="never" />
+</menu>

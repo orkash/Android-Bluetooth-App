@@ -12,6 +12,7 @@
     <string name="app_name">[Product] app </string>
     <string name="hello">Hello World, FileExplore!</string>
     <string name="hello_world">Hello World</string>
+    <string name="title_activity_post_get">PostGetActivity</string>
     <string name="title_activity_setting">Setting</string>
     <string name="title_activity_settings">Settings</string>
     <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values/styles.xml -->

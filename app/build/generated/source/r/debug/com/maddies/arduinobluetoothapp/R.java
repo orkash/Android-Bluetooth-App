@@ -18,21 +18,27 @@ public final class R {
         public static final int directory_icon=0x7f020000;
         public static final int directory_up=0x7f020001;
         public static final int file_icon=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
+        public static final int ic_alert=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
     }
     public static final class id {
-        public static final int action_bar_developers=0x7f090005;
-        public static final int action_bar_settings=0x7f090004;
-        public static final int connect_button=0x7f090002;
+        public static final int action_bar_developers=0x7f090008;
+        public static final int action_bar_settings=0x7f090007;
+        public static final int connect_button=0x7f090003;
+        public static final int connected_to_text_view=0x7f090004;
+        public static final int get_button=0x7f090006;
+        public static final int loadingPanel=0x7f090001;
+        public static final int post_button=0x7f090005;
         public static final int search_button=0x7f090000;
-        public static final int select_file_button=0x7f090003;
-        public static final int spinner=0x7f090001;
+        public static final int spinner=0x7f090002;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
+        public static final int activity_post_get=0x7f030001;
     }
     public static final class menu {
         public static final int main=0x7f080000;
+        public static final int menu_post_get=0x7f080001;
     }
     public static final class string {
         public static final int action_bar_developers=0x7f060000;
@@ -41,9 +47,10 @@ public final class R {
         public static final int app_name=0x7f060003;
         public static final int hello=0x7f060004;
         public static final int hello_world=0x7f060005;
-        public static final int menu_developers=0x7f060008;
-        public static final int title_activity_setting=0x7f060006;
-        public static final int title_activity_settings=0x7f060007;
+        public static final int menu_developers=0x7f060009;
+        public static final int title_activity_post_get=0x7f060006;
+        public static final int title_activity_setting=0x7f060007;
+        public static final int title_activity_settings=0x7f060008;
     }
     public static final class style {
         /**  Customize your theme here. 
