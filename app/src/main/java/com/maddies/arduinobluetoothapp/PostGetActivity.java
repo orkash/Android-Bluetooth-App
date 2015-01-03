@@ -21,7 +21,7 @@ public class PostGetActivity extends Activity {
         TextView connectedTo = (TextView) findViewById(R.id.connected_to_text_view);
 
         Intent intent = getIntent();
-        String device = intent.getExtras().getString("device name and address");
+        String device = intent.getExtras().getString("deviceString");
 
         connectedTo.setText("Connected to: " + device);
 
@@ -31,7 +31,7 @@ public class PostGetActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // checks if there is  a bluetooth connection with an Arduino
-                if (MainActivity.bluetoothThread.connectedThread.isAlive()) {
+                if (MainActivity.connectThread.connectedThread.isAlive()) {
                     // there is a connection
                     // open the explorer
                     Intent intent = new Intent(PostGetActivity.this, FileExplore.class);
@@ -50,7 +50,7 @@ public class PostGetActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // checks if there is  a bluetooth connection with an Arduino
-                if (MainActivity.bluetoothThread.connectedThread.isAlive()) {
+                if (MainActivity.connectThread.connectedThread.isAlive()) {
                     // there is a connection
                     Toast.makeText(getApplicationContext(),
                             "Before selecting a file you need to be connected", Toast.LENGTH_SHORT).show();
@@ -60,6 +60,17 @@ public class PostGetActivity extends Activity {
                     Toast.makeText(getApplicationContext(),
                             "Before selecting a file you need to be connected", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        Button cancelButton = (Button) findViewById(R.id.cancel_button);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            // cacnel the current connection
+            /*ConnectThread.connectedThread.cancel();*/
+            // go back to mainactivity
+            finish();
+
             }
         });
     }

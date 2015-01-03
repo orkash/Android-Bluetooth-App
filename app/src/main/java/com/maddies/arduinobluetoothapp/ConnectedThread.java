@@ -65,6 +65,7 @@ class ConnectedThread extends Thread {
     public void cancel() {
         try {
             mmSocket.close();
+            // go to mainactivity
         } catch (IOException e) {
         }
     }

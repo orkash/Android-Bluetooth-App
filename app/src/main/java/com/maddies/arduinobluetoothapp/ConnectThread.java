@@ -3,7 +3,14 @@ package com.maddies.arduinobluetoothapp;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.Set;
@@ -11,64 +18,98 @@ import java.util.UUID;
 
 // this class is for establishing a connection between the arduino and android device
 class ConnectThread extends Thread {
-    private BluetoothSocket mmSocket;
-    private BluetoothDevice mmDevice;
-    private BluetoothAdapter mBluetoothAdapter;
-    public ConnectedThread connectedThread;
+    Handler handler;
+    Context context;
+    MainActivity mainActivity;
+
+    private final BluetoothSocket mmSocket;
+    private final BluetoothDevice mmDevice;
+    public static ConnectedThread connectedThread;
 
     // get called when the user accepted to make a connection
-    public ConnectThread(String deviceNameAndAddress) {
-        BluetoothSocket tmp;
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    public ConnectThread(Context context, BluetoothDevice device) {
+        mainActivity = new MainActivity();
+        handler = new Handler(Looper.getMainLooper());
 
-        // it will run through all bonded devices on your devices and see if they have the same mac adress and
-        // device name. If they do, then that bonded device will be selected.
-        Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
-        if (devices != null) {
-            for (BluetoothDevice device : devices) {
-                String nameAndAddress = device.getName() + " " + device.getAddress();
+        this.context = context;
 
-                Log.d(MainActivity.TAG, "loop: " +nameAndAddress);
-                Log.d(MainActivity.TAG, "trying to find: " + deviceNameAndAddress);
+        BluetoothSocket tmp = null;
+        mmDevice = device;
 
-                if (nameAndAddress.equals(deviceNameAndAddress))
-                    mmDevice = device;
-                    Log.d(MainActivity.TAG, "Found the bonded device with same address and name");
-            }
-        }
+        Log.d(MainActivity.TAG, "connecting to: " + device.getName() + " - " + device.getAddress() );
 
-        // sees if our selected bluetooth device has the correct UUID
-        // this UUID is unique for our arduino
-        // so basically checks if our selected bluetooth device is an arduino from us
+        // Get a BluetoothSocket to connect with the given BluetoothDevice
         try {
+            // this uuid is the also used by the server code
             UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
             tmp = mmDevice.createRfcommSocketToServiceRecord(uuid);
-            mmSocket = tmp;
+
         } catch (IOException e) {
 
         }
+        mmSocket = tmp;
     }
 
     public void run() {
-        // device will stop searching for other devices
-        mBluetoothAdapter.cancelDiscovery();
+        // Cancel discovery because it will slow down the connection
+        MainActivity.mBluetoothAdapter.cancelDiscovery();
 
         try {
-            // will try to make a connection
+            // Connect the device through the socket. This will block
+            // until it succeeds or throws an exception
             mmSocket.connect();
             Log.d(MainActivity.TAG, "is connected");
+
         } catch (IOException connectException) {
+            // Unable to connect; close the socket and get out
+            Log.d(MainActivity.TAG, "can't connect ");
+
+            mainActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(context, "Unable to make a connection", Toast.LENGTH_SHORT).show();
+                }
+            });
+            handler.post(new Runnable() {
+
+                @Override
+                public void run() {
+                    MainActivity.connectingPanel.setVisibility(View.GONE);
+                }
+            });
+
             try {
-                // error in trying to make a connection
                 mmSocket.close();
+
             } catch (IOException closeException) {
+
             }
+
             return;
         }
 
+
+        // connection succesfully made
+        // go to post get activity
         connectedThread = new ConnectedThread(mmSocket);
         connectedThread.start();
-        Log.d(MainActivity.TAG, "establishing connection thread");
 
+        // this is not tested yet
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                MainActivity.connectingPanel.setVisibility(View.GONE);
+
+                Intent startPostGet = new Intent(context, PostGetActivity.class);
+                startPostGet.putExtra("deviceString", mmDevice.getName() + " - " + mmDevice.getAddress());
+                context.startActivity(startPostGet);
+                Log.d(MainActivity.TAG, "opening new activity");
+            }
+        });
+        Log.d(MainActivity.TAG, "establishing connection thread");
     }
+
+
 }
+
+

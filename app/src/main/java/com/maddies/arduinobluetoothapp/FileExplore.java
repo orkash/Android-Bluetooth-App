@@ -219,7 +219,7 @@ public class FileExplore extends Activity {
         fileSent = false;
         tempState = 0;
         while (!fileSent)
-            MainActivity.bluetoothThread.connectedThread.write(readFile(file));
+            MainActivity.connectThread.connectedThread.write(readFile(file));
     }
 
     static int tempState = 0;
