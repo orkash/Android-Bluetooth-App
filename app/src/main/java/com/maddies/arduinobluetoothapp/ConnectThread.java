@@ -1,34 +1,31 @@
 package com.maddies.arduinobluetoothapp;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.Set;
 import java.util.UUID;
 
 // this class is for establishing a connection between the arduino and android device
 class ConnectThread extends Thread {
     Handler handler;
     Context context;
-    MainActivity mainActivity;
 
     private final BluetoothSocket mmSocket;
     private final BluetoothDevice mmDevice;
+
     public static ConnectedThread connectedThread;
 
     // get called when the user accepted to make a connection
     public ConnectThread(Context context, BluetoothDevice device) {
-        mainActivity = new MainActivity();
         handler = new Handler(Looper.getMainLooper());
 
         this.context = context;
@@ -36,12 +33,17 @@ class ConnectThread extends Thread {
         BluetoothSocket tmp = null;
         mmDevice = device;
 
+        connectedThread = null;
+
         Log.d(MainActivity.TAG, "connecting to: " + device.getName() + " - " + device.getAddress() );
 
         // Get a BluetoothSocket to connect with the given BluetoothDevice
         try {
             // this uuid is the also used by the server code
-            UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+
+            String s = PreferenceManager.getDefaultSharedPreferences(context).getString("pref_bluetooth_uuid", "");
+            Log.d(MainActivity.TAG, s);
+            UUID uuid = UUID.fromString(s);
             tmp = mmDevice.createRfcommSocketToServiceRecord(uuid);
 
         } catch (IOException e) {
@@ -64,50 +66,56 @@ class ConnectThread extends Thread {
             // Unable to connect; close the socket and get out
             Log.d(MainActivity.TAG, "can't connect ");
 
-            mainActivity.runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(context, "Unable to make a connection", Toast.LENGTH_SHORT).show();
-                }
-            });
             handler.post(new Runnable() {
 
                 @Override
                 public void run() {
-                    MainActivity.connectingPanel.setVisibility(View.GONE);
+                    MainActivity.connectingProgressBar.setVisibility(View.GONE);
+                    Toast.makeText(context, "Unable to make a connection", Toast.LENGTH_SHORT).show();
                 }
             });
 
             try {
                 mmSocket.close();
-
-            } catch (IOException closeException) {
-
-            }
-
+            } catch (IOException closeException) { }
             return;
         }
-
 
         // connection succesfully made
         // go to post get activity
         connectedThread = new ConnectedThread(mmSocket);
         connectedThread.start();
 
-        // this is not tested yet
+
         handler.post(new Runnable() {
 
             @Override
             public void run() {
-                MainActivity.connectingPanel.setVisibility(View.GONE);
+                MainActivity.connectingProgressBar.setVisibility(View.GONE);
 
                 Intent startPostGet = new Intent(context, PostGetActivity.class);
-                startPostGet.putExtra("deviceString", mmDevice.getName() + " - " + mmDevice.getAddress());
+                startPostGet.putExtra("device", mmDevice.getName() + " - " + mmDevice.getAddress());
+
                 context.startActivity(startPostGet);
+
                 Log.d(MainActivity.TAG, "opening new activity");
             }
         });
+
         Log.d(MainActivity.TAG, "establishing connection thread");
+
+
     }
+
+    public void cancel() {
+        try {
+            mmSocket.close();
+            // go to mainactivity
+        } catch (IOException e) {
+        }
+    }
+
+
 
 
 }

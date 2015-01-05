@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -23,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -38,14 +36,18 @@ public class MainActivity extends Activity {
     public static final String TAG = "Bluetooth App";
 
     public static BluetoothAdapter mBluetoothAdapter;
-    public ArrayAdapter<String> bluetoothDeviceArrayAdapter;
     public static ConnectThread connectThread;
+
     ListView bluetoothListView;
-    public List<BluetoothDevice> bluetoothList = new ArrayList<>();
+    List<BluetoothDevice> bluetoothList = new ArrayList<>();
+    ArrayAdapter<String> bluetoothDeviceArrayAdapter;
 
-    static ProgressBar connectingPanel, loadingPanel;
+    public static ProgressBar connectingProgressBar;
+    ProgressBar loadingProgressBar;
     Button searchButton, stopButton;
+    String prefBluetoothMacAddress, prefBluetoothName, prefBluetoothUUID;
 
+    IntentFilter intentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,26 +59,20 @@ public class MainActivity extends Activity {
         // sets the layout
         setContentView(R.layout.activity_main);
 
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
+
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        loadingPanel = (ProgressBar) findViewById(R.id.loading_panel);
-        connectingPanel = (ProgressBar) findViewById(R.id.connecting_panel);
+        loadingProgressBar = (ProgressBar) findViewById(R.id.loading_panel);
+        connectingProgressBar = (ProgressBar) findViewById(R.id.connecting_panel);
 
         searchButton = (Button) findViewById(R.id.search_button);
         stopButton = (Button) findViewById(R.id.stop_button);
 
         bluetoothDeviceArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
         bluetoothListView = (ListView) findViewById(R.id.list_view);
-
-
-
-        // Registers BraodcastReceiver for bluetooth state changes
-        IntentFilter bluetoothStateFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(mReceiver, bluetoothStateFilter);
-
-        // Registers BroadcastReceiver for new bluetooth devices
-        IntentFilter bluetoothDeviceFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        registerReceiver(mReceiver, bluetoothDeviceFilter);
 
         // When the search button is clicked it will search for Bluetooth devices
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +120,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 mBluetoothAdapter.cancelDiscovery();
-                loadingPanel.setVisibility(View.GONE);
+                loadingProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -136,7 +132,7 @@ public class MainActivity extends Activity {
     private void startBluetooth() {
         if (mBluetoothAdapter.startDiscovery()){
             Log.d(TAG, "you have started searching");
-            loadingPanel.setVisibility(View.VISIBLE);
+            loadingProgressBar.setVisibility(View.VISIBLE);
         };
     }
 
@@ -162,6 +158,13 @@ public class MainActivity extends Activity {
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (getIntent().getExtras().getString(TAG).equals("enableBluetooth")) {
+                enableBluetooth();
+        }
+    }
 
 
     // listens if user manually disables bluetooth
@@ -171,16 +174,9 @@ public class MainActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {               
 
-                Log.d(TAG, "new device found");
-
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-                String prefBluetoothMacAddress = sharedPreferences.getString("pref_bluetooth_mac_address", "");
-                String prefBluetoothDeviceName = sharedPreferences.getString("pref_bluetooth_device_name", "");
-
+                retreivePreferences();
 
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -194,13 +190,14 @@ public class MainActivity extends Activity {
 
 
                 Log.d(TAG, "name: " + device.getName() + "-- address : " + device.getAddress());
-                Log.d(TAG, "PREFERENCES -- name: " + prefBluetoothDeviceName + "-- address : " + prefBluetoothMacAddress);
+                Log.d(TAG, "PREFERENCES -- name: " + prefBluetoothName + "-- address : " + prefBluetoothMacAddress
+                + "uuid: " + prefBluetoothUUID);
 
                 if (device.getAddress().equals(prefBluetoothMacAddress)) {
                     askMakeConnection("A device matched your preferred MAC Address.", stringDevice, device);
                     Log.d(TAG, "connecting because of Mac address");
 
-                } else if (device.getName().equals(prefBluetoothDeviceName)) {
+                } else if (device.getName().equals(prefBluetoothName)) {
                     askMakeConnection("A device matched your preferred Name.", stringDevice, device);
                     Log.d(TAG, "connecting because of Device name");
 
@@ -239,10 +236,10 @@ public class MainActivity extends Activity {
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
                         Log.d(TAG, " User is turning bluetooth off...");
+                        mBluetoothAdapter.cancelDiscovery();
                         break;
                     case BluetoothAdapter.STATE_ON:
                         Log.d(TAG, "User switched bluetooth on");
-                        mBluetoothAdapter.cancelDiscovery();
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
                         Log.d(TAG, "User is turning bluetooth on");
@@ -254,6 +251,15 @@ public class MainActivity extends Activity {
         }
     };
 
+    private void retreivePreferences() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+
+        prefBluetoothMacAddress = sharedPreferences.getString("pref_bluetooth_mac_address", "");
+        prefBluetoothName = sharedPreferences.getString("pref_bluetooth_device_name", "");
+        prefBluetoothUUID = sharedPreferences.getString("pref_bluetooth_uuid", "");
+    }
+
     private void askMakeConnection(String message, final String deviceString, final BluetoothDevice device) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(message + " Do you want to connect to: " + deviceString +  "?")
@@ -261,10 +267,13 @@ public class MainActivity extends Activity {
                 .setTitle("Make Connection?")
                 .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        retreivePreferences();
+
                         connectThread = new ConnectThread(MainActivity.this ,device);
                         connectThread.start();
-                        loadingPanel.setVisibility(View.GONE);
-                        connectingPanel.setVisibility(View.VISIBLE);
+
+                        loadingProgressBar.setVisibility(View.GONE);
+                        connectingProgressBar.setVisibility(View.VISIBLE);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -282,16 +291,14 @@ public class MainActivity extends Activity {
     // will exit application but not close if user has bluetooth problems
     public void closeApplication(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage(message + " The application will now close.")
+        builder.setMessage(message)
                 .setCancelable(false)
                 .setTitle("Error")
                 .setIcon(R.drawable.ic_alert)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        loadingProgressBar.setVisibility(View.GONE);
+                        connectingProgressBar.setVisibility(View.GONE);
                     }
                 });
 
@@ -301,11 +308,18 @@ public class MainActivity extends Activity {
 
 
     @Override
-    public void onDestroy() {
+    public void onStop() {
         // closes the broadcast receiver
         unregisterReceiver(mReceiver);
-        super.onDestroy();
+        super.onStop();
 
+    }
+
+    @Override
+    public void onStart() {
+        // Registers BroadcastReceiver for bluetooth state changes
+        registerReceiver(mReceiver, intentFilter);
+        super.onStart();
     }
 
     @Override
@@ -328,7 +342,7 @@ public class MainActivity extends Activity {
                 makeToast("Developed by Matthijs & Maarten");
                 return true;
             case R.id.action_bar_settings:
-                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
         }
 

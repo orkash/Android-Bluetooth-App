@@ -1,13 +1,17 @@
 package com.maddies.arduinobluetoothapp;
 
 import android.bluetooth.BluetoothSocket;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
+
 // this class is for the actual data transmission between the two devices when they are already connected
-class ConnectedThread extends Thread {
+class ConnectedThread extends Thread{
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;

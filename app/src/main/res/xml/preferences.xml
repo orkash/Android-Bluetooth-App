@@ -3,14 +3,22 @@
     <!-- Preferred Device Name-->
     <EditTextPreference
         android:key="pref_bluetooth_device_name"
-        android:title="Change Arduino Device Name"
-        android:defaultValue="-" />
+        android:title="Name"
+        android:defaultValue="-"
+        android:summary="Change Arduino Device Name"/>
 
     <!-- Preferred Mac Address-->
     <EditTextPreference
         android:key="pref_bluetooth_mac_address"
-        android:title="Change Arduino Device MAC Address"
-        android:defaultValue="-" />
+        android:title="MAC Address"
+        android:defaultValue="-"
+        android:summary="Change Arduino Device MAC Address"/>
+
+    <EditTextPreference
+        android:key="pref_bluetooth_uuid"
+        android:title="UUID"
+        android:defaultValue="00001101-0000-1000-8000-00805f9b34fb"
+        android:summary="Change Arduino Device UUID"/>
 
     <!-- Maybe Donations?-->
     <Preference android:title="Give Donation" >
