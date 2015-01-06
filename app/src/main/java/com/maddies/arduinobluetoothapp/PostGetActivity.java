@@ -21,7 +21,7 @@ import android.widget.Toast;
 public class PostGetActivity extends Activity {
 
     TextView connectedTo;
-    String device;
+    BluetoothDevice device;
     Button getButton, postButton, cancelButton;
 
     @Override
@@ -31,9 +31,9 @@ public class PostGetActivity extends Activity {
 
         connectedTo = (TextView) findViewById(R.id.connected_to_text_view);
 
-        device = getIntent().getExtras().getString(device);
+        device = getIntent().getParcelableExtra("device");
 
-        connectedTo.setText("Connected to: " + device);
+        connectedTo.setText("Connected to: " + device.getName() + " - " + device.getAddress());
 
         // When the select file button is open the file explorer and send it
         postButton = (Button) findViewById(R.id.post_button);
@@ -49,6 +49,7 @@ public class PostGetActivity extends Activity {
                 }
             }
         });
+
 
         getButton = (Button) findViewById(R.id.get_button);
         getButton.setOnClickListener(new View.OnClickListener() {

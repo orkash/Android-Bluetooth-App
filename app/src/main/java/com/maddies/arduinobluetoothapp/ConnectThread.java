@@ -86,7 +86,6 @@ class ConnectThread extends Thread {
         connectedThread = new ConnectedThread(mmSocket);
         connectedThread.start();
 
-
         handler.post(new Runnable() {
 
             @Override
@@ -94,10 +93,8 @@ class ConnectThread extends Thread {
                 MainActivity.connectingProgressBar.setVisibility(View.GONE);
 
                 Intent startPostGet = new Intent(context, PostGetActivity.class);
-                startPostGet.putExtra("device", mmDevice.getName() + " - " + mmDevice.getAddress());
-
+                startPostGet.putExtra("device", mmDevice);
                 context.startActivity(startPostGet);
-
                 Log.d(MainActivity.TAG, "opening new activity");
             }
         });

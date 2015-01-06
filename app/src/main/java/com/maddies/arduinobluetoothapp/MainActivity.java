@@ -39,8 +39,8 @@ public class MainActivity extends Activity {
     public static ConnectThread connectThread;
 
     ListView bluetoothListView;
-    List<BluetoothDevice> bluetoothList = new ArrayList<>();
-    ArrayAdapter<String> bluetoothDeviceArrayAdapter;
+    ArrayList<BluetoothDevice> devicesArrayList;
+    BluetoothDevicesAdapter mBluetoothDevicesAdapter;
 
     public static ProgressBar connectingProgressBar;
     ProgressBar loadingProgressBar;
@@ -71,8 +71,15 @@ public class MainActivity extends Activity {
         searchButton = (Button) findViewById(R.id.search_button);
         stopButton = (Button) findViewById(R.id.stop_button);
 
-        bluetoothDeviceArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line);
-        bluetoothListView = (ListView) findViewById(R.id.list_view);
+        // Construct the data source
+        devicesArrayList = new ArrayList<>();
+        // Create the adapter to convert the array to views
+        mBluetoothDevicesAdapter = new BluetoothDevicesAdapter(this, devicesArrayList);
+        mBluetoothDevicesAdapter.setNotifyOnChange(true);
+
+        // Attach the adapter to a ListView
+        bluetoothListView = (ListView) findViewById(R.id.devices_list_view);
+        bluetoothListView.setAdapter(mBluetoothDevicesAdapter);
 
         // When the search button is clicked it will search for Bluetooth devices
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -106,7 +113,7 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 try {
                     askMakeConnection("", String.valueOf(adapterView.getItemAtPosition(position)),
-                            bluetoothList.get(position));
+                            devicesArrayList.get(position));
                 } catch (NullPointerException e) {
                     makeToast("There are no bluetooth devices");
                 }
@@ -162,7 +169,7 @@ public class MainActivity extends Activity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (getIntent().getExtras().getString(TAG).equals("enableBluetooth")) {
-                enableBluetooth();
+            enableBluetooth();
         }
     }
 
@@ -174,36 +181,37 @@ public class MainActivity extends Activity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {               
-
-                retreivePreferences();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                // Add the name and address to an array adapter to show in a ListView
-                bluetoothDeviceArrayAdapter.add(device.getName() + " " + device.getAddress());
 
-                // add device to separate list
-                bluetoothList.add(device);
+                if (devicesArrayList.contains(device)) {
+                    return;
+                }
+
+                devicesArrayList.add(device);
+                bluetoothListView.setAdapter(mBluetoothDevicesAdapter);
+
+                retreivePreferences();
+
 
                 String stringDevice = device.getName() + " " + device.getAddress();
 
 
                 Log.d(TAG, "name: " + device.getName() + "-- address : " + device.getAddress());
                 Log.d(TAG, "PREFERENCES -- name: " + prefBluetoothName + "-- address : " + prefBluetoothMacAddress
-                + "uuid: " + prefBluetoothUUID);
+                        + "uuid: " + prefBluetoothUUID);
 
                 if (device.getAddress().equals(prefBluetoothMacAddress)) {
-                    askMakeConnection("A device matched your preferred MAC Address.", stringDevice, device);
+                    askMakeConnection("A device matched your preferred MAC address.", stringDevice, device);
                     Log.d(TAG, "connecting because of Mac address");
 
                 } else if (device.getName().equals(prefBluetoothName)) {
-                    askMakeConnection("A device matched your preferred Name.", stringDevice, device);
+                    askMakeConnection("A device matched your preferred name.", stringDevice, device);
                     Log.d(TAG, "connecting because of Device name");
 
                 }
-
-                bluetoothListView.setAdapter(bluetoothDeviceArrayAdapter);
             }
 
 
