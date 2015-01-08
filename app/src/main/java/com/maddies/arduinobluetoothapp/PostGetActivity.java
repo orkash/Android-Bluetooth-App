@@ -58,14 +58,14 @@ public class PostGetActivity extends Activity {
                 // checks if there is  a bluetooth connection with an Arduino
                 if (MainActivity.connectThread.connectedThread.isAlive()) {
                     // there is a connection
-                    Toast.makeText(getApplicationContext(),
-                            "Before selecting a file you need to be connected", Toast.LENGTH_SHORT).show();
+                    // send
                 } else {
                     // there is no connection
                     // display message to user that there is no connection
                     Toast.makeText(getApplicationContext(),
                             "Before selecting a file you need to be connected", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
 
@@ -75,7 +75,6 @@ public class PostGetActivity extends Activity {
             public void onClick(View v) {
             // cancel the current connection
             // not tested yet
-            //connectedThread.cancel();
             ConnectThread.connectedThread.cancel();
             // go back to mainactivity
             finish();

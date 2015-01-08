@@ -18,14 +18,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity {
 
@@ -48,6 +50,8 @@ public class MainActivity extends Activity {
     String prefBluetoothMacAddress, prefBluetoothName, prefBluetoothUUID;
 
     IntentFilter intentFilter;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +84,18 @@ public class MainActivity extends Activity {
         // Attach the adapter to a ListView
         bluetoothListView = (ListView) findViewById(R.id.devices_list_view);
         bluetoothListView.setAdapter(mBluetoothDevicesAdapter);
+
+        // on first run
+        sharedPreferences = getSharedPreferences("com.maddies.arduinobluetoothapp", MODE_PRIVATE);
+        if (sharedPreferences.getBoolean("firstrun", true)) {
+            // Do first run stuff here then set 'firstrun' as false
+            // using the following line to edit/commit prefs
+
+
+            displayShowCaseView("Search Button", "This is a search button", R.id.search_button);
+
+            sharedPreferences.edit().putBoolean("firstrun", false).commit();
+        }
 
         // When the search button is clicked it will search for Bluetooth devices
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +131,7 @@ public class MainActivity extends Activity {
                     askMakeConnection("", String.valueOf(adapterView.getItemAtPosition(position)),
                             devicesArrayList.get(position));
                 } catch (NullPointerException e) {
-                    makeToast("There are no bluetooth devices");
+                    makeToast(MainActivity.this, "There are no bluetooth devices");
                 }
             }
 
@@ -132,7 +148,42 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void makeToast(String message) {
+    public void displayShowCaseView(String title, String message, final int id) {
+        new ShowcaseView.Builder(MainActivity.this)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setTarget(new ViewTarget(id, MainActivity.this))
+                .setShowcaseEventListener(new OnShowcaseEventListener() {
+                    @Override
+                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                        showcaseView.setVisibility(View.GONE);
+                        if (id == R.id.search_button) {
+                            displayShowCaseView("Stop Button",
+                                    "If this button is pressed your device will stop searching",
+                                    R.id.stop_button);
+                        } else if (id == R.id.stop_button) {
+                            displayShowCaseView("List View",
+                                    "LOL",
+                                    R.id.devices_list_view);
+                        } else if (id == R.id.devices_list_view) {
+                            return;
+                        }
+                    }
+
+                    @Override
+                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                    }
+
+                    @Override
+                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                    }
+                })
+                .build();
+    }
+
+    public void makeToast(Context context ,String message) {
         Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -160,7 +211,7 @@ public class MainActivity extends Activity {
     }
 
     // enables bluetooth
-    public void enableBluetooth() {
+    private void enableBluetooth() {
         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
     }
@@ -175,7 +226,7 @@ public class MainActivity extends Activity {
 
 
     // listens if user manually disables bluetooth
-    public final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -214,7 +265,6 @@ public class MainActivity extends Activity {
                 }
             }
 
-
             if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                 final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
                         BluetoothAdapter.ERROR);
@@ -234,7 +284,7 @@ public class MainActivity extends Activity {
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        closeApplication("The application works only with Bluetooth enabled");
+                                        closeApplication("The application works only with Bluetooth enabled. ");
                                     }
                                 });
 
@@ -259,13 +309,14 @@ public class MainActivity extends Activity {
         }
     };
 
-    private void retreivePreferences() {
+    public void retreivePreferences() {
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
         prefBluetoothMacAddress = sharedPreferences.getString("pref_bluetooth_mac_address", "");
         prefBluetoothName = sharedPreferences.getString("pref_bluetooth_device_name", "");
         prefBluetoothUUID = sharedPreferences.getString("pref_bluetooth_uuid", "");
+        Log.d(TAG, prefBluetoothUUID);
     }
 
     private void askMakeConnection(String message, final String deviceString, final BluetoothDevice device) {
@@ -297,7 +348,7 @@ public class MainActivity extends Activity {
 
 
     // will exit application but not close if user has bluetooth problems
-    public void closeApplication(String message) {
+    private void closeApplication(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(message)
                 .setCancelable(false)
@@ -316,7 +367,7 @@ public class MainActivity extends Activity {
 
 
     @Override
-    public void onStop() {
+    protected void onStop() {
         // closes the broadcast receiver
         unregisterReceiver(mReceiver);
         super.onStop();
@@ -324,7 +375,7 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public void onStart() {
+    protected void onStart() {
         // Registers BroadcastReceiver for bluetooth state changes
         registerReceiver(mReceiver, intentFilter);
         super.onStart();
@@ -347,7 +398,7 @@ public class MainActivity extends Activity {
         switch (id){
             // developer button is pressed
             case R.id.action_bar_developers:
-                makeToast("Developed by Matthijs & Maarten");
+                makeToast(MainActivity.this, "Developed by Matthijs & Maarten");
                 return true;
             case R.id.action_bar_settings:
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -357,6 +408,4 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }

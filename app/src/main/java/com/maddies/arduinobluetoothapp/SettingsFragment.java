@@ -16,6 +16,8 @@ public class SettingsFragment extends PreferenceFragment {
         // creates the preferences from the xml preferences file
         addPreferencesFromResource(R.xml.preferences);
 
+
+        // not working yet
         Preference restoreSettingsButton = findPreference("restore_settings");
         restoreSettingsButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -23,7 +25,6 @@ public class SettingsFragment extends PreferenceFragment {
                 Toast.makeText(getActivity(), "Default settings set", Toast.LENGTH_SHORT).show();
 
                 PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().commit();
-
                 return true;
             }
         });

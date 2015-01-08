@@ -111,10 +111,6 @@ class ConnectThread extends Thread {
         } catch (IOException e) {
         }
     }
-
-
-
-
 }
 
 
