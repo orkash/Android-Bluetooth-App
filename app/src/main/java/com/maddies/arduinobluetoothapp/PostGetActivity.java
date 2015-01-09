@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +24,7 @@ public class PostGetActivity extends Activity {
     TextView connectedTo;
     BluetoothDevice device;
     Button getButton, postButton, cancelButton;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +33,23 @@ public class PostGetActivity extends Activity {
 
         connectedTo = (TextView) findViewById(R.id.connected_to_text_view);
 
-        device = getIntent().getParcelableExtra("device");
+        device = getIntent().getParcelableExtra(MainActivity.EXTRA_DEVICE);
 
-        connectedTo.setText("Connected to: " + device.getName() + " - " + device.getAddress());
+        connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());
+
+        // starts tutorial chain
+
+        // on first run
+        sharedPreferences = getSharedPreferences("com.maddies.arduinobluetoothapp", MODE_PRIVATE);
+        if (sharedPreferences.getBoolean("firstRunPostGetActivity", true)) {
+            // Do first run stuff here then set 'firstrun' as false
+            // using the following line to edit/commit prefs
+            MainActivity.displayShowCaseView(this, getString(R.string.tutorial_post_button_header),
+                    getString(R.string.tutorial_post_button_text),
+                    R.id.post_button);
+            sharedPreferences.edit().putBoolean("firstRunPostGetActivity", false).apply();
+        }
+
 
         // When the select file button is open the file explorer and send it
         postButton = (Button) findViewById(R.id.post_button);
@@ -101,23 +117,23 @@ public class PostGetActivity extends Activity {
                         Log.d(MainActivity.TAG, " User is turning bluetooth off...");
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(PostGetActivity.this);
-                        builder.setMessage("Bluetooth was disabled. Do you want to enable it?")
+                        builder.setMessage(getString(R.string.bluetooth_disabled_message))
                                 .setCancelable(false)
-                                .setTitle("Error")
+                                .setTitle(R.string.error)
                                 .setIcon(R.drawable.ic_alert)
-                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         // close the connection
                                         Intent intent = new Intent(PostGetActivity.this, MainActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        intent.putExtra(MainActivity.TAG, "enableBluetooth");
+                                        intent.putExtra(MainActivity.TAG, MainActivity.EXTRA_ENABLE_BLUETOOTH);
                                         startActivity(intent);
                                     }
                                 })
-                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        closeApplication("The application works only with Bluetooth enabled");
+                                        closeApplication(getString(R.string.error_bluetooth_not_enabled));
                                     }
                                 });
 
@@ -141,9 +157,9 @@ public class PostGetActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(PostGetActivity.this);
         builder.setMessage(message)
                 .setCancelable(false)
-                .setTitle("Error")
+                .setTitle(R.string.error)
                 .setIcon(R.drawable.ic_alert)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent(PostGetActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -188,7 +204,7 @@ public class PostGetActivity extends Activity {
         switch (id) {
             // developer button is pressed
             case R.id.action_bar_developers:
-                Toast toast = Toast.makeText(getApplicationContext(), "Developed by Matthijs & Maarten", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.developers, Toast.LENGTH_SHORT);
                 toast.show();
                 return true;
         }

@@ -1,5 +1,6 @@
 package com.maddies.arduinobluetoothapp;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -18,16 +19,19 @@ public class SettingsFragment extends PreferenceFragment {
 
 
         // not working yet
-        Preference restoreSettingsButton = findPreference("restore_settings");
+        /*Preference restoreSettingsButton = findPreference("restore_settings");
         restoreSettingsButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference arg0) {
                 Toast.makeText(getActivity(), "Default settings set", Toast.LENGTH_SHORT).show();
-
-                PreferenceManager.getDefaultSharedPreferences(getActivity()).edit().clear().commit();
+                // resets settings
+                SharedPreferences prefs = getActivity().getSharedPreferences("preferences.xml",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.clear();
+                editor.commit();
                 return true;
             }
-        });
+        });*/
     }
 }
 

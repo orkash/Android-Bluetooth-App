@@ -23,22 +23,78 @@
     <eat-comment/>
     <string name="action_bar_developers">Developers</string>
     <string name="action_bar_settings">Settings</string>
-    <string name="action_settings">Settings</string>
     <string name="app_name">[Product] app </string>
-    <string name="hello">Hello World, FileExplore!</string>
-    <string name="hello_world">Hello World</string>
-    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
-    <eat-comment/>
+    <string name="bluetooth_disabled_message">Bluetooth was disabled. Do you want to enable it?</string>
+    <string name="connected_to">"Connected to: "</string>
+    <string name="connection_dialog_cancel">Cancel</string>
+    <string name="connection_dialog_connect">Connect</string>
+    <string name="connection_dialog_message">" Do you want to connect to: "</string>
+    <string name="connection_dialog_preferred_mac">A device matched your preferred MAC address.</string>
+    <string name="connection_dialog_preferred_name">A device matched your preferred name.</string>
+    <string name="connection_dialog_title">Make Connection?</string>
+    <string name="developers"><![CDATA[Developed by Matthijs & Maarten]]></string>
+    <string name="error">Error</string>
+    <string name="error_bluetooth_not_enabled">"The application works only with Bluetooth enabled. "</string>
+    <string name="error_no_bluetooth">Your device does not support Bluetooth.</string>
+    <string name="list_view_title">List of Bluetooth devices</string>
+    <string name="making_connection_failed">Unable to make a connection</string>
+    <string name="no">No</string>
     <string name="ok">OK</string>
-    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values/strings.xml -->
-    <eat-comment/>
+    <string name="search_button">Search</string>
+    <string name="stop_button">Stop</string>
     <string name="title_activity_post_get">PostGetActivity</string>
-    <string name="title_activity_setting">Setting</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_setting">Settings</string>
+    <string name="tutorial_cancel_button_header">Cancel Button</string>
+    <string name="tutorial_cancel_button_text">After pressing this button, the connection between your Android
+        and the other device will be cancelled.
+        This is very useful to safe power since having an unused connection is unnecessary power consuming.</string>
+    <string name="tutorial_get_button_header">Get Button</string>
+    <string name="tutorial_get_button_text">After pressing this button,
+        a file explorer with files to be send to you, will pop up.
+        From the list of files, one can be selected to be send to your device and saved into your download folder.</string>
+    <string name="tutorial_list_view_header">List of Bluetooth devices</string>
+    <string name="tutorial_list_view_text">All found Bluetooth devices will be displayed here.
+        There is nothing yet because you have not started searching and discovered any devices.
+        New devices will be displayed per row, in the format: device name - device MAC address.</string>
+    <string name="tutorial_overflow_header">Overflow</string>
+    <string name="tutorial_overflow_text">In the overflow, the settings can be accessed.
+        In the settings the preferred device name,
+        MAC address and UUID for the device you want to connect to, can be made.
+        Device name and MAC address are optional while UUID is required to make a connection.</string>
+    <string name="tutorial_post_button_header">Post Button</string>
+    <string name="tutorial_post_button_text">After pressing this button,
+        a file explorer with files from your memory, will pop up.
+        Once a file has been selected, it will be send in the background to the connected device.</string>
+    <string name="tutorial_search_button_header">Search Button</string>
+    <string name="tutorial_search_button_text">After pressing this button,
+        Android will start searching for other Bluetooth devices that have made themselves discoverable.
+        When Bluetooth is not yet enabled, you will be asked first to enable it.</string>
+    <string name="tutorial_stop_button_header">Stop Button</string>
+    <string name="tutorial_stop_button_text">After pressing this button,
+        Android will stop searching for new devices but will keep Bluetooth on.
+        The system will wait for your input.</string>
+    <string name="yes">Yes</string>
     <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+    </style>
+    <style name="CustomShowcaseThemeClose" parent="ShowcaseView.Light">
+        <item name="sv_backgroundColor">#663d4353</item>
+        <item name="sv_showcaseColor">#25467A</item>
+        <item name="sv_tintButtonColor">true</item>
+        <item name="sv_buttonText">Close</item>
+        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
+    </style>
+    <style name="CustomShowcaseThemeNext" parent="ShowcaseView.Light">
+        <item name="sv_backgroundColor">#663d4353</item>
+        <item name="sv_showcaseColor">#25467A</item>
+        <item name="sv_buttonText">Next</item>
+        <item name="sv_tintButtonColor">true</item>
+        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
+    </style>
+    <style name="CustomTitle" parent="TextAppearance.ShowcaseView.Title">
+        <item name="android:textColor">#25467A</item>
     </style>
     <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
     <eat-comment/>

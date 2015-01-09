@@ -125,27 +125,59 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class string {
         public static final int action_bar_developers=0x7f070000;
         public static final int action_bar_settings=0x7f070001;
-        public static final int action_settings=0x7f070002;
-        public static final int app_name=0x7f070003;
-        public static final int hello=0x7f070004;
-        public static final int hello_world=0x7f070005;
-        public static final int menu_developers=0x7f07000a;
-        public static final int ok=0x7f070006;
-        public static final int title_activity_post_get=0x7f070007;
-        public static final int title_activity_setting=0x7f070008;
-        public static final int title_activity_settings=0x7f070009;
+        public static final int app_name=0x7f070002;
+        public static final int bluetooth_disabled_message=0x7f070003;
+        public static final int connected_to=0x7f070004;
+        public static final int connection_dialog_cancel=0x7f070005;
+        public static final int connection_dialog_connect=0x7f070006;
+        public static final int connection_dialog_message=0x7f070007;
+        public static final int connection_dialog_preferred_mac=0x7f070008;
+        public static final int connection_dialog_preferred_name=0x7f070009;
+        public static final int connection_dialog_title=0x7f07000a;
+        public static final int developers=0x7f07000b;
+        public static final int error=0x7f07000c;
+        public static final int error_bluetooth_not_enabled=0x7f07000d;
+        public static final int error_no_bluetooth=0x7f07000e;
+        public static final int list_view_title=0x7f07000f;
+        public static final int making_connection_failed=0x7f070010;
+        public static final int menu_developers=0x7f070026;
+        public static final int no=0x7f070011;
+        public static final int ok=0x7f070012;
+        public static final int search_button=0x7f070013;
+        public static final int stop_button=0x7f070014;
+        public static final int title_activity_post_get=0x7f070015;
+        public static final int title_activity_setting=0x7f070016;
+        public static final int tutorial_cancel_button_header=0x7f070017;
+        public static final int tutorial_cancel_button_text=0x7f070018;
+        public static final int tutorial_get_button_header=0x7f070019;
+        public static final int tutorial_get_button_text=0x7f07001a;
+        public static final int tutorial_list_view_header=0x7f07001b;
+        public static final int tutorial_list_view_text=0x7f07001c;
+        public static final int tutorial_overflow_header=0x7f07001d;
+        public static final int tutorial_overflow_text=0x7f07001e;
+        public static final int tutorial_post_button_header=0x7f07001f;
+        public static final int tutorial_post_button_text=0x7f070020;
+        public static final int tutorial_search_button=0x7f070027;
+        public static final int tutorial_search_button_header=0x7f070021;
+        public static final int tutorial_search_button_text=0x7f070022;
+        public static final int tutorial_stop_button_header=0x7f070023;
+        public static final int tutorial_stop_button_text=0x7f070024;
+        public static final int yes=0x7f070025;
     }
     public static final class style {
         /**  Customize your theme here. 
          */
         public static final int AppTheme=0x7f080000;
-        public static final int ShowcaseButton=0x7f080001;
-        public static final int ShowcaseView=0x7f080002;
-        public static final int ShowcaseView_Light=0x7f080003;
-        public static final int TextAppearance_ShowcaseView_Detail=0x7f080004;
-        public static final int TextAppearance_ShowcaseView_Detail_Light=0x7f080005;
-        public static final int TextAppearance_ShowcaseView_Title=0x7f080006;
-        public static final int TextAppearance_ShowcaseView_Title_Light=0x7f080007;
+        public static final int CustomShowcaseThemeClose=0x7f080001;
+        public static final int CustomShowcaseThemeNext=0x7f080002;
+        public static final int CustomTitle=0x7f080003;
+        public static final int ShowcaseButton=0x7f080004;
+        public static final int ShowcaseView=0x7f080005;
+        public static final int ShowcaseView_Light=0x7f080006;
+        public static final int TextAppearance_ShowcaseView_Detail=0x7f080007;
+        public static final int TextAppearance_ShowcaseView_Detail_Light=0x7f080008;
+        public static final int TextAppearance_ShowcaseView_Title=0x7f080009;
+        public static final int TextAppearance_ShowcaseView_Title_Light=0x7f08000a;
     }
     public static final class xml {
         public static final int preferences=0x7f040000;

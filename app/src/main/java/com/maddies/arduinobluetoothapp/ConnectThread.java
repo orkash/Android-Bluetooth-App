@@ -71,7 +71,20 @@ class ConnectThread extends Thread {
                 @Override
                 public void run() {
                     MainActivity.connectingProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(context, "Unable to make a connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.making_connection_failed), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            handler.post(new Runnable() {
+
+                @Override
+                public void run() {
+                    MainActivity.connectingProgressBar.setVisibility(View.GONE);
+
+                    Intent startPostGet = new Intent(context, PostGetActivity.class);
+                    startPostGet.putExtra(MainActivity.EXTRA_DEVICE, mmDevice);
+                    context.startActivity(startPostGet);
+                    Log.d(MainActivity.TAG, "opening new activity");
                 }
             });
 
@@ -93,7 +106,7 @@ class ConnectThread extends Thread {
                 MainActivity.connectingProgressBar.setVisibility(View.GONE);
 
                 Intent startPostGet = new Intent(context, PostGetActivity.class);
-                startPostGet.putExtra("device", mmDevice);
+                startPostGet.putExtra(MainActivity.EXTRA_DEVICE, mmDevice);
                 context.startActivity(startPostGet);
                 Log.d(MainActivity.TAG, "opening new activity");
             }

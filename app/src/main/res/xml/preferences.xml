@@ -20,10 +20,10 @@
         android:defaultValue="00001101-0000-1000-8000-00805f9b34fb"
         android:summary="Change Arduino Device UUID"/>
 
-    <Preference android:title="Restore Default Settings"
+    <!--<Preference android:title="Restore Default Settings"
                 android:key="restore_settings">
 
-    </Preference>
+    </Preference>-->
 
     <!-- Maybe Donations?-->
     <Preference android:title="Give Donation"

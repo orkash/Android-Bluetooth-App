@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="menu_developers">Ontwikkelaars</string>
+    <string name="search_button">Search</string>
+    <string name="tutorial_search_button">This is a search button</string>
+    <string name="tutorial_search_button_header">Search Button</string>
 </resources>
