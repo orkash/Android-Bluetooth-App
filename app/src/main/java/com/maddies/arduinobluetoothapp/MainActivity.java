@@ -17,11 +17,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
@@ -30,12 +30,11 @@ import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity {
 
     public static int state = 1;
-    public static final boolean DEBUG_MODE = true;
+
     private static final int REQUEST_ENABLE_BT = 1;
 
     public static final String TAG = "Bluetooth App";
@@ -58,7 +57,6 @@ public class MainActivity extends Activity {
     IntentFilter intentFilter;
 
     SharedPreferences sharedPreferences;
-    private static long singleShotCouter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,8 +135,7 @@ public class MainActivity extends Activity {
         bluetoothListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                askMakeConnection("", String.valueOf(adapterView.getItemAtPosition(position)),
-                            devicesArrayList.get(position));
+                askMakeConnection("", devicesArrayList.get(position));
             }
         });
 
@@ -153,28 +150,33 @@ public class MainActivity extends Activity {
     }
 
     public static void displayShowCaseView(final Context context, String title, String message, final int id) {
-        singleShotCouter++;
         ShowcaseView.Builder showcaseViewBuilder = new ShowcaseView.Builder((Activity) context)
                 .setContentTitle(title)
                 .setContentText(message)
-
-                .singleShot(singleShotCouter)
                 .setShowcaseEventListener(new OnShowcaseEventListener() {
                     @Override
                     public void onShowcaseViewHide(ShowcaseView showcaseView) {
                         showcaseView.setVisibility(View.GONE);
+
                         if (id == R.id.search_button) {
                             displayShowCaseView(context, context.getString(R.string.tutorial_stop_button_header),
                                     context.getString(R.string.tutorial_stop_button_text),
                                     R.id.stop_button);
+
                         } else if (id == R.id.stop_button) {
                             displayShowCaseView(context, context.getString(R.string.tutorial_list_view_header),
                                     context.getString(R.string.tutorial_list_view_text),
                                     R.id.devices_list_view);
+
                         } else if (id == R.id.devices_list_view) {
-                            displayShowCaseView(context, context.getString(R.string.tutorial_overflow_header),
-                                    context.getString(R.string.tutorial_overflow_text),
-                                   1);
+                            if (ViewConfiguration.get(context).hasPermanentMenuKey()) {
+                                Log.d(TAG, "has overflow button");
+                                return;
+                            } else {
+                                displayShowCaseView(context, context.getString(R.string.tutorial_overflow_header),
+                                        context.getString(R.string.tutorial_overflow_text),
+                                        1);
+                            }
                         } else if (id == 1) {
                             return;
                         }
@@ -188,39 +190,39 @@ public class MainActivity extends Activity {
                                     context.getString(R.string.tutorial_cancel_button_text),
                                     R.id.cancel_button);
                         } else if (id == R.id.cancel_button) {
-                            return;
+                            // nothings needs to be done if the cancel button tutorial
                         }
                     }
-
                     @Override
                     public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
                     }
 
                     @Override
                     public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
                     }
                 });
 
-                if (id != 1 && id != R.id.cancel_button) {
-                    // not the last image
-                    showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeNext);
-                } else {
-                    // the last image
-                    showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeClose);
-                }
+        if (ViewConfiguration.get(context).hasPermanentMenuKey() && id == R.id.devices_list_view) {
+            // no overflow, so last showcase view
+            showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeClose);
+        } else if (id == 1 || id == R.id.cancel_button) {
+            // the last image
+            showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeClose);
+        } else {
+            // the last image
+            showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeNext);
+        }
 
-                if (id == 1) {
-                    // overflow
-                    showcaseViewBuilder.setTarget(
-                            new ActionViewTarget((Activity) context, ActionViewTarget.Type.OVERFLOW));
-                } else {
-                    // all other views
-                    showcaseViewBuilder.setTarget(new ViewTarget(id, (Activity) context));
-                }
+        if (id == 1) {
+            // the overflow
+            showcaseViewBuilder.setTarget(
+                    new ActionViewTarget((Activity) context, ActionViewTarget.Type.OVERFLOW));
+        } else {
+            // all other views
+            showcaseViewBuilder.setTarget(new ViewTarget(id, (Activity) context));
+        }
 
-                showcaseViewBuilder.build();
+        showcaseViewBuilder.build();
     }
 
     public void makeToast(Context context ,String message) {
@@ -231,7 +233,7 @@ public class MainActivity extends Activity {
         if (mBluetoothAdapter.startDiscovery()){
             Log.d(TAG, "you have started searching");
             loadingProgressBar.setVisibility(View.VISIBLE);
-        };
+        }
     }
 
 
@@ -286,20 +288,16 @@ public class MainActivity extends Activity {
 
                 retreivePreferences();
 
-
-                String stringDevice = device.getName() + " " + device.getAddress();
-
-
                 Log.d(TAG, "name: " + device.getName() + "-- address : " + device.getAddress());
                 Log.d(TAG, "PREFERENCES -- name: " + prefBluetoothName + "-- address : " + prefBluetoothMacAddress
                         + "uuid: " + prefBluetoothUUID);
 
                 if (device.getAddress().equals(prefBluetoothMacAddress)) {
-                    askMakeConnection(getString(R.string.connection_dialog_preferred_mac), stringDevice, device);
+                    askMakeConnection(getString(R.string.connection_dialog_preferred_mac), device);
                     Log.d(TAG, "connecting because of Mac address");
 
                 } else if (device.getName().equals(prefBluetoothName)) {
-                    askMakeConnection(getString(R.string.connection_dialog_preferred_name), stringDevice, device);
+                    askMakeConnection(getString(R.string.connection_dialog_preferred_name), device);
                     Log.d(TAG, "connecting because of Device name");
 
                 }
@@ -359,9 +357,10 @@ public class MainActivity extends Activity {
         Log.d(TAG, prefBluetoothUUID);
     }
 
-    private void askMakeConnection(String message, final String deviceString, final BluetoothDevice device) {
+    private void askMakeConnection(String message, final BluetoothDevice device) {
+        String stringDevice = device.getName() + " " + device.getAddress();
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage(message + getString(R.string.connection_dialog_message) + deviceString +  "?")
+        builder.setMessage(message + getString(R.string.connection_dialog_message) + stringDevice + "?")
                 .setCancelable(true)
                 .setTitle(getString(R.string.connection_dialog_title))
                 .setPositiveButton(getString(R.string.connection_dialog_connect), new DialogInterface.OnClickListener() {

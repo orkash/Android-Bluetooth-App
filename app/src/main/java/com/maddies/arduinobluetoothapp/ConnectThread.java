@@ -47,8 +47,8 @@ class ConnectThread extends Thread {
             tmp = mmDevice.createRfcommSocketToServiceRecord(uuid);
 
         } catch (IOException e) {
-
         }
+
         mmSocket = tmp;
     }
 
@@ -75,7 +75,7 @@ class ConnectThread extends Thread {
                 }
             });
 
-            handler.post(new Runnable() {
+            /*handler.post(new Runnable() {
 
                 @Override
                 public void run() {
@@ -86,11 +86,12 @@ class ConnectThread extends Thread {
                     context.startActivity(startPostGet);
                     Log.d(MainActivity.TAG, "opening new activity");
                 }
-            });
+            });*/
 
             try {
                 mmSocket.close();
-            } catch (IOException closeException) { }
+            } catch (IOException closeException) {
+            }
             return;
         }
 

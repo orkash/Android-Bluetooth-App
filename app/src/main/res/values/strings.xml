@@ -70,5 +70,6 @@
     <string name="making_connection_failed">Unable to make a connection</string>
 
     <string name="list_view_title">List of Bluetooth devices</string>
+    <string name="file_explorer_dialog_title">Choose your file</string>
 
 </resources>
