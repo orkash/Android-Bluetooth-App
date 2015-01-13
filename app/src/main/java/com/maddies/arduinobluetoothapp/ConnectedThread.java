@@ -23,6 +23,7 @@ class ConnectedThread extends Thread{
 
         try {
             tmpIn = socket.getInputStream();
+
             tmpOut = socket.getOutputStream();
 
         } catch (IOException e) {
@@ -45,6 +46,7 @@ class ConnectedThread extends Thread{
             counter++;
             return;
         }
+
         try {
             Log.i(MainActivity.TAG, "Working");
             mmOutStream.write(bytes);

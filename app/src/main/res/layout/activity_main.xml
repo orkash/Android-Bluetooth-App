@@ -17,14 +17,14 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search"
+            android:text="@string/search_button"
             android:id="@+id/search_button"
             android:gravity="center" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stop"
+            android:text="@string/stop_button"
             android:id="@+id/stop_button"/>
 
         <ProgressBar
@@ -38,9 +38,9 @@
 
 
     <ListView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/list_view" />
+        android:id="@+id/devices_list_view" />
 
     <ProgressBar
         android:layout_width="wrap_content"
