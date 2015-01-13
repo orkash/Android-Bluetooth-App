@@ -229,17 +229,17 @@ public class FileExplore extends Activity {
         // Open file
         RandomAccessFile f = new RandomAccessFile(file, "r");
         try {
-            if (MainActivity.state == 1 && tempState != 1) {
+            if (MainActivity.state == 1 && tempState == 0) {
                 tempState = 1;
                 Log.i(MainActivity.TAG, "Working1");
 
                 return ByteBuffer.allocate(8).putLong(file.length()).array();
-            } else if (MainActivity.state == 2 && tempState != 2) {
+            } else if (MainActivity.state == 2 && tempState == 1) {
                 tempState = 2;
                 Log.i(MainActivity.TAG, "Working2");
 
                 return file.getName().getBytes();
-            } else if (MainActivity.state == 3 && tempState != 3) {
+            } else if (MainActivity.state == 3 && tempState == 2) {
                 tempState = 3;
                 // Get and check length
                 long longLength = f.length();

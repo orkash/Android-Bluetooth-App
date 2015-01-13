@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/C:/Users/Madgijs/Desktop/Development/Programming/Projects/Java/Android%20Workspace/Android-Bluetooth-App/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Users/Madgijs/Desktop/Development/Programming/Projects/Java/Android%20Workspace/Android-Bluetooth-App/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="action_bar_developers">Developers</string>
     <string name="action_bar_settings">Settings</string>
@@ -15,7 +15,7 @@
     <string name="title_activity_post_get">PostGetActivity</string>
     <string name="title_activity_setting">Setting</string>
     <string name="title_activity_settings">Settings</string>
-    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/C:/Users/Madgijs/Desktop/Development/Programming/Projects/Java/Android%20Workspace/Android-Bluetooth-App/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
