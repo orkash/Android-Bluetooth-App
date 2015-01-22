@@ -1,9 +1,13 @@
 package com.maddies.arduinobluetoothapp;
 
 import android.bluetooth.BluetoothSocket;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +21,7 @@ class ConnectedThread extends Thread{
     private final OutputStream mmOutStream;
 
     public ConnectedThread(BluetoothSocket socket) {
+
         mmSocket = socket;
         InputStream tmpIn = null;
         OutputStream tmpOut = null;
@@ -42,14 +47,17 @@ class ConnectedThread extends Thread{
 
     public void write(byte[] bytes) {
         if (bytes == null) {
-            Log.d(MainActivity.TAG, "Sent Empty File " + counter);
+            //Log.d(MainActivity.TAG, "Sent Empty File " + counter);
             counter++;
             return;
         }
 
         try {
+            for(byte b : bytes)
+                Log.i(MainActivity.TAG, b + "");
             Log.i(MainActivity.TAG, "Working");
             mmOutStream.write(bytes);
+
         } catch (IOException e) {
             Log.e("Oh oh", "ERROR");
         }

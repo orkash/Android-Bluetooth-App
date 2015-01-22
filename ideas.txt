@@ -6,7 +6,7 @@ get list of all files on arduino
 sending files getting files in seperate thread
 restore default settings
 french german dutch translations
-file explore folder structure root
+file explore folder structure root, done
 donations
 
 tablet version

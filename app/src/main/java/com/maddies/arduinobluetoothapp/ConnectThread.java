@@ -85,8 +85,11 @@ class ConnectThread extends Thread {
                     startPostGet.putExtra(MainActivity.EXTRA_DEVICE, mmDevice);
                     context.startActivity(startPostGet);
                     Log.d(MainActivity.TAG, "opening new activity");
+
                 }
             });*/
+
+
 
             try {
                 mmSocket.close();

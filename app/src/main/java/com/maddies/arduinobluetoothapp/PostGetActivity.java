@@ -33,7 +33,8 @@ import java.util.ArrayList;
 
 public class PostGetActivity extends Activity {
 
-    TextView connectedTo;
+
+    static TextView connectedTo, statusTextView;
     BluetoothDevice device;
     Button getButton, postButton, cancelButton;
     SharedPreferences sharedPreferences;
@@ -56,6 +57,7 @@ public class PostGetActivity extends Activity {
         setContentView(R.layout.activity_post_get);
 
         connectedTo = (TextView) findViewById(R.id.connected_to_text_view);
+        statusTextView = (TextView) findViewById(R.id.status_text_view);
 
         device = getIntent().getParcelableExtra(MainActivity.EXTRA_DEVICE);
 
@@ -85,11 +87,12 @@ public class PostGetActivity extends Activity {
                     // open the explorer
 
                 }*/
+                if (isExternalStorageReadable()) {
+                    loadFileList();
 
-                loadFileList();
-
-                showDialog(DIALOG_LOAD_FILE);
-                Log.d(TAG, path.getAbsolutePath());
+                    showDialog(DIALOG_LOAD_FILE);
+                    Log.d(TAG, path.getAbsolutePath());
+                }
             }
         });
 
@@ -99,7 +102,7 @@ public class PostGetActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // checks if there is  a bluetooth connection with an Arduino
-                if (ConnectThread.connectedThread.isAlive()) {
+                if (ConnectThread.connectedThread.isAlive() && isExternalStorageWritable()) {
                     // there is a connection
                     // send
                 } else {
@@ -216,32 +219,9 @@ public class PostGetActivity extends Activity {
         super.onStart();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_post_get, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            // developer button is pressed
-            case R.id.action_bar_developers:
-                Toast toast = Toast.makeText(getApplicationContext(), R.string.developers, Toast.LENGTH_SHORT);
-                toast.show();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void loadFileList() {
         if (path.mkdirs() || path.isDirectory()) {
-            Log.e(TAG, "success");
+            Log.e(TAG, "able to write to sd card");
         } else {
             Log.e(TAG, "unable to write on the sd card ");
         }
@@ -384,7 +364,6 @@ public class PostGetActivity extends Activity {
                 }
                 // File picked
                 else {
-                    Log.e(MainActivity.TAG, "FILE PICKED  " + path.getAbsolutePath());
                     try {
                         sendFile(sel);
                     } catch (IOException e) {
@@ -404,8 +383,15 @@ public class PostGetActivity extends Activity {
     public static void sendFile(File file) throws IOException {
         fileSent = false;
         tempState = 0;
-        while (!fileSent)
+
+        PostGetActivity.statusTextView.setText("sending");
+
+        while (!fileSent){
             MainActivity.connectThread.connectedThread.write(readFile(file));
+        }
+
+        statusTextView.setText("Done");
+
     }
 
     static int tempState = 0;
@@ -415,28 +401,30 @@ public class PostGetActivity extends Activity {
         // Open file
         RandomAccessFile f = new RandomAccessFile(file, "r");
         try {
-            if (MainActivity.state == 1 && tempState != 1) {
+            if (MainActivity.state == 1 && tempState == 0) {
                 tempState = 1;
                 Log.i(MainActivity.TAG, "Working1");
 
                 return ByteBuffer.allocate(8).putLong(file.length()).array();
-            } else if (MainActivity.state == 2 && tempState != 2) {
+            } else if (MainActivity.state == 2 && tempState == 1) {
                 tempState = 2;
                 Log.i(MainActivity.TAG, "Working2");
 
                 return file.getName().getBytes();
-            } else if (MainActivity.state == 3 && tempState != 3) {
+            } else if (MainActivity.state == 3 && tempState == 2) {
                 tempState = 3;
                 // Get and check length
                 long longLength = f.length();
                 int length = (int) longLength;
                 if (length != longLength)
                     throw new IOException("File size >= 2 GB");
+                Log.i(MainActivity.TAG, f.length() + "TEST");
                 // Read file and return data
                 byte[] data = new byte[length];
                 f.readFully(data);
                 fileSent = true;
                 Log.i(MainActivity.TAG, "Working3");
+                statusTextView.setText("Done");
 
                 return data;
             }
@@ -444,5 +432,48 @@ public class PostGetActivity extends Activity {
         } finally {
             f.close();
         }
+    }
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+
+
+    /* Checks if external storage is available to at least read */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_post_get, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            // developer button is pressed
+            case R.id.action_bar_developers:
+                Toast toast = Toast.makeText(getApplicationContext(), R.string.developers, Toast.LENGTH_SHORT);
+                toast.show();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
