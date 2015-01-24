@@ -58,6 +58,8 @@ public class MainActivity extends Activity {
 
     SharedPreferences sharedPreferences;
 
+    boolean bluetoothAvailible;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +95,13 @@ public class MainActivity extends Activity {
         bluetoothListView.addHeaderView(textView);*/
         bluetoothListView.setAdapter(mBluetoothDevicesAdapter);
 
-
+        // check if the device has bluetooth
+        if (mBluetoothAdapter == null) {
+            // Device does not support Bluetooth and forces app shutdown
+            bluetoothAvailible = false;
+        } else {
+            bluetoothAvailible = true;
+        }
 
         // on first run
         sharedPreferences = getSharedPreferences("preferences.xml", MODE_PRIVATE);
@@ -105,18 +113,14 @@ public class MainActivity extends Activity {
             sharedPreferences.edit().putBoolean("firstRunMainActivity", false).apply();
         }
 
+
+
         // When the search button is clicked it will search for Bluetooth devices
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                // check if the device has bluetooth
-                if (mBluetoothAdapter == null) {
-                    // Device does not support Bluetooth and forces app shutdown
-                    closeApplication(getString(R.string.error_no_bluetooth));
-
-
-                } else {
+                if (bluetoothAvailible) {
                     // Device does have bluetooth
                     // Checks if bluetooth is already enabled
                     if (!mBluetoothAdapter.isEnabled()) {
@@ -127,6 +131,10 @@ public class MainActivity extends Activity {
                         // bluetooth is enabled
                         startBluetooth();
                     }
+
+                } else {
+
+                    closeApplication(getString(R.string.error_no_bluetooth));
                 }
             }
         });
@@ -143,8 +151,14 @@ public class MainActivity extends Activity {
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBluetoothAdapter.cancelDiscovery();
-                loadingProgressBar.setVisibility(View.GONE);
+                if (bluetoothAvailible) {
+                    mBluetoothAdapter.cancelDiscovery();
+                    loadingProgressBar.setVisibility(View.GONE);
+
+
+                } else {
+                    closeApplication(getString(R.string.error_no_bluetooth));
+                }
             }
         });
     }
@@ -190,6 +204,11 @@ public class MainActivity extends Activity {
                                     context.getString(R.string.tutorial_cancel_button_text),
                                     R.id.cancel_button);
                         } else if (id == R.id.cancel_button) {
+                            displayShowCaseView(context, context.getString(R.string.tutorial_status_text_view_header),
+                                    context.getString(R.string.tutorial_status_text_view_text),
+                                    R.id.status_text_view);
+
+                        } else if (id == R.id.status_text_view) {
                             // nothings needs to be done if the cancel button tutorial
                         }
                     }
@@ -205,7 +224,7 @@ public class MainActivity extends Activity {
         if (ViewConfiguration.get(context).hasPermanentMenuKey() && id == R.id.devices_list_view) {
             // no overflow, so last showcase view
             showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeClose);
-        } else if (id == 1 || id == R.id.cancel_button) {
+        } else if (id == 1 || id == R.id.status_text_view) {
             // the last image
             showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeClose);
         } else {

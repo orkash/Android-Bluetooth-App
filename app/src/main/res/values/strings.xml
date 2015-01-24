@@ -11,16 +11,15 @@
     <string name="search_button">Search</string>
     <string name="stop_button">Stop</string>
 
-
     <string name="tutorial_search_button_text">After pressing this button,
         Android will start searching for other Bluetooth devices that have made themselves discoverable.
-        When Bluetooth is not yet enabled, you will be asked first to enable it.</string>
+        When Bluetooth is not yet enabled, you will be asked to enable it.</string>
     <string name="tutorial_search_button_header">Search Button</string>
 
     <string name="tutorial_stop_button_header">Stop Button</string>
     <string name="tutorial_stop_button_text">After pressing this button,
-        Android will stop searching for new devices but will keep Bluetooth on.
-        The system will wait for your input.</string>
+        Android will stop searching for new devices but will Bluetooth will stay on.
+        The system will wait for further user input.</string>
 
     <string name="tutorial_list_view_header">List of Bluetooth devices</string>
     <string name="tutorial_list_view_text">All found Bluetooth devices will be displayed here.
@@ -31,22 +30,27 @@
     <string name="tutorial_overflow_text">In the overflow, the settings can be accessed.
         In the settings the preferred device name,
         MAC address and UUID for the device you want to connect to, can be made.
-        Device name and MAC address are optional while UUID is required to make a connection.</string>
+        Device name and MAC address are optional but the UUID is required to make a connection.</string>
 
     <string name="tutorial_post_button_header">Post Button</string>
     <string name="tutorial_post_button_text">After pressing this button,
-        a file explorer with files from your memory, will pop up.
+        a file explorer with files from your storage will pop up.
         Once a file has been selected, it will be send in the background to the connected device.</string>
 
     <string name="tutorial_get_button_header">Get Button</string>
     <string name="tutorial_get_button_text">After pressing this button,
-        a file explorer with files to be send to you, will pop up.
-        From the list of files, one can be selected to be send to your device and saved into your download folder.</string>
+        a file explorer with files from the arduino to be send to you, will pop up.
+        From the list of files, one can be selected to be send to your device and saved into your downloads folder.</string>
 
     <string name="tutorial_cancel_button_header">Cancel Button</string>
     <string name="tutorial_cancel_button_text">After pressing this button, the connection between your Android
-        and the other device will be cancelled.
-        This is very useful to safe power since having an unused connection is unnecessary power consuming.</string>
+        and the arduino will be cancelled.
+        This is very useful for saving battery power since having an unused connection is unnecessary power consumption.</string>
+
+    <string name="tutorial_status_text_view_header">Status </string>
+    <string name="tutorial_status_text_view_text">Here status of your current action will be displayed.
+        Now the status is "-" since no action has been done yet. After sending or retrieving files,
+        the status will be updated.</string>
 
     <string name="error_bluetooth_not_enabled">"The application works only with Bluetooth enabled. "</string>
     <string name="error_no_bluetooth">Your device does not support Bluetooth.</string>
@@ -71,5 +75,6 @@
 
     <string name="list_view_title">List of Bluetooth devices</string>
     <string name="file_explorer_dialog_title">Choose your file</string>
+    <string name="status_nothing">Status: -</string>
 
 </resources>

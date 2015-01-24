@@ -75,7 +75,7 @@ class ConnectThread extends Thread {
                 }
             });
 
-            /*handler.post(new Runnable() {
+            handler.post(new Runnable() {
 
                 @Override
                 public void run() {
@@ -87,7 +87,7 @@ class ConnectThread extends Thread {
                     Log.d(MainActivity.TAG, "opening new activity");
 
                 }
-            });*/
+            });
 
 
 
