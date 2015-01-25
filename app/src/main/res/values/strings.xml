@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">[Product] app </string>
+    <string name="app_name">Communico</string>
 
     <string name="action_bar_developers">Developers</string>
     <string name="action_bar_settings">Settings</string>
