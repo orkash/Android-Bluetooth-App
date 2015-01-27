@@ -75,21 +75,6 @@ class ConnectThread extends Thread {
                 }
             });
 
-            handler.post(new Runnable() {
-
-                @Override
-                public void run() {
-                    MainActivity.connectingProgressBar.setVisibility(View.GONE);
-
-                    Intent startPostGet = new Intent(context, PostGetActivity.class);
-                    startPostGet.putExtra(MainActivity.EXTRA_DEVICE, mmDevice);
-                    context.startActivity(startPostGet);
-                    Log.d(MainActivity.TAG, "opening new activity");
-
-                }
-            });
-
-
 
             try {
                 mmSocket.close();
