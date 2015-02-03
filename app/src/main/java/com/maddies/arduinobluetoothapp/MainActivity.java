@@ -33,27 +33,33 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class MainActivity extends ActionBarActivity {
 
+    public static final String EXTRA_FILES = "FILES" ;
     public static int state = 1;
 
     private static final int REQUEST_ENABLE_BT = 1;
-
-    public static final String TAG = "Bluetooth App";
-
-    public final static String EXTRA_DEVICE = "com.maddies.arduinobluetoothapp.DEVICE";
-    public final static String EXTRA_ENABLE_BLUETOOTH = "com.maddies.arduinobluetooth.ENABLE_BLUETOOTH";
+    public final static  String TAG = "Bluetooth App";
+    public final static String EXTRA_DEVICE = "DEVICE";
+    public final static String EXTRA_ENABLE_BLUETOOTH = "ENABLE_BLUETOOTH";
+    public final static byte[] ASK_FILES_BYTES = {3};
+    public final static String PUT_ARRAY = "ARRAY";
 
     public static BluetoothAdapter mBluetoothAdapter;
     public static ConnectThread connectThread;
 
-    ListView bluetoothListView;
+    ListView devicesListView;
     ArrayList<BluetoothDevice> devicesArrayList;
     BluetoothDevicesAdapter mBluetoothDevicesAdapter;
 
     public static ProgressBar connectingProgressBar;
-    ProgressBar loadingProgressBar;
-    Button searchButton, stopButton;
+    @InjectView(R.id.loading_panel) ProgressBar loadingProgressBar;
+    @InjectView(R.id.search_button) Button searchButton;
+    @InjectView(R.id.stop_button) Button stopButton;
+
     String prefBluetoothMacAddress, prefBluetoothName, prefBluetoothUUID;
 
     IntentFilter intentFilter;
@@ -66,11 +72,15 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         // restores previously stored preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // sets the layout
         setContentView(R.layout.activity_main);
+
+        ButterKnife.inject(this);
 
         intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -78,20 +88,15 @@ public class MainActivity extends ActionBarActivity {
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        loadingProgressBar = (ProgressBar) findViewById(R.id.loading_panel);
         connectingProgressBar = (ProgressBar) findViewById(R.id.connecting_panel);
-
-        searchButton = (Button) findViewById(R.id.search_button);
-        stopButton = (Button) findViewById(R.id.stop_button);
-
 
         devicesArrayList = new ArrayList<>();
         mBluetoothDevicesAdapter = new BluetoothDevicesAdapter(this, devicesArrayList);
         mBluetoothDevicesAdapter.setNotifyOnChange(true);
 
         // Attach the adapter to a ListView
-        bluetoothListView = (ListView) findViewById(R.id.devices_list_view);
-        bluetoothListView.setAdapter(mBluetoothDevicesAdapter);
+        devicesListView = (ListView) findViewById(R.id.devices_list_view);
+        devicesListView.setAdapter(mBluetoothDevicesAdapter);
 
         // check if the device has bluetooth
         if (mBluetoothAdapter == null) {
@@ -138,7 +143,7 @@ public class MainActivity extends ActionBarActivity {
         });
 
         // selects a device and initiates connection
-        bluetoothListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        devicesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 askMakeConnection("", devicesArrayList.get(position));
@@ -151,7 +156,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 if (bluetoothAvailible) {
                     mBluetoothAdapter.cancelDiscovery();
-                    loadingProgressBar.setVisibility(View.GONE);
+                    loadingProgressBar.setVisibility(View.INVISIBLE);
 
 
                 } else {
@@ -301,7 +306,7 @@ public class MainActivity extends ActionBarActivity {
                 }
 
                 devicesArrayList.add(device);
-                bluetoothListView.setAdapter(mBluetoothDevicesAdapter);
+                devicesListView.setAdapter(mBluetoothDevicesAdapter);
 
                 retreivePreferences();
 

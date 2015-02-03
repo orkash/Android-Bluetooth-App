@@ -21,6 +21,14 @@ import java.util.ArrayList;
 
 public class AndroidFileDialogFragment extends DialogFragment{
 
+    // Stores names of traversed directories
+    ArrayList<String> str = new ArrayList<>();
+    // Check if the first level of the directory structure is the one showing
+    private Boolean firstLvl = true;
+    private Item[] fileList;
+    private File path = Environment.getExternalStorageDirectory();
+    private String chosenFile;
+    ListAdapter adapter;
 
     /* The activity that creates an instance of this dialog fragment must
     * implement this interface in order to receive event callbacks.
@@ -44,7 +52,7 @@ public class AndroidFileDialogFragment extends DialogFragment{
 
 
         if (fileList == null) {
-            Log.e(TAG, "No files loaded");
+            // no files loaded
         }
 
         builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
@@ -64,6 +72,8 @@ public class AndroidFileDialogFragment extends DialogFragment{
                     loadFileList();
 
                     mListener.onAndroidFileClick(AndroidFileDialogFragment.this, sel, true);
+
+
 
                 }
 
@@ -163,7 +173,7 @@ public class AndroidFileDialogFragment extends DialogFragment{
                 fileList = temp;
             }
         } else {
-            Log.e(TAG, "path does not exist");
+            // path does not exist
         }
 
         adapter = new ArrayAdapter<Item>(getActivity(), android.R.layout.select_dialog_item,
@@ -189,16 +199,7 @@ public class AndroidFileDialogFragment extends DialogFragment{
         };
     }
 
-    // Stores names of traversed directories
-    ArrayList<String> str = new ArrayList<>();
-    // Check if the first level of the directory structure is the one showing
-    private Boolean firstLvl = true;
-    private static final String TAG = "F_PATH";
-    private Item[] fileList;
-    private File path = Environment.getExternalStorageDirectory();
-    private String chosenFile;
-    private static final int DIALOG_LOAD_FILE = 1000;
-    ListAdapter adapter;
+
 
 }
 

@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,37 +34,34 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class PostGetActivity extends ActionBarActivity
         implements ArduinoFileDialogFragment.ArduinoFileDialogListener, AndroidFileDialogFragment.AndroidFileDialogListener {
 
-    static TextView connectedTo, statusTextView;
+    @InjectView(R.id.connected_to_text_view)TextView connectedTo;
+    static TextView statusTextView;
     BluetoothDevice device;
-    Button getButton, postButton, cancelButton;
+    @InjectView(R.id.get_button) Button getButton;
+    @InjectView(R.id.post_button) Button postButton;
+    @InjectView(R.id.cancel_button) Button cancelButton;
+    @InjectView(R.id.progressBar) ProgressBar progressBar;
     SharedPreferences sharedPreferences;
 
-
-    /*// Stores names of traversed directories
-    ArrayList<String> str = new ArrayList<>();
-    // Check if the first level of the directory structure is the one showing
-    private Boolean firstLvl = true;
-    private static final String TAG = "F_PATH";
-    private Item[] fileList;
-    private File path = Environment.getExternalStorageDirectory();
-    private String chosenFile;
-    private static final int DIALOG_LOAD_FILE = 1000;
-    ListAdapter adapter;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_get);
 
-        connectedTo = (TextView) findViewById(R.id.connected_to_text_view);
+        ButterKnife.inject(this);
+
         statusTextView = (TextView) findViewById(R.id.status_text_view);
 
         device = getIntent().getParcelableExtra(MainActivity.EXTRA_DEVICE);
 
-        /*connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());*/
+        //connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());
 
 
         // on first run
@@ -78,7 +77,6 @@ public class PostGetActivity extends ActionBarActivity
 
 
         // When the select file button is open the file explorer and send it
-        postButton = (Button) findViewById(R.id.post_button);
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,47 +87,43 @@ public class PostGetActivity extends ActionBarActivity
 
                 }*/
 
-                DialogFragment dialog = new AndroidFileDialogFragment();
-                dialog.show(getSupportFragmentManager(), MainActivity.TAG + "AndroidFileDialogFragment");
-
-
-                /*if (isExternalStorageReadable()) {
-                    loadFileList();
-
-                    showDialog(DIALOG_LOAD_FILE);
+                if (isExternalStorageReadable()) {
+                    DialogFragment dialog = new AndroidFileDialogFragment();
+                    dialog.show(getSupportFragmentManager(), MainActivity.TAG + "AndroidFileDialogFragment");
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Could not read the SD card", Toast.LENGTH_SHORT).show();
-                }*/
+                }
 
             }
         });
 
 
-        getButton = (Button) findViewById(R.id.get_button);
         getButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // checks if there is  a bluetooth connection with an Arduino
 
-                // Create an instance of the dialog fragment and show it
-                DialogFragment dialog = new ArduinoFileDialogFragment();
-                dialog.show(getSupportFragmentManager(), MainActivity.TAG + "ArduinoFileDialogFragment");
+                /*ConnectThread.connectedThread.write(MainActivity.ASK_FILES_BYTES);*/
+                statusTextView.setText("Asking for files list");
+                progressBar.setVisibility(View.VISIBLE);
+                String[] lol = {"lol", "sup"};
+                openArduinoFilePicker(lol);
 
-                /*if (ConnectThread.connectedThread.isAlive() && isExternalStorageWritable()) {
-                    // there is a connection
-                    // send
+                /*if (isExternalStorageWritable()) {
+                    DialogFragment dialog = new ArduinoFileDialogFragment();
+                    dialog.show(getSupportFragmentManager(), MainActivity.TAG + "ArduinoFileDialogFragment");
+
                 } else {
                     // there is no connection
                     // display message to user that there is no connection
                     Toast.makeText(getApplicationContext(),
-                            "Before selecting a file you need to be connected", Toast.LENGTH_SHORT).show();
-                }
-*/
+                            "Could not open the file explorer", Toast.LENGTH_SHORT).show();
+                }*/
+
             }
         });
 
-        cancelButton = (Button) findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,77 +227,26 @@ public class PostGetActivity extends ActionBarActivity
         super.onStart();
     }
 
-    /*private void loadFileList() {
-        if (path.mkdirs() || path.isDirectory()) {
-            Log.e(TAG, "able to write to sd card");
+    /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ----------------------------------------------------------------------
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
+
+
+    public void openArduinoFilePicker(String[] array) {
+        progressBar.setVisibility(View.INVISIBLE);
+
+        if (isExternalStorageWritable()) {
+            DialogFragment dialog = ArduinoFileDialogFragment.newInstance(array);
+            dialog.show(getSupportFragmentManager(), MainActivity.TAG + "ArduinoFileDialogFragment");
+
         } else {
-            Log.e(TAG, "unable to write on the sd card ");
+            // there is no connection
+            // display message to user that there is no connection
+            Toast.makeText(getApplicationContext(),
+                    "Could not open the file explorer", Toast.LENGTH_SHORT).show();
         }
 
-        // Checks whether path exists
-        if (path.exists()) {
-            FilenameFilter filter = new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String filename) {
-                    File sel = new File(dir, filename);
-                    // Filters based on whether the file is hidden or not
-                    return (sel.isFile() || sel.isDirectory())
-                            && !sel.isHidden();
-
-                }
-            };
-
-            String[] fList = path.list(filter);
-            fileList = new Item[fList.length];
-            for (int i = 0; i < fList.length; i++) {
-                fileList[i] = new Item(fList[i], R.drawable.file_icon);
-
-                // Convert into file path
-                File sel = new File(path, fList[i]);
-
-                // Set drawables
-                if (sel.isDirectory()) {
-                    fileList[i].icon = R.drawable.directory_icon;
-                } else {
-                }
-            }
-
-            if (!firstLvl) {
-                Item temp[] = new Item[fileList.length + 1];
-                for (int i = 0; i < fileList.length; i++) {
-                    temp[i + 1] = fileList[i];
-                }
-                temp[0] = new Item("Up", R.drawable.directory_up);
-                fileList = temp;
-            }
-        } else {
-            Log.e(TAG, "path does not exist");
-        }
-
-        adapter = new ArrayAdapter<Item>(this,
-                android.R.layout.select_dialog_item, android.R.id.text1,
-                fileList) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                // creates view
-                View view = super.getView(position, convertView, parent);
-                TextView textView = (TextView) view
-                        .findViewById(android.R.id.text1);
-
-                // put the image on the text view
-                textView.setCompoundDrawablesWithIntrinsicBounds(
-                        fileList[position].icon, 0, 0, 0);
-
-                // add margin between image and text (support various screen
-                // densities)
-                int dp5 = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
-                textView.setCompoundDrawablePadding(dp5);
-
-                return view;
-            }
-        };
-
-    }*/
+    }
 
 
     // The dialog fragment receives a reference to this Activity through the
@@ -313,10 +256,17 @@ public class PostGetActivity extends ActionBarActivity
     public void onAndroidFileClick(DialogFragment dialog, File file, Boolean again) {
         // user chose an item
         if (again) {
+            // chose a directory
             dialog.dismiss();
             dialog.show(getSupportFragmentManager(), MainActivity.TAG + "AndroidFileDialogFragment");
+        } else {
+            // chose a file
+            try {
+                sendFile(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        Toast.makeText(getApplicationContext(), "You chose" + file.getName(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -325,100 +275,12 @@ public class PostGetActivity extends ActionBarActivity
         Toast.makeText(getApplicationContext(), "You chose" + which, Toast.LENGTH_SHORT).show();
     }
 
-    /*private class Item {
-        public String file;
-        public int icon;
-
-        public Item(String file, Integer icon) {
-            this.file = file;
-            this.icon = icon;
-        }
-
-        @Override
-        public String toString() {
-            return file;
-        }
-    }*/
-
-    /*@Override
-    protected Dialog onCreateDialog(int id) {
-        Dialog dialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        if (fileList == null) {
-            Log.e(TAG, "No files loaded");
-            dialog = builder.create();
-            return dialog;
-        }
-
-        builder.setTitle(getString(R.string.file_explorer_dialog_title));
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                chosenFile = fileList[which].file;
-                File sel = new File(path + "/" + chosenFile);
-                if (sel.isDirectory()) {
-                    firstLvl = false;
-
-                    // Adds chosen directory to list
-                    str.add(chosenFile);
-                    fileList = null;
-                    path = new File(sel + "");
-
-                    loadFileList();
-
-                    removeDialog(DIALOG_LOAD_FILE);
-                    showDialog(DIALOG_LOAD_FILE);
-                    Log.d(TAG, path.getAbsolutePath());
-
-                }
-
-                // Checks if 'up' was clicked
-                else if (chosenFile.equalsIgnoreCase("up") && !sel.exists()) {
-
-                    // present directory removed from list
-                    String s = str.remove(str.size() - 1);
-
-                    // path modified to exclude present directory
-                    path = new File(path.toString().substring(0,
-                            path.toString().lastIndexOf(s)));
-                    fileList = null;
-
-                    // if there are no more directories in the list, then
-                    // its the first level
-                    if (str.isEmpty()) {
-                        firstLvl = true;
-                    }
-                    loadFileList();
-
-                    removeDialog(DIALOG_LOAD_FILE);
-                    showDialog(DIALOG_LOAD_FILE);
-                    Log.d(TAG, path.getAbsolutePath());
-
-                }
-                // File picked
-                else {
-                    try {
-                        sendFile(sel);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
-            }
-        });
-
-        dialog = builder.show();
-        return dialog;
-    }*/
-
 
     public static void sendFile(File file) throws IOException {
         fileSent = false;
         tempState = 0;
 
-        PostGetActivity.statusTextView.setText("sending");
+        statusTextView.setText("sending");
 
         while (!fileSent){
             MainActivity.connectThread.connectedThread.write(readFile(file));
@@ -468,9 +330,16 @@ public class PostGetActivity extends ActionBarActivity
         }
     }
 
+    /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ------------------------------------------------------------------------
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
 
-
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String[] arduinoFiles = intent.getStringArrayExtra(MainActivity.EXTRA_FILES);
+        openArduinoFilePicker(arduinoFiles);
+    }
 
     /* Checks if external storage is available for read and write */
     public boolean isExternalStorageWritable() {
@@ -480,8 +349,6 @@ public class PostGetActivity extends ActionBarActivity
         }
         return false;
     }
-
-
 
     /* Checks if external storage is available to at least read */
     public boolean isExternalStorageReadable() {

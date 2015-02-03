@@ -15,14 +15,16 @@
         android:orientation="horizontal">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/search_button"
             android:id="@+id/search_button"
             android:gravity="center" />
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="@string/stop_button"
             android:id="@+id/stop_button"/>
@@ -32,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
     </LinearLayout>
 
@@ -47,7 +49,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         android:id="@+id/connecting_panel"
-        android:visibility="gone"
+        android:visibility="invisible"
         android:layout_gravity="center_horizontal"/>
 
 

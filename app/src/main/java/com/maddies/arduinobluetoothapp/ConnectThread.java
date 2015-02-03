@@ -16,6 +16,7 @@ import java.util.UUID;
 
 // this class is for establishing a connection between the arduino and android device
 class ConnectThread extends Thread {
+
     Handler handler;
     Context context;
 
@@ -76,6 +77,23 @@ class ConnectThread extends Thread {
             });
 
 
+           /*
+                    Just for Testing
+           */
+            handler.post(new Runnable() {
+
+                @Override
+                public void run() {
+                    MainActivity.connectingProgressBar.setVisibility(View.GONE);
+
+                    Intent startPostGet = new Intent(context, PostGetActivity.class);
+                    startPostGet.putExtra(MainActivity.EXTRA_DEVICE, mmDevice);
+                    context.startActivity(startPostGet);
+                    Log.d(MainActivity.TAG, "opening new activity");
+                }
+            });
+
+
             try {
                 mmSocket.close();
             } catch (IOException closeException) {
@@ -85,7 +103,7 @@ class ConnectThread extends Thread {
 
         // connection succesfully made
         // go to post get activity
-        connectedThread = new ConnectedThread(mmSocket);
+        connectedThread = new ConnectedThread(mmSocket, context);
         connectedThread.start();
 
         handler.post(new Runnable() {
@@ -93,11 +111,9 @@ class ConnectThread extends Thread {
             @Override
             public void run() {
                 MainActivity.connectingProgressBar.setVisibility(View.GONE);
-
                 Intent startPostGet = new Intent(context, PostGetActivity.class);
                 startPostGet.putExtra(MainActivity.EXTRA_DEVICE, mmDevice);
                 context.startActivity(startPostGet);
-                Log.d(MainActivity.TAG, "opening new activity");
             }
         });
 

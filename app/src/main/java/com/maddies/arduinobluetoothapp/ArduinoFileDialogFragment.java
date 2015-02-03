@@ -11,6 +11,15 @@ import android.support.v4.app.DialogFragment;
 public class ArduinoFileDialogFragment extends DialogFragment{
 
 
+    public static ArduinoFileDialogFragment newInstance(String[] array) {
+        ArduinoFileDialogFragment frag = new ArduinoFileDialogFragment();
+        Bundle args = new Bundle();
+        args.putStringArray(MainActivity.PUT_ARRAY, array);
+        frag.setArguments(args);
+        return frag;
+    }
+
+
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
@@ -24,7 +33,8 @@ public class ArduinoFileDialogFragment extends DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        String[] array = {"lol","sup"};
+        String[] array = getArguments().getStringArray(MainActivity.PUT_ARRAY);
+
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

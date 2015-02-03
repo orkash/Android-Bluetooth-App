@@ -1,7 +1,12 @@
 package com.maddies.arduinobluetoothapp;
 
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +18,13 @@ class ConnectedThread extends Thread{
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
 
-    public ConnectedThread(BluetoothSocket socket) {
+    Handler handler;
+    Context context;
+
+    public ConnectedThread(BluetoothSocket socket, Context context) {
+
+        handler = new Handler(Looper.getMainLooper());
+        this.context = context;
 
         mmSocket = socket;
         InputStream tmpIn = null;
@@ -67,7 +78,21 @@ class ConnectedThread extends Thread{
         } catch (IOException e) {
 
         }
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(context, PostGetActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                String[] sampleArray = {"LOL","YO"};
+                i.putExtra(MainActivity.EXTRA_FILES, sampleArray);
+                context.startActivity(i);
+            }
+        });
+
     }
+
+
 
     public void cancel() {
         try {

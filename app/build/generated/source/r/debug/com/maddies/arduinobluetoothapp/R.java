@@ -1381,9 +1381,9 @@ containing a value of this type.
         public static final int action_bar=0x7f090034;
         public static final int action_bar_activity_content=0x7f090000;
         public static final int action_bar_container=0x7f090033;
-        public static final int action_bar_developers=0x7f090050;
+        public static final int action_bar_developers=0x7f090051;
         public static final int action_bar_root=0x7f09002f;
-        public static final int action_bar_settings=0x7f09004f;
+        public static final int action_bar_settings=0x7f090050;
         public static final int action_bar_spinner=0x7f090001;
         public static final int action_bar_subtitle=0x7f090022;
         public static final int action_bar_title=0x7f090021;
@@ -1403,8 +1403,8 @@ containing a value of this type.
         public static final int connecting_panel=0x7f090045;
         public static final int decor_content_parent=0x7f090032;
         public static final int default_activity_button=0x7f090027;
-        public static final int device_address=0x7f09004d;
-        public static final int device_name=0x7f09004c;
+        public static final int device_address=0x7f09004e;
+        public static final int device_name=0x7f09004d;
         public static final int devices_list_view=0x7f090044;
         public static final int dialog=0x7f09001e;
         public static final int disableHome=0x7f09000f;
@@ -1427,7 +1427,8 @@ containing a value of this type.
         public static final int none=0x7f090011;
         public static final int normal=0x7f09000d;
         public static final int post_button=0x7f090047;
-        public static final int preference_container=0x7f09004b;
+        public static final int preference_container=0x7f09004c;
+        public static final int progressBar=0x7f09004a;
         public static final int progress_circular=0x7f090005;
         public static final int progress_horizontal=0x7f090006;
         public static final int radio=0x7f09002e;
@@ -1449,12 +1450,12 @@ containing a value of this type.
         public static final int showcase_sub_text=0x7f090008;
         public static final int showcase_title_text=0x7f090009;
         public static final int split_action_bar=0x7f09000a;
-        public static final int status_text_view=0x7f09004a;
+        public static final int status_text_view=0x7f09004b;
         public static final int stop_button=0x7f090042;
         public static final int submit_area=0x7f09003f;
         public static final int tabMode=0x7f09000e;
         public static final int title=0x7f09002a;
-        public static final int toolbar=0x7f09004e;
+        public static final int toolbar=0x7f09004f;
         public static final int up=0x7f09000b;
         public static final int useLogo=0x7f090015;
         public static final int withText=0x7f09001d;
