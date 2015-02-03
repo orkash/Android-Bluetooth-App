@@ -1,18 +1,11 @@
 package com.maddies.arduinobluetoothapp;
 
 import android.bluetooth.BluetoothSocket;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 
 // this class is for the actual data transmission between the two devices when they are already connected
 class ConnectedThread extends Thread{

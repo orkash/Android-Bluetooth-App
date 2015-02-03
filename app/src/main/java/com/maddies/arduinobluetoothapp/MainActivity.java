@@ -1,6 +1,7 @@
 package com.maddies.arduinobluetoothapp;
 
 // imports all the packages that we need
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -13,6 +14,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +33,7 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     public static int state = 1;
 
@@ -82,17 +84,13 @@ public class MainActivity extends Activity {
         searchButton = (Button) findViewById(R.id.search_button);
         stopButton = (Button) findViewById(R.id.stop_button);
 
-        // Construct the data source
+
         devicesArrayList = new ArrayList<>();
-        // Create the adapter to convert the array to views
         mBluetoothDevicesAdapter = new BluetoothDevicesAdapter(this, devicesArrayList);
         mBluetoothDevicesAdapter.setNotifyOnChange(true);
 
         // Attach the adapter to a ListView
         bluetoothListView = (ListView) findViewById(R.id.devices_list_view);
-        /*TextView textView = new TextView(this);
-        textView.setText(getString(R.string.list_view_title));
-        bluetoothListView.addHeaderView(textView);*/
         bluetoothListView.setAdapter(mBluetoothDevicesAdapter);
 
         // check if the device has bluetooth

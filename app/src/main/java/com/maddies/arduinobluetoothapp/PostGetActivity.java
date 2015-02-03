@@ -1,6 +1,5 @@
 package com.maddies.arduinobluetoothapp;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
@@ -13,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,8 +31,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class PostGetActivity extends Activity {
-
+public class PostGetActivity extends ActionBarActivity {
 
     static TextView connectedTo, statusTextView;
     BluetoothDevice device;
