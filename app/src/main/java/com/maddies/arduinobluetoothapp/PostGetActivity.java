@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -31,7 +32,8 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class PostGetActivity extends ActionBarActivity {
+public class PostGetActivity extends ActionBarActivity
+        implements ArduinoFileDialogFragment.ArduinoFileDialogListener, AndroidFileDialogFragment.AndroidFileDialogListener {
 
     static TextView connectedTo, statusTextView;
     BluetoothDevice device;
@@ -39,7 +41,7 @@ public class PostGetActivity extends ActionBarActivity {
     SharedPreferences sharedPreferences;
 
 
-    // Stores names of traversed directories
+    /*// Stores names of traversed directories
     ArrayList<String> str = new ArrayList<>();
     // Check if the first level of the directory structure is the one showing
     private Boolean firstLvl = true;
@@ -48,7 +50,7 @@ public class PostGetActivity extends ActionBarActivity {
     private File path = Environment.getExternalStorageDirectory();
     private String chosenFile;
     private static final int DIALOG_LOAD_FILE = 1000;
-    ListAdapter adapter;
+    ListAdapter adapter;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class PostGetActivity extends ActionBarActivity {
 
         device = getIntent().getParcelableExtra(MainActivity.EXTRA_DEVICE);
 
-        connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());
+        /*connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());*/
 
 
         // on first run
@@ -86,12 +88,20 @@ public class PostGetActivity extends ActionBarActivity {
                     // open the explorer
 
                 }*/
-                if (isExternalStorageReadable()) {
+
+                DialogFragment dialog = new AndroidFileDialogFragment();
+                dialog.show(getSupportFragmentManager(), MainActivity.TAG + "AndroidFileDialogFragment");
+
+
+                /*if (isExternalStorageReadable()) {
                     loadFileList();
 
                     showDialog(DIALOG_LOAD_FILE);
-                    Log.d(TAG, path.getAbsolutePath());
-                }
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Could not read the SD card", Toast.LENGTH_SHORT).show();
+                }*/
+
             }
         });
 
@@ -101,7 +111,12 @@ public class PostGetActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 // checks if there is  a bluetooth connection with an Arduino
-                if (ConnectThread.connectedThread.isAlive() && isExternalStorageWritable()) {
+
+                // Create an instance of the dialog fragment and show it
+                DialogFragment dialog = new ArduinoFileDialogFragment();
+                dialog.show(getSupportFragmentManager(), MainActivity.TAG + "ArduinoFileDialogFragment");
+
+                /*if (ConnectThread.connectedThread.isAlive() && isExternalStorageWritable()) {
                     // there is a connection
                     // send
                 } else {
@@ -110,7 +125,7 @@ public class PostGetActivity extends ActionBarActivity {
                     Toast.makeText(getApplicationContext(),
                             "Before selecting a file you need to be connected", Toast.LENGTH_SHORT).show();
                 }
-
+*/
             }
         });
 
@@ -211,14 +226,14 @@ public class PostGetActivity extends ActionBarActivity {
     @Override
     public void onStart() {
         // closes the broadcast receiver
-        // Registers BraodcastReceiver for bluetooth state changes
+        // Registers BroadcastReceiver for bluetooth state changes
         IntentFilter bluetoothStateFilter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, bluetoothStateFilter);
 
         super.onStart();
     }
 
-    private void loadFileList() {
+    /*private void loadFileList() {
         if (path.mkdirs() || path.isDirectory()) {
             Log.e(TAG, "able to write to sd card");
         } else {
@@ -288,9 +303,29 @@ public class PostGetActivity extends ActionBarActivity {
             }
         };
 
+    }*/
+
+
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the ArduinoFileDialogFragment.ArduinoFileDialogListener interface
+    @Override
+    public void onAndroidFileClick(DialogFragment dialog, File file, Boolean again) {
+        // user chose an item
+        if (again) {
+            dialog.dismiss();
+            dialog.show(getSupportFragmentManager(), MainActivity.TAG + "AndroidFileDialogFragment");
+        }
+        Toast.makeText(getApplicationContext(), "You chose" + file.getName(), Toast.LENGTH_SHORT).show();
     }
 
-    private class Item {
+    @Override
+    public void onArduinoFileClick(DialogFragment dialog, int which) {
+        // user chose an item
+        Toast.makeText(getApplicationContext(), "You chose" + which, Toast.LENGTH_SHORT).show();
+    }
+
+    /*private class Item {
         public String file;
         public int icon;
 
@@ -303,9 +338,9 @@ public class PostGetActivity extends ActionBarActivity {
         public String toString() {
             return file;
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     protected Dialog onCreateDialog(int id) {
         Dialog dialog;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -376,7 +411,7 @@ public class PostGetActivity extends ActionBarActivity {
 
         dialog = builder.show();
         return dialog;
-    }
+    }*/
 
 
     public static void sendFile(File file) throws IOException {
@@ -432,6 +467,10 @@ public class PostGetActivity extends ActionBarActivity {
             f.close();
         }
     }
+
+
+
+
 
     /* Checks if external storage is available for read and write */
     public boolean isExternalStorageWritable() {

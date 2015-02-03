@@ -109,7 +109,7 @@ class ConnectThread extends Thread {
     public void cancel() {
         try {
             mmSocket.close();
-            // go to mainactivity
+
         } catch (IOException e) {
         }
     }
