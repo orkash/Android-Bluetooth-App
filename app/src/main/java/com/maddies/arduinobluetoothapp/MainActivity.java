@@ -3,15 +3,14 @@ package com.maddies.arduinobluetoothapp;
 // imports all the packages that we need
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,11 +22,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
@@ -41,6 +41,7 @@ import butterknife.InjectView;
 public class MainActivity extends ActionBarActivity {
 
     public static int state = 1;
+
     private static final int REQUEST_ENABLE_BT = 1;
     public final static  String TAG = "Bluetooth App";
     public final static String EXTRA_DEVICE = "DEVICE";
@@ -60,10 +61,10 @@ public class MainActivity extends ActionBarActivity {
     ArrayList<BluetoothDevice> devicesArrayList;
     BluetoothDevicesAdapter mBluetoothDevicesAdapter;
 
-    @InjectView(R.id.connecting_panel) ProgressBar connectingProgressBar;
-    @InjectView(R.id.loading_panel) ProgressBar loadingProgressBar;
-    @InjectView(R.id.search_button) Button searchButton;
-    @InjectView(R.id.stop_button) Button stopButton;
+    @InjectView(R.id.connecting_panel) ProgressBarCircularIndeterminate connectingProgressBar;
+    @InjectView(R.id.loading_panel) ProgressBarCircularIndeterminate loadingProgressBar;
+    @InjectView(R.id.search_button)  ButtonRectangle searchButton;
+    @InjectView(R.id.stop_button)  ButtonRectangle stopButton;
 
     String prefBluetoothMacAddress, prefBluetoothName, prefBluetoothUUID;
 
@@ -80,12 +81,12 @@ public class MainActivity extends ActionBarActivity {
         public void handleMessage(Message message) {
             switch (message.what) {
                 case FAILED_CONNECTING:
-                    connectingProgressBar.setVisibility(View.INVISIBLE);
+                    connectingProgressBar.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(),
                             getString(R.string.making_connection_failed), Toast.LENGTH_SHORT).show();
                     return;
                 case SUCCESS_CONNECTING:
-                    connectingProgressBar.setVisibility(View.INVISIBLE);
+                    connectingProgressBar.setVisibility(View.GONE);
                     Intent startPostGet = new Intent(MainActivity.this, PostGetActivity.class);
                     startPostGet.putExtra(MainActivity.EXTRA_DEVICE, selectedDevice);
                     MainActivity.this.startActivity(startPostGet);
@@ -179,7 +180,7 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 if (bluetoothAvailible) {
                     mBluetoothAdapter.cancelDiscovery();
-                    loadingProgressBar.setVisibility(View.INVISIBLE);
+                    loadingProgressBar.setVisibility(View.GONE);
 
 
                 } else {
@@ -277,7 +278,13 @@ public class MainActivity extends ActionBarActivity {
     private void startBluetooth() {
         if (mBluetoothAdapter.startDiscovery()){
             Log.d(TAG, "you have started searching");
-            loadingProgressBar.setVisibility(View.VISIBLE);
+            loadingProgressBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    loadingProgressBar.setVisibility(View.VISIBLE);
+                }
+            });
+
         }
     }
 
@@ -353,24 +360,28 @@ public class MainActivity extends ActionBarActivity {
                     case BluetoothAdapter.STATE_OFF:
                         Log.d(TAG, "User turned Bluetooth off");
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setMessage(getString(R.string.bluetooth_disabled_message))
-                                .setCancelable(false)
-                                .setTitle(getString(R.string.error))
-                                .setIcon(R.drawable.ic_alert)
-                                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                        new MaterialDialog.Builder(MainActivity.this)
+                                .content(getString(R.string.bluetooth_disabled_message))
+                                .negativeColor(Color.GRAY)
+                                .cancelable(false)
+                                .title(getString(R.string.error))
+                                .icon(getResources().getDrawable(R.drawable.ic_alert))
+                                .positiveText(getString(R.string.yes))
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        super.onPositive(dialog);
                                         enableBluetooth();
                                     }
-                                })
-                                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    @Override
+                                    public void onNegative(MaterialDialog dialog) {
+                                        super.onNegative(dialog);
                                         closeApplication(getString(R.string.error_bluetooth_not_enabled));
                                     }
-                                });
-
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                                })
+                                .negativeText(getString(R.string.no))
+                                .show();
 
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
@@ -402,51 +413,55 @@ public class MainActivity extends ActionBarActivity {
 
     private void askMakeConnection(String message, final BluetoothDevice device) {
         String stringDevice = device.getName() + " " + device.getAddress();
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage(message + getString(R.string.connection_dialog_message) + stringDevice + "?")
-                .setCancelable(true)
-                .setTitle(getString(R.string.connection_dialog_title))
-                .setPositiveButton(getString(R.string.connection_dialog_connect), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
+        new MaterialDialog.Builder(MainActivity.this)
+                .content(message + getString(R.string.connection_dialog_message) + stringDevice + "?")
+                .cancelable(true)
+                .negativeColor(Color.GRAY)
+                .title(getString(R.string.connection_dialog_title))
+                .positiveText(getString(R.string.connection_dialog_connect))
+                .negativeText(getString(R.string.connection_dialog_cancel))
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
                         selectedDevice = device;
                         retreivePreferences();
 
                         connectThread = new ConnectThread(handler, device, getApplicationContext());
                         connectThread.start();
 
-                        loadingProgressBar.setVisibility(View.INVISIBLE);
+                        loadingProgressBar.setVisibility(View.GONE);
                         connectingProgressBar.setVisibility(View.VISIBLE);
                     }
-                })
-                .setNegativeButton(getString(R.string.connection_dialog_cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // no action required
-                    }
-                });
 
-        AlertDialog alert = builder.create();
-        alert.show();
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        super.onNegative(dialog);
+                    }
+                })
+                .show();
+
 
     }
 
 
     // will exit application but not close if user has bluetooth problems
     private void closeApplication(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage(message)
-                .setCancelable(false)
-                .setTitle(getString(R.string.error))
-                .setIcon(R.drawable.ic_alert)
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        loadingProgressBar.setVisibility(View.INVISIBLE);
-                        connectingProgressBar.setVisibility(View.INVISIBLE);
+       new MaterialDialog.Builder(MainActivity.this)
+                .content(message)
+                .cancelable(false)
+                .title(getString(R.string.error))
+                .icon(getResources().getDrawable(R.drawable.ic_alert))
+                .positiveText(getString(R.string.ok))
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
+                        loadingProgressBar.setVisibility(View.GONE);
+                        connectingProgressBar.setVisibility(View.GONE);
                     }
-                });
-
-        AlertDialog alert = builder.create();
-        alert.show();
+                })
+               .show();
     }
 
 

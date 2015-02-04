@@ -20,15 +20,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
+        <com.gc.materialdesign.views.ButtonRectangle
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Post"
-            android:id="@+id/post_button"
-            />
+            android:id="@+id/post_button" />
 
-        <Button
+        <com.gc.materialdesign.views.ButtonRectangle
+
+
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
             android:id="@+id/get_button"
             />
 
-        <Button
+        <com.gc.materialdesign.views.ButtonRectangle
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -46,16 +47,8 @@
 
     </LinearLayout>
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:indeterminate="true"
-        android:layout_gravity="center_horizontal"
-        android:visibility="invisible"/>
-
     <LinearLayout
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -67,16 +60,23 @@
             android:textSize="18sp"/>
 
         <TextView
-            android:layout_marginLeft="30dp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:id="@+id/status_text_view"
+            android:gravity="center"
             android:text="-"
             android:textSize="18sp"/>
 
+        <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/progressBar"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            android:background="#4CAF50"/>
 
-        </LinearLayout>
+    </LinearLayout>
 
 
 

@@ -1,7 +1,5 @@
 package com.maddies.arduinobluetoothapp;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -10,22 +8,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
-import android.widget.ProgressBar;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.gc.materialdesign.views.ButtonRectangle;
+import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -37,19 +38,29 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class PostGetActivity extends ActionBarActivity
-        implements ArduinoFileDialogFragment.ArduinoFileDialogListener, AndroidFileDialogFragment.AndroidFileDialogListener {
+public class PostGetActivity extends ActionBarActivity  {
 
-    @InjectView(R.id.connected_to_text_view)TextView connectedTo;
+    @InjectView(R.id.connected_to_text_view) TextView connectedTo;
     @InjectView(R.id.status_text_view) TextView statusTextView;
 
-    @InjectView(R.id.get_button) Button getButton;
-    @InjectView(R.id.post_button) Button postButton;
-    @InjectView(R.id.cancel_button) Button cancelButton;
-    @InjectView(R.id.progressBar) ProgressBar progressBar;
+    @InjectView(R.id.get_button) ButtonRectangle getButton;
+    @InjectView(R.id.post_button) ButtonRectangle postButton;
+    @InjectView(R.id.cancel_button) ButtonRectangle cancelButton;
+    @InjectView(R.id.progressBar)   ProgressBarCircularIndeterminate progressBar;
 
     SharedPreferences sharedPreferences;
     BluetoothDevice device;
+
+
+
+    // Stores names of traversed directories
+    ArrayList<String> str = new ArrayList<>();
+    // Check if the first level of the directory structure is the one showing
+    private Boolean firstLvl = true;
+    private Item[] fileList;
+    private File path = Environment.getExternalStorageDirectory();
+    private String chosenFile;
+    ListAdapter adapter;
 
 
     @Override
@@ -86,8 +97,14 @@ public class PostGetActivity extends ActionBarActivity
                 }*/
 
                 if (isExternalStorageReadable()) {
-                    DialogFragment dialog = new AndroidFileDialogFragment();
-                    dialog.show(getSupportFragmentManager(), MainActivity.TAG + "AndroidFileDialogFragment");
+                    openAndroidFilePicker();
+
+                    if (fileList == null) {
+                        // no files loaded
+                    }
+
+                    /*DialogFragment dialog = new AndroidFileDialogFragment();
+                    dialog.show(getSupportFragmentManager(), MainActivity.TAG + "AndroidFileDialogFragment");*/
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Could not read the SD card", Toast.LENGTH_SHORT).show();
@@ -106,6 +123,8 @@ public class PostGetActivity extends ActionBarActivity
                 statusTextView.setText("Asking for files list");
                 progressBar.setVisibility(View.VISIBLE);
                 String[] lol = {"lol", "sup"};
+
+
                 openArduinoFilePicker(lol);
 
                 /*if (isExternalStorageWritable()) {
@@ -152,29 +171,31 @@ public class PostGetActivity extends ActionBarActivity
                     case BluetoothAdapter.STATE_TURNING_OFF:
                         Log.d(MainActivity.TAG, " User is turning bluetooth off...");
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(PostGetActivity.this);
-                        builder.setMessage(getString(R.string.bluetooth_disabled_message))
-                                .setCancelable(false)
-                                .setTitle(R.string.error)
-                                .setIcon(R.drawable.ic_alert)
-                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        // close the connection
+                        new MaterialDialog.Builder(PostGetActivity.this)
+                                .content(getString(R.string.bluetooth_disabled_message))
+                                .cancelable(false)
+                                .title(R.string.error)
+                                .negativeColor(Color.GRAY)
+                                .icon(getResources().getDrawable(R.drawable.ic_alert))
+                                .positiveText(R.string.yes)
+                                .negativeText(R.string.no)
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        super.onPositive(dialog);
                                         Intent intent = new Intent(PostGetActivity.this, MainActivity.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         intent.putExtra(MainActivity.TAG, MainActivity.EXTRA_ENABLE_BLUETOOTH);
                                         startActivity(intent);
                                     }
-                                })
-                                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                                    public void onNegative(MaterialDialog dialog) {
+                                        super.onNegative(dialog);
                                         closeApplication(getString(R.string.error_bluetooth_not_enabled));
                                     }
-                                });
-
-                        AlertDialog alert = builder.create();
-                        alert.show();
+                                })
+                                .show();
                         break;
                     case BluetoothAdapter.STATE_ON:
                         Log.d(MainActivity.TAG, "User switched bluetooth on");
@@ -190,21 +211,23 @@ public class PostGetActivity extends ActionBarActivity
     };
 
     public void closeApplication(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(PostGetActivity.this);
-        builder.setMessage(message)
-                .setCancelable(false)
-                .setTitle(R.string.error)
-                .setIcon(R.drawable.ic_alert)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+        new MaterialDialog.Builder(PostGetActivity.this)
+                .content(message)
+                .cancelable(false)
+                .title(R.string.error)
+                .icon(getResources().getDrawable(R.drawable.ic_alert))
+                .positiveText(R.string.ok)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        super.onPositive(dialog);
                         Intent intent = new Intent(PostGetActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                    }
-                });
 
-        AlertDialog alert = builder.create();
-        alert.show();
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -229,13 +252,103 @@ public class PostGetActivity extends ActionBarActivity
     ----------------------------------------------------------------------
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
 
+    private void openAndroidFilePicker() {
+        loadFileList();
 
-    public void openArduinoFilePicker(String[] array) {
-        progressBar.setVisibility(View.INVISIBLE);
+        // Use the Builder class for convenient dialog construction
+        final MaterialDialog dialog = new MaterialDialog.Builder(PostGetActivity.this)
+                .title(R.string.file_explorer_dialog_title)
+                .adapter(adapter)
+                .cancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        statusTextView.setText("Cancelled");
+                    }
+                })
+                .build()
+                ;
+
+        ListView listView = dialog.getListView();
+        if (listView != null) {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    chosenFile = fileList[position].file;
+                    File sel = new File(path + "/" + chosenFile);
+
+                    if (sel.isDirectory()) {
+                        firstLvl = false;
+
+                        // Adds chosen directory to list
+                        str.add(chosenFile);
+                        fileList = null;
+                        path = new File(sel + "");
+
+                        loadFileList();
+
+                        onAndroidFileClick(sel, true);
+                        dialog.dismiss();
+                    }
+
+                    // Checks if 'up' was clicked
+                    else if (chosenFile.equalsIgnoreCase("up") && !sel.exists()) {
+
+                        // present directory removed from list
+                        String s = str.remove(str.size() - 1);
+
+                        // path modified to exclude present directory
+                        path = new File(path.toString().substring(0,
+                                path.toString().lastIndexOf(s)));
+                        fileList = null;
+
+                        // if there are no more directories in the list, then
+                        // its the first level
+                        if (str.isEmpty()) {
+                            firstLvl = true;
+                        }
+                        loadFileList();
+
+                        onAndroidFileClick(sel, true);
+                        dialog.dismiss();
+
+                    }
+                    // File picked
+                    else {
+                        onAndroidFileClick(sel, false);
+                        dialog.dismiss();
+                    }
+                }
+            });
+        }
+
+        dialog.show();
+    }
+
+    private void openArduinoFilePicker(String[] array) {
+
+        progressBar.setVisibility(View.GONE);
 
         if (isExternalStorageWritable()) {
-            DialogFragment dialog = ArduinoFileDialogFragment.newInstance(array);
-            dialog.show(getSupportFragmentManager(), MainActivity.TAG + "ArduinoFileDialogFragment");
+
+            new MaterialDialog.Builder(PostGetActivity.this)
+                    .title("Choose a File")
+                    .items(array)
+                    .itemsCallback(new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                            // user chose an item
+                            Toast.makeText(getApplicationContext(), "You chose" + i, Toast.LENGTH_SHORT).show();
+                            statusTextView.setText("Getting File");
+                            progressBar.setVisibility(View.VISIBLE);
+                        }
+                    })
+                    .cancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            statusTextView.setText("Cancelled");
+                        }
+                    })
+                    .show();
 
         } else {
             // there is no connection
@@ -247,16 +360,12 @@ public class PostGetActivity extends ActionBarActivity
     }
 
 
-    // The dialog fragment receives a reference to this Activity through the
-    // Fragment.onAttach() callback, which it uses to call the following methods
-    // defined by the ArduinoFileDialogFragment.ArduinoFileDialogListener interface
-    @Override
-    public void onAndroidFileClick(DialogFragment dialog, File file, Boolean again) {
+
+    public void onAndroidFileClick(File file, Boolean again) {
         // user chose an item
         if (again) {
             // chose a directory
-            dialog.dismiss();
-            dialog.show(getSupportFragmentManager(), MainActivity.TAG + "AndroidFileDialogFragment");
+            openAndroidFilePicker();
         } else {
             // chose a file
 
@@ -271,18 +380,8 @@ public class PostGetActivity extends ActionBarActivity
         }
     }
 
-    @Override
-    public void onArduinoFileClick(DialogFragment dialog, int which) {
-        // user chose an item
-        Toast.makeText(getApplicationContext(), "You chose" + which, Toast.LENGTH_SHORT).show();
-        statusTextView.setText("Getting File");
-        progressBar.setVisibility(View.VISIBLE);
 
-    }
 
-    public void onCancel(DialogFragment dialog){
-        statusTextView.setText("Cancelled");
-    }
 
 
     public void sendFile(File file) throws IOException {
@@ -389,5 +488,82 @@ public class PostGetActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    ------------------------------------------------------------------------
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
+
+
+    private void loadFileList() {
+        if (path.mkdirs() || path.isDirectory()) {
+            // able to write to sd card
+        } else {
+            // unable to write on the sd card
+        }
+
+        // Checks whether path exists
+        if (path.exists()) {
+            FilenameFilter filter = new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String filename) {
+                    File sel = new File(dir, filename);
+                    // Filters based on whether the file is hidden or not
+                    return (sel.isFile() || sel.isDirectory())
+                            && !sel.isHidden();
+
+                }
+            };
+
+            String[] fList = path.list(filter);
+            fileList = new Item[fList.length];
+            for (int i = 0; i < fList.length; i++) {
+                fileList[i] = new Item(fList[i], R.drawable.file_icon);
+
+                // Convert into file path
+                File sel = new File(path, fList[i]);
+
+                // Set drawables
+                if (sel.isDirectory()) {
+                    fileList[i].icon = R.drawable.directory_icon;
+                } else {
+
+                }
+            }
+
+            if (!firstLvl) {
+                Item temp[] = new Item[fileList.length + 1];
+                for (int i = 0; i < fileList.length; i++) {
+                    temp[i + 1] = fileList[i];
+                }
+                temp[0] = new Item("Up", R.drawable.directory_up);
+                fileList = temp;
+            }
+        } else {
+            // path does not exist
+        }
+
+        adapter = new ArrayAdapter<Item>(PostGetActivity.this, android.R.layout.select_dialog_item,
+                android.R.id.text1, fileList) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // creates view
+                View view = super.getView(position, convertView, parent);
+                TextView textView = (TextView) view
+                        .findViewById(android.R.id.text1);
+
+                // put the image on the text view
+                textView.setCompoundDrawablesWithIntrinsicBounds(
+                        fileList[position].icon, 0, 0, 0);
+
+                // add margin between image and text (support various screen
+                // densities)
+                int dp5 = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
+                textView.setCompoundDrawablePadding(dp5);
+
+                return view;
+            }
+        };
     }
 }

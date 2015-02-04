@@ -4,9 +4,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.io.InputStream;
