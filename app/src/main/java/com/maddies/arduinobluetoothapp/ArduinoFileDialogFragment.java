@@ -55,8 +55,8 @@ public class ArduinoFileDialogFragment extends DialogFragment{
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
         mListener.onCancel(ArduinoFileDialogFragment.this);
     }
 
