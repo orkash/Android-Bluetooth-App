@@ -21,9 +21,9 @@ class ConnectedThread extends Thread{
     Handler handler;
     Context context;
 
-    public ConnectedThread(BluetoothSocket socket, Context context) {
+    public ConnectedThread(BluetoothSocket socket, Context context, Handler handler) {
 
-        handler = new Handler(Looper.getMainLooper());
+        this.handler = handler;
         this.context = context;
 
         mmSocket = socket;
@@ -32,11 +32,9 @@ class ConnectedThread extends Thread{
 
         try {
             tmpIn = socket.getInputStream();
-
             tmpOut = socket.getOutputStream();
+        } catch (IOException e) { }
 
-        } catch (IOException e) {
-        }
         mmInStream = tmpIn;
         mmOutStream = tmpOut;
     }
@@ -63,12 +61,13 @@ class ConnectedThread extends Thread{
             mmOutStream.write(bytes);
 
         } catch (IOException e) {
-            Log.e("Oh oh", "ERROR");
+            Log.e(MainActivity.TAG, "ERROR");
         }
 
     }
 
     public void readState() {
+
         try {
             MainActivity.state = mmInStream.read();
             Log.d(MainActivity.TAG, "Reading " + MainActivity.state);
@@ -79,6 +78,12 @@ class ConnectedThread extends Thread{
 
         }
 
+        if (/*you got the array of items*/  true) {
+            openDialog();
+        }
+    }
+
+    private void openDialog() {
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -89,16 +94,13 @@ class ConnectedThread extends Thread{
                 context.startActivity(i);
             }
         });
-
     }
-
 
 
     public void cancel() {
         try {
             mmSocket.close();
             // go to mainactivity
-        } catch (IOException e) {
-        }
+        } catch (IOException e) { }
     }
 }

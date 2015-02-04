@@ -72,7 +72,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:id="@+id/status_text_view"
-            android:text="something"
+            android:text="-"
             android:textSize="18sp"/>
 
 

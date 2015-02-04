@@ -22,20 +22,15 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.maddies.arduinobluetoothapp" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00b9b05e-c7b3-4f11-8836-205525c17024" name="Default" comment="lot of changes">
-      <change type="DELETED" beforePath="C:\Users\Maarten\Documents\GitHub\Android-Bluetooth-App\app\src\main\res\layout\toolbar.xml" afterPath="" />
+    <list default="true" id="00b9b05e-c7b3-4f11-8836-205525c17024" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/AndroidFileDialogFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/AndroidFileDialogFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ArduinoFileDialogFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ArduinoFileDialogFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectThread.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectThread.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/maddies/arduinobluetoothapp/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/maddies/arduinobluetoothapp/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_post_get.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_post_get.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Android-Bluetooth-App.iws" />
@@ -59,53 +54,39 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PostGetActivity.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="PostGetActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.060606" vertical-offset="500" max-vertical-offset="7889">
-              <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.42778993" vertical-offset="4876" max-vertical-offset="8372">
+              <caret line="264" column="12" selection-start-line="264" selection-start-column="12" selection-end-line="264" selection-end-column="12" />
               <folding>
-                <element signature="e#2584#2631#0" expanded="true" />
-                <element signature="e#2653#2698#0" expanded="true" />
-                <element signature="e#3807#4863#0" expanded="true" />
-                <element signature="e#4852#4853#0" expanded="true" />
-                <element signature="e#4907#5231#0" expanded="true" />
-                <element signature="e#5220#5221#0" expanded="true" />
-                <element signature="e#6139#6185#0" expanded="true" />
-                <element signature="e#6283#6297#0" expanded="true" />
-                <element signature="e#6412#6424#0" expanded="true" />
-                <element signature="e#6426#7065#0" expanded="true" />
-                <element signature="e#7030#7031#0" expanded="true" />
-                <element signature="e#7118#7129#0" expanded="true" />
-                <element signature="e#7367#7414#0" expanded="true" />
-                <element signature="e#8339#8353#0" expanded="true" />
-                <element signature="e#8436#8447#0" expanded="true" />
-                <element signature="e#14644#14663#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_post_get.xml" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_post_get.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33081895" vertical-offset="613" max-vertical-offset="2047">
-              <caret line="40" column="18" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="535" max-vertical-offset="10465">
-              <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#2071#2103#0" expanded="true" />
+                <element signature="e#2537#2584#0" expanded="true" />
+                <element signature="e#2606#2651#0" expanded="true" />
+                <element signature="e#2909#3717#0" expanded="true" />
+                <element signature="e#3706#3707#0" expanded="true" />
+                <element signature="e#3759#4815#0" expanded="true" />
+                <element signature="e#4804#4805#0" expanded="true" />
+                <element signature="e#4859#5183#0" expanded="true" />
+                <element signature="e#5172#5173#0" expanded="true" />
+                <element signature="e#5241#8052#0" expanded="true" />
+                <element signature="e#6091#6137#0" expanded="true" />
+                <element signature="e#6235#6249#0" expanded="true" />
+                <element signature="e#6364#6376#0" expanded="true" />
+                <element signature="e#6378#7017#0" expanded="true" />
+                <element signature="e#6982#6983#0" expanded="true" />
+                <element signature="e#7070#7081#0" expanded="true" />
+                <element signature="e#7083#7440#0" expanded="true" />
+                <element signature="e#7319#7366#0" expanded="true" />
+                <element signature="e#7405#7406#0" expanded="true" />
+                <element signature="e#8045#8046#0" expanded="true" />
+                <element signature="e#8291#8305#0" expanded="true" />
+                <element signature="e#8388#8399#0" expanded="true" />
+                <element signature="e#8401#8768#0" expanded="true" />
+                <element signature="e#8749#8750#0" expanded="true" />
+                <element signature="e#11433#11434#0" expanded="true" />
+                <element signature="e#11484#11485#0" expanded="true" />
+                <element signature="e#14904#14923#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -114,11 +95,94 @@
       <file leaf-file-name="ConnectedThread.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1008" max-vertical-offset="2300">
-              <caret line="70" column="29" selection-start-line="70" selection-start-column="29" selection-end-line="70" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2277">
+              <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ArduinoFileDialogFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ArduinoFileDialogFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="621" max-vertical-offset="1702">
+              <caret line="56" column="4" selection-start-line="56" selection-start-column="4" selection-end-line="60" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidFileDialogFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/AndroidFileDialogFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="33.454544" vertical-offset="2024" max-vertical-offset="4508">
+              <caret line="56" column="9" selection-start-line="56" selection-start-column="9" selection-end-line="56" selection-end-column="9" />
               <folding>
-                <element signature="e#2034#2454#0" expanded="true" />
-                <element signature="e#2443#2444#0" expanded="true" />
+                <element signature="e#1771#1817#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-237.66667" vertical-offset="1587" max-vertical-offset="11500">
+              <caret line="410" column="0" selection-start-line="410" selection-start-column="0" selection-end-line="410" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2698#3544#0" expanded="true" />
+                <element signature="e#3022#3066#0" expanded="true" />
+                <element signature="e#3537#3538#0" expanded="true" />
+                <element signature="e#5061#5110#0" expanded="true" />
+                <element signature="e#5132#5179#0" expanded="true" />
+                <element signature="e#5425#6114#0" expanded="true" />
+                <element signature="e#6032#6070#0" expanded="true" />
+                <element signature="e#6103#6104#0" expanded="true" />
+                <element signature="e#6218#6474#0" expanded="true" />
+                <element signature="e#6463#6464#0" expanded="true" />
+                <element signature="e#6570#6978#0" expanded="true" />
+                <element signature="e#6896#6934#0" expanded="true" />
+                <element signature="e#6967#6968#0" expanded="true" />
+                <element signature="e#7638#7693#0" expanded="true" />
+                <element signature="e#7731#7784#0" expanded="true" />
+                <element signature="e#7960#8013#0" expanded="true" />
+                <element signature="e#8051#8102#0" expanded="true" />
+                <element signature="e#8526#8578#0" expanded="true" />
+                <element signature="e#8620#8670#0" expanded="true" />
+                <element signature="e#8966#9020#0" expanded="true" />
+                <element signature="e#9058#9110#0" expanded="true" />
+                <element signature="e#9283#9340#0" expanded="true" />
+                <element signature="e#9378#9433#0" expanded="true" />
+                <element signature="e#9612#9672#0" expanded="true" />
+                <element signature="e#9710#9768#0" expanded="true" />
+                <element signature="e#12025#12072#0" expanded="true" />
+                <element signature="e#12656#16175#0" expanded="true" />
+                <element signature="e#13515#13566#0" expanded="true" />
+                <element signature="e#13758#13810#0" expanded="true" />
+                <element signature="e#14421#14467#0" expanded="true" />
+                <element signature="e#14565#14590#0" expanded="true" />
+                <element signature="e#14705#14728#0" expanded="true" />
+                <element signature="e#14730#14990#0" expanded="true" />
+                <element signature="e#14955#14956#0" expanded="true" />
+                <element signature="e#15043#15065#0" expanded="true" />
+                <element signature="e#15067#15375#0" expanded="true" />
+                <element signature="e#15254#15301#0" expanded="true" />
+                <element signature="e#15340#15341#0" expanded="true" />
+                <element signature="e#16168#16169#0" expanded="true" />
+                <element signature="e#16943#16988#0" expanded="true" />
+                <element signature="e#17074#17117#0" expanded="true" />
+                <element signature="e#17154#17199#0" expanded="true" />
+                <element signature="e#17201#17750#0" expanded="true" />
+                <element signature="e#17731#17732#0" expanded="true" />
+                <element signature="e#17787#17831#0" expanded="true" />
+                <element signature="e#17833#18032#0" expanded="true" />
+                <element signature="e#18013#18014#0" expanded="true" />
+                <element signature="e#18421#18446#0" expanded="true" />
+                <element signature="e#18529#18551#0" expanded="true" />
+                <element signature="e#18553#18857#0" expanded="true" />
+                <element signature="e#18838#18839#0" expanded="true" />
+                <element signature="e#19984#20014#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1093,15 +1157,15 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/SettingsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/GetFileFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/Item.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/AndroidFileDialogFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ArduinoFileDialogFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectThread.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectThread.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ArduinoFileDialogFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/AndroidFileDialogFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_post_get.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java" />
       </list>
     </option>
   </component>
@@ -1505,7 +1569,11 @@
       <created>1422995201907</created>
       <updated>1422995201907</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="lot of changes">
+      <created>1423005475807</created>
+      <updated>1423005475807</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1526,7 +1594,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3282981" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967743" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32930514" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298969" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -1866,56 +1934,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/AndroidFileDialogFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3.6354167" vertical-offset="466" max-vertical-offset="4784">
-          <caret line="175" column="34" selection-start-line="175" selection-start-column="34" selection-end-line="175" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1718#1764#0" expanded="false" />
-            <element signature="e#4602#4991#0" expanded="false" />
-            <element signature="e#4976#4977#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.344245" vertical-offset="1652" max-vertical-offset="2668">
-          <caret line="106" column="32" selection-start-line="106" selection-start-column="32" selection-end-line="106" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ArduinoFileDialogFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.640625" vertical-offset="581" max-vertical-offset="1541">
-          <caret line="61" column="37" selection-start-line="61" selection-start-column="37" selection-end-line="61" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1146" max-vertical-offset="2300">
-          <caret line="70" column="29" selection-start-line="70" selection-start-column="29" selection-end-line="70" selection-end-column="29" />
-          <folding>
-            <element signature="e#2034#2454#0" expanded="true" />
-            <element signature="e#2443#2444#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="535" max-vertical-offset="10465">
-          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.61875" vertical-offset="280" max-vertical-offset="1242">
@@ -1951,40 +1969,147 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.060606" vertical-offset="500" max-vertical-offset="7889">
-          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+        <state vertical-scroll-proportion="-237.66667" vertical-offset="1587" max-vertical-offset="11500">
+          <caret line="410" column="0" selection-start-line="410" selection-start-column="0" selection-end-line="410" selection-end-column="0" />
           <folding>
-            <element signature="e#2584#2631#0" expanded="true" />
-            <element signature="e#2653#2698#0" expanded="true" />
-            <element signature="e#3807#4863#0" expanded="true" />
-            <element signature="e#4852#4853#0" expanded="true" />
-            <element signature="e#4907#5231#0" expanded="true" />
-            <element signature="e#5220#5221#0" expanded="true" />
-            <element signature="e#6139#6185#0" expanded="true" />
-            <element signature="e#6283#6297#0" expanded="true" />
-            <element signature="e#6412#6424#0" expanded="true" />
-            <element signature="e#6426#7065#0" expanded="true" />
-            <element signature="e#7030#7031#0" expanded="true" />
-            <element signature="e#7118#7129#0" expanded="true" />
-            <element signature="e#7367#7414#0" expanded="true" />
-            <element signature="e#8339#8353#0" expanded="true" />
-            <element signature="e#8436#8447#0" expanded="true" />
-            <element signature="e#14644#14663#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#2698#3544#0" expanded="true" />
+            <element signature="e#3022#3066#0" expanded="true" />
+            <element signature="e#3537#3538#0" expanded="true" />
+            <element signature="e#5061#5110#0" expanded="true" />
+            <element signature="e#5132#5179#0" expanded="true" />
+            <element signature="e#5425#6114#0" expanded="true" />
+            <element signature="e#6032#6070#0" expanded="true" />
+            <element signature="e#6103#6104#0" expanded="true" />
+            <element signature="e#6218#6474#0" expanded="true" />
+            <element signature="e#6463#6464#0" expanded="true" />
+            <element signature="e#6570#6978#0" expanded="true" />
+            <element signature="e#6896#6934#0" expanded="true" />
+            <element signature="e#6967#6968#0" expanded="true" />
+            <element signature="e#7638#7693#0" expanded="true" />
+            <element signature="e#7731#7784#0" expanded="true" />
+            <element signature="e#7960#8013#0" expanded="true" />
+            <element signature="e#8051#8102#0" expanded="true" />
+            <element signature="e#8526#8578#0" expanded="true" />
+            <element signature="e#8620#8670#0" expanded="true" />
+            <element signature="e#8966#9020#0" expanded="true" />
+            <element signature="e#9058#9110#0" expanded="true" />
+            <element signature="e#9283#9340#0" expanded="true" />
+            <element signature="e#9378#9433#0" expanded="true" />
+            <element signature="e#9612#9672#0" expanded="true" />
+            <element signature="e#9710#9768#0" expanded="true" />
+            <element signature="e#12025#12072#0" expanded="true" />
+            <element signature="e#12656#16175#0" expanded="true" />
+            <element signature="e#13515#13566#0" expanded="true" />
+            <element signature="e#13758#13810#0" expanded="true" />
+            <element signature="e#14421#14467#0" expanded="true" />
+            <element signature="e#14565#14590#0" expanded="true" />
+            <element signature="e#14705#14728#0" expanded="true" />
+            <element signature="e#14730#14990#0" expanded="true" />
+            <element signature="e#14955#14956#0" expanded="true" />
+            <element signature="e#15043#15065#0" expanded="true" />
+            <element signature="e#15067#15375#0" expanded="true" />
+            <element signature="e#15254#15301#0" expanded="true" />
+            <element signature="e#15340#15341#0" expanded="true" />
+            <element signature="e#16168#16169#0" expanded="true" />
+            <element signature="e#16943#16988#0" expanded="true" />
+            <element signature="e#17074#17117#0" expanded="true" />
+            <element signature="e#17154#17199#0" expanded="true" />
+            <element signature="e#17201#17750#0" expanded="true" />
+            <element signature="e#17731#17732#0" expanded="true" />
+            <element signature="e#17787#17831#0" expanded="true" />
+            <element signature="e#17833#18032#0" expanded="true" />
+            <element signature="e#18013#18014#0" expanded="true" />
+            <element signature="e#18421#18446#0" expanded="true" />
+            <element signature="e#18529#18551#0" expanded="true" />
+            <element signature="e#18553#18857#0" expanded="true" />
+            <element signature="e#18838#18839#0" expanded="true" />
+            <element signature="e#19984#20014#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5279831" vertical-offset="1248" max-vertical-offset="2208">
+          <caret line="88" column="78" selection-start-line="88" selection-start-column="78" selection-end-line="88" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/AndroidFileDialogFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="33.454544" vertical-offset="2024" max-vertical-offset="4508">
+          <caret line="56" column="9" selection-start-line="56" selection-start-column="9" selection-end-line="56" selection-end-column="9" />
+          <folding>
+            <element signature="e#1771#1817#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ArduinoFileDialogFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="621" max-vertical-offset="1702">
+          <caret line="56" column="4" selection-start-line="56" selection-start-column="4" selection-end-line="60" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2277">
+          <caret line="32" column="13" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_post_get.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33081895" vertical-offset="613" max-vertical-offset="2047">
-          <caret line="40" column="18" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="18" />
+        <state vertical-scroll-proportion="1.8340517" vertical-offset="0" max-vertical-offset="2047">
+          <caret line="74" column="28" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
           <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42778993" vertical-offset="4876" max-vertical-offset="8372">
+          <caret line="264" column="12" selection-start-line="264" selection-start-column="12" selection-end-line="264" selection-end-column="12" />
+          <folding>
+            <element signature="e#2071#2103#0" expanded="true" />
+            <element signature="e#2537#2584#0" expanded="true" />
+            <element signature="e#2606#2651#0" expanded="true" />
+            <element signature="e#2909#3717#0" expanded="true" />
+            <element signature="e#3706#3707#0" expanded="true" />
+            <element signature="e#3759#4815#0" expanded="true" />
+            <element signature="e#4804#4805#0" expanded="true" />
+            <element signature="e#4859#5183#0" expanded="true" />
+            <element signature="e#5172#5173#0" expanded="true" />
+            <element signature="e#5241#8052#0" expanded="true" />
+            <element signature="e#6091#6137#0" expanded="true" />
+            <element signature="e#6235#6249#0" expanded="true" />
+            <element signature="e#6364#6376#0" expanded="true" />
+            <element signature="e#6378#7017#0" expanded="true" />
+            <element signature="e#6982#6983#0" expanded="true" />
+            <element signature="e#7070#7081#0" expanded="true" />
+            <element signature="e#7083#7440#0" expanded="true" />
+            <element signature="e#7319#7366#0" expanded="true" />
+            <element signature="e#7405#7406#0" expanded="true" />
+            <element signature="e#8045#8046#0" expanded="true" />
+            <element signature="e#8291#8305#0" expanded="true" />
+            <element signature="e#8388#8399#0" expanded="true" />
+            <element signature="e#8401#8768#0" expanded="true" />
+            <element signature="e#8749#8750#0" expanded="true" />
+            <element signature="e#11433#11434#0" expanded="true" />
+            <element signature="e#11484#11485#0" expanded="true" />
+            <element signature="e#14904#14923#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
   </component>

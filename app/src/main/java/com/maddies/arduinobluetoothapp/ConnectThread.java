@@ -26,9 +26,9 @@ class ConnectThread extends Thread {
     public static ConnectedThread connectedThread;
 
     // get called when the user accepted to make a connection
-    public ConnectThread(Context context, BluetoothDevice device) {
-        handler = new Handler(Looper.getMainLooper());
+    public ConnectThread(Handler handler, BluetoothDevice device, Context context) {
 
+        this.handler = handler;
         this.context = context;
 
         BluetoothSocket tmp = null;
@@ -67,67 +67,35 @@ class ConnectThread extends Thread {
             // Unable to connect; close the socket and get out
             Log.d(MainActivity.TAG, "can't connect ");
 
-            handler.post(new Runnable() {
-
-                @Override
-                public void run() {
-                    MainActivity.connectingProgressBar.setVisibility(View.GONE);
-                    Toast.makeText(context, context.getString(R.string.making_connection_failed), Toast.LENGTH_SHORT).show();
-                }
-            });
-
+            handler.obtainMessage(MainActivity.FAILED_CONNECTING).sendToTarget();
 
            /*
                     Just for Testing
            */
-            handler.post(new Runnable() {
-
-                @Override
-                public void run() {
-                    MainActivity.connectingProgressBar.setVisibility(View.GONE);
-
-                    Intent startPostGet = new Intent(context, PostGetActivity.class);
-                    startPostGet.putExtra(MainActivity.EXTRA_DEVICE, mmDevice);
-                    context.startActivity(startPostGet);
-                    Log.d(MainActivity.TAG, "opening new activity");
-                }
-            });
-
+            handler.obtainMessage(MainActivity.SUCCESS_CONNECTING).sendToTarget();
 
             try {
                 mmSocket.close();
-            } catch (IOException closeException) {
-            }
+            } catch (IOException closeException) { }
             return;
         }
 
         // connection succesfully made
         // go to post get activity
-        connectedThread = new ConnectedThread(mmSocket, context);
+        connectedThread = new ConnectedThread(mmSocket, context, handler);
         connectedThread.start();
 
-        handler.post(new Runnable() {
 
-            @Override
-            public void run() {
-                MainActivity.connectingProgressBar.setVisibility(View.GONE);
-                Intent startPostGet = new Intent(context, PostGetActivity.class);
-                startPostGet.putExtra(MainActivity.EXTRA_DEVICE, mmDevice);
-                context.startActivity(startPostGet);
-            }
-        });
+        handler.obtainMessage(MainActivity.SUCCESS_CONNECTING).sendToTarget();
 
         Log.d(MainActivity.TAG, "establishing connection thread");
-
-
     }
 
     public void cancel() {
         try {
             mmSocket.close();
 
-        } catch (IOException e) {
-        }
+        } catch (IOException e) { }
     }
 }
 

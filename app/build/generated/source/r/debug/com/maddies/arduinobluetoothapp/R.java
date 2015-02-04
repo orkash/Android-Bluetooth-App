@@ -1381,9 +1381,9 @@ containing a value of this type.
         public static final int action_bar=0x7f090034;
         public static final int action_bar_activity_content=0x7f090000;
         public static final int action_bar_container=0x7f090033;
-        public static final int action_bar_developers=0x7f090051;
+        public static final int action_bar_developers=0x7f090050;
         public static final int action_bar_root=0x7f09002f;
-        public static final int action_bar_settings=0x7f090050;
+        public static final int action_bar_settings=0x7f09004f;
         public static final int action_bar_spinner=0x7f090001;
         public static final int action_bar_subtitle=0x7f090022;
         public static final int action_bar_title=0x7f090021;
@@ -1455,7 +1455,6 @@ containing a value of this type.
         public static final int submit_area=0x7f09003f;
         public static final int tabMode=0x7f09000e;
         public static final int title=0x7f09002a;
-        public static final int toolbar=0x7f09004f;
         public static final int up=0x7f09000b;
         public static final int useLogo=0x7f090015;
         public static final int withText=0x7f09001d;
@@ -1495,7 +1494,6 @@ containing a value of this type.
         public static final int item_bluetooth_device=0x7f03001b;
         public static final int showcase_button=0x7f03001c;
         public static final int support_simple_spinner_dropdown_item=0x7f03001d;
-        public static final int toolbar=0x7f03001e;
     }
     public static final class menu {
         public static final int main=0x7f0d0000;

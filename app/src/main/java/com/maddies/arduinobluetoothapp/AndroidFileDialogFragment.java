@@ -35,6 +35,7 @@ public class AndroidFileDialogFragment extends DialogFragment{
     * Each method passes the DialogFragment in case the host needs to query it. */
     public interface AndroidFileDialogListener {
         public void onAndroidFileClick(DialogFragment dialog, File file, Boolean again);
+        public void onCancel(DialogFragment dialog);
     }
 
     // Use this instance of the interface to deliver action events
@@ -108,6 +109,12 @@ public class AndroidFileDialogFragment extends DialogFragment{
         // Create the AlertDialog object and return it
         AlertDialog dialog = builder.create();
         return dialog;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        mListener.onCancel(AndroidFileDialogFragment.this);
     }
 
 

@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -38,29 +40,34 @@ import butterknife.InjectView;
 
 public class MainActivity extends ActionBarActivity {
 
-    public static final String EXTRA_FILES = "FILES" ;
     public static int state = 1;
-
     private static final int REQUEST_ENABLE_BT = 1;
     public final static  String TAG = "Bluetooth App";
     public final static String EXTRA_DEVICE = "DEVICE";
     public final static String EXTRA_ENABLE_BLUETOOTH = "ENABLE_BLUETOOTH";
+    public static final String EXTRA_FILES = "FILES" ;
     public final static byte[] ASK_FILES_BYTES = {3};
     public final static String PUT_ARRAY = "ARRAY";
+
+    public final static int FAILED_CONNECTING = 10;
+    public final static  int SUCCESS_CONNECTING = 20;
+    public final static  int GOT_DATA = 20;
 
     public static BluetoothAdapter mBluetoothAdapter;
     public static ConnectThread connectThread;
 
-    ListView devicesListView;
+    @InjectView(R.id.devices_list_view) ListView devicesListView;
     ArrayList<BluetoothDevice> devicesArrayList;
     BluetoothDevicesAdapter mBluetoothDevicesAdapter;
 
-    public static ProgressBar connectingProgressBar;
+    @InjectView(R.id.connecting_panel) ProgressBar connectingProgressBar;
     @InjectView(R.id.loading_panel) ProgressBar loadingProgressBar;
     @InjectView(R.id.search_button) Button searchButton;
     @InjectView(R.id.stop_button) Button stopButton;
 
     String prefBluetoothMacAddress, prefBluetoothName, prefBluetoothUUID;
+
+    BluetoothDevice selectedDevice;
 
     IntentFilter intentFilter;
 
@@ -68,11 +75,30 @@ public class MainActivity extends ActionBarActivity {
 
     boolean bluetoothAvailible;
 
+    public final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {
+            switch (message.what) {
+                case FAILED_CONNECTING:
+                    connectingProgressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.making_connection_failed), Toast.LENGTH_SHORT).show();
+                    return;
+                case SUCCESS_CONNECTING:
+                    connectingProgressBar.setVisibility(View.INVISIBLE);
+                    Intent startPostGet = new Intent(MainActivity.this, PostGetActivity.class);
+                    startPostGet.putExtra(MainActivity.EXTRA_DEVICE, selectedDevice);
+                    MainActivity.this.startActivity(startPostGet);
+                    return;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
-
-
 
         // restores previously stored preferences
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
@@ -88,14 +114,11 @@ public class MainActivity extends ActionBarActivity {
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        connectingProgressBar = (ProgressBar) findViewById(R.id.connecting_panel);
-
         devicesArrayList = new ArrayList<>();
         mBluetoothDevicesAdapter = new BluetoothDevicesAdapter(this, devicesArrayList);
         mBluetoothDevicesAdapter.setNotifyOnChange(true);
 
         // Attach the adapter to a ListView
-        devicesListView = (ListView) findViewById(R.id.devices_list_view);
         devicesListView.setAdapter(mBluetoothDevicesAdapter);
 
         // check if the device has bluetooth
@@ -311,8 +334,6 @@ public class MainActivity extends ActionBarActivity {
                 retreivePreferences();
 
                 Log.d(TAG, "name: " + device.getName() + "-- address : " + device.getAddress());
-                Log.d(TAG, "PREFERENCES -- name: " + prefBluetoothName + "-- address : " + prefBluetoothMacAddress
-                        + "uuid: " + prefBluetoothUUID);
 
                 if (device.getAddress().equals(prefBluetoothMacAddress)) {
                     askMakeConnection(getString(R.string.connection_dialog_preferred_mac), device);
@@ -387,12 +408,14 @@ public class MainActivity extends ActionBarActivity {
                 .setTitle(getString(R.string.connection_dialog_title))
                 .setPositiveButton(getString(R.string.connection_dialog_connect), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+
+                        selectedDevice = device;
                         retreivePreferences();
 
-                        connectThread = new ConnectThread(MainActivity.this , device);
+                        connectThread = new ConnectThread(handler, device, getApplicationContext());
                         connectThread.start();
 
-                        loadingProgressBar.setVisibility(View.GONE);
+                        loadingProgressBar.setVisibility(View.INVISIBLE);
                         connectingProgressBar.setVisibility(View.VISIBLE);
                     }
                 })
@@ -417,8 +440,8 @@ public class MainActivity extends ActionBarActivity {
                 .setIcon(R.drawable.ic_alert)
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        loadingProgressBar.setVisibility(View.GONE);
-                        connectingProgressBar.setVisibility(View.GONE);
+                        loadingProgressBar.setVisibility(View.INVISIBLE);
+                        connectingProgressBar.setVisibility(View.INVISIBLE);
                     }
                 });
 
@@ -465,7 +488,6 @@ public class MainActivity extends ActionBarActivity {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
         }
-
 
         return super.onOptionsItemSelected(item);
     }

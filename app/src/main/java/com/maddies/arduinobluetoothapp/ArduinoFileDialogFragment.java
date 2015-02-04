@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 
 
 public class ArduinoFileDialogFragment extends DialogFragment{
@@ -25,9 +26,9 @@ public class ArduinoFileDialogFragment extends DialogFragment{
      * Each method passes the DialogFragment in case the host needs to query it. */
     public interface ArduinoFileDialogListener {
         public void onArduinoFileClick(DialogFragment dialog, int which);
+        public void onCancel(DialogFragment dialog);
     }
 
-    // Use this instance of the interface to deliver action events
     ArduinoFileDialogListener mListener;
 
     @Override
@@ -36,20 +37,27 @@ public class ArduinoFileDialogFragment extends DialogFragment{
         String[] array = getArguments().getStringArray(MainActivity.PUT_ARRAY);
 
 
-        // Use the Builder class for convenient dialog construction
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Choose A File")
                 .setItems(array, new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Send the positive button event back to the host activity
                         mListener.onArduinoFileClick(ArduinoFileDialogFragment.this, which);
                     }
                 });
+
+
         // Create the AlertDialog object and return it
         AlertDialog dialog = builder.create();
         return dialog;
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        mListener.onCancel(ArduinoFileDialogFragment.this);
     }
 
     @Override

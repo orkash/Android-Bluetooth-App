@@ -41,13 +41,15 @@ public class PostGetActivity extends ActionBarActivity
         implements ArduinoFileDialogFragment.ArduinoFileDialogListener, AndroidFileDialogFragment.AndroidFileDialogListener {
 
     @InjectView(R.id.connected_to_text_view)TextView connectedTo;
-    static TextView statusTextView;
-    BluetoothDevice device;
+    @InjectView(R.id.status_text_view) TextView statusTextView;
+
     @InjectView(R.id.get_button) Button getButton;
     @InjectView(R.id.post_button) Button postButton;
     @InjectView(R.id.cancel_button) Button cancelButton;
     @InjectView(R.id.progressBar) ProgressBar progressBar;
+
     SharedPreferences sharedPreferences;
+    BluetoothDevice device;
 
 
     @Override
@@ -57,11 +59,8 @@ public class PostGetActivity extends ActionBarActivity
 
         ButterKnife.inject(this);
 
-        statusTextView = (TextView) findViewById(R.id.status_text_view);
-
         device = getIntent().getParcelableExtra(MainActivity.EXTRA_DEVICE);
-
-        //connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());
+        connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());
 
 
         // on first run
@@ -74,7 +73,6 @@ public class PostGetActivity extends ActionBarActivity
                     R.id.post_button);
             sharedPreferences.edit().putBoolean("firstRunPostGetActivity", false).apply();
         }
-
 
         // When the select file button is open the file explorer and send it
         postButton.setOnClickListener(new View.OnClickListener() {
@@ -261,11 +259,15 @@ public class PostGetActivity extends ActionBarActivity
             dialog.show(getSupportFragmentManager(), MainActivity.TAG + "AndroidFileDialogFragment");
         } else {
             // chose a file
-            try {
+
+            statusTextView.setText("Sending File");
+            progressBar.setVisibility(View.VISIBLE);
+
+            /*try {
                 sendFile(file);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 
@@ -273,10 +275,17 @@ public class PostGetActivity extends ActionBarActivity
     public void onArduinoFileClick(DialogFragment dialog, int which) {
         // user chose an item
         Toast.makeText(getApplicationContext(), "You chose" + which, Toast.LENGTH_SHORT).show();
+        statusTextView.setText("Getting File");
+        progressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    public void onCancel(DialogFragment dialog){
+        statusTextView.setText("Cancelled");
     }
 
 
-    public static void sendFile(File file) throws IOException {
+    public void sendFile(File file) throws IOException {
         fileSent = false;
         tempState = 0;
 
@@ -293,7 +302,7 @@ public class PostGetActivity extends ActionBarActivity
     static int tempState = 0;
     static boolean fileSent = false;
 
-    private static byte[] readFile(File file) throws IOException {
+    private byte[] readFile(File file) throws IOException {
         // Open file
         RandomAccessFile f = new RandomAccessFile(file, "r");
         try {
