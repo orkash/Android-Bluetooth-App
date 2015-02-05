@@ -41,6 +41,7 @@ import butterknife.InjectView;
 public class MainActivity extends ActionBarActivity {
 
     public static int state = 1;
+    public static int protocolState = 1;
 
     private static final int REQUEST_ENABLE_BT = 1;
     public final static  String TAG = "Bluetooth App";
@@ -475,7 +476,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onStart() {
-        // Registers BroadcastReceiver for bluetooth state changes
+        // Registers BroadcastReceiver for bluetooth status changes
         registerReceiver(mReceiver, intentFilter);
         super.onStart();
     }

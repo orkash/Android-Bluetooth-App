@@ -57,7 +57,8 @@ public class PostGetActivity extends ActionBarActivity  {
     ArrayList<String> str = new ArrayList<>();
     // Check if the first level of the directory structure is the one showing
     private Boolean firstLvl = true;
-    private Item[] fileList;
+
+    private ArrayList<Item> fileList = new ArrayList<>();
     private File path = Environment.getExternalStorageDirectory();
     private String chosenFile;
     ListAdapter adapter;
@@ -96,6 +97,11 @@ public class PostGetActivity extends ActionBarActivity  {
 
                 }*/
 
+                byte[] stateToBeSent = {2};
+                MainActivity.connectThread.connectedThread.write(stateToBeSent);
+                MainActivity.protocolState = 2;
+
+
                 if (isExternalStorageReadable()) {
                     openAndroidFilePicker();
 
@@ -120,23 +126,30 @@ public class PostGetActivity extends ActionBarActivity  {
                 // checks if there is  a bluetooth connection with an Arduino
 
                 /*ConnectThread.connectedThread.write(MainActivity.ASK_FILES_BYTES);*/
-                statusTextView.setText("Asking for files list");
-                progressBar.setVisibility(View.VISIBLE);
-                String[] lol = {"lol", "sup"};
+
+                byte[] stateToBeSent = {3};
+                MainActivity.connectThread.connectedThread.write(stateToBeSent);
+                MainActivity.protocolState = 3;
+
+                if (isExternalStorageWritable()) {
+
+                    statusTextView.setText("Asking for files list");
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    ArrayList<Item> list = new ArrayList<>();
+
+                    list.add(new Item("LOl", R.drawable.file_icon));
+                    list.add(new Item("sup", R.drawable.file_icon));
 
 
-                openArduinoFilePicker(lol);
-
-                /*if (isExternalStorageWritable()) {
-                    DialogFragment dialog = new ArduinoFileDialogFragment();
-                    dialog.show(getSupportFragmentManager(), MainActivity.TAG + "ArduinoFileDialogFragment");
+                    openArduinoFilePicker(list);
 
                 } else {
                     // there is no connection
                     // display message to user that there is no connection
                     Toast.makeText(getApplicationContext(),
                             "Could not open the file explorer", Toast.LENGTH_SHORT).show();
-                }*/
+                }
 
             }
         });
@@ -146,6 +159,10 @@ public class PostGetActivity extends ActionBarActivity  {
             public void onClick(View v) {
                 // cancel the current connection
                 // not tested yet
+                byte[] stateToBeSent = {1};
+                MainActivity.connectThread.connectedThread.write(stateToBeSent);
+                MainActivity.protocolState = 1;
+
                 ConnectThread.connectedThread.cancel();
                 // go back to mainactivity
                 finish();
@@ -258,22 +275,23 @@ public class PostGetActivity extends ActionBarActivity  {
         // Use the Builder class for convenient dialog construction
         final MaterialDialog dialog = new MaterialDialog.Builder(PostGetActivity.this)
                 .title(R.string.file_explorer_dialog_title)
-                .adapter(adapter)
+                .adapter(new FileArrayAdapter(PostGetActivity.this, fileList))
                 .cancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
                         statusTextView.setText("Cancelled");
                     }
+
                 })
-                .build()
-                ;
+                .build();
+
 
         ListView listView = dialog.getListView();
         if (listView != null) {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    chosenFile = fileList[position].file;
+                    chosenFile = fileList.get(position).file;
                     File sel = new File(path + "/" + chosenFile);
 
                     if (sel.isDirectory()) {
@@ -324,24 +342,16 @@ public class PostGetActivity extends ActionBarActivity  {
         dialog.show();
     }
 
-    private void openArduinoFilePicker(String[] array) {
+    private void openArduinoFilePicker(ArrayList<Item> array) {
 
         progressBar.setVisibility(View.GONE);
 
         if (isExternalStorageWritable()) {
 
-            new MaterialDialog.Builder(PostGetActivity.this)
+            final MaterialDialog dialog = new MaterialDialog.Builder(PostGetActivity.this)
                     .title("Choose a File")
-                    .items(array)
-                    .itemsCallback(new MaterialDialog.ListCallback() {
-                        @Override
-                        public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
-                            // user chose an item
-                            Toast.makeText(getApplicationContext(), "You chose" + i, Toast.LENGTH_SHORT).show();
-                            statusTextView.setText("Getting File");
-                            progressBar.setVisibility(View.VISIBLE);
-                        }
-                    })
+                    .adapter(new FileArrayAdapter(PostGetActivity.this, array))
+
                     .cancelListener(new DialogInterface.OnCancelListener() {
                         @Override
                         public void onCancel(DialogInterface dialog) {
@@ -349,6 +359,19 @@ public class PostGetActivity extends ActionBarActivity  {
                         }
                     })
                     .show();
+
+            ListView listView = dialog.getListView();
+            if (listView != null) {
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(getApplicationContext(), "You chose" + position, Toast.LENGTH_SHORT).show();
+                        statusTextView.setText("Getting File");
+                        progressBar.setVisibility(View.VISIBLE);
+                        dialog.dismiss();
+                    }
+                });
+            }
 
         } else {
             // there is no connection
@@ -363,6 +386,7 @@ public class PostGetActivity extends ActionBarActivity  {
 
     public void onAndroidFileClick(File file, Boolean again) {
         // user chose an item
+
         if (again) {
             // chose a directory
             openAndroidFilePicker();
@@ -372,11 +396,11 @@ public class PostGetActivity extends ActionBarActivity  {
             statusTextView.setText("Sending File");
             progressBar.setVisibility(View.VISIBLE);
 
-            /*try {
+            try {
                 sendFile(file);
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
         }
     }
 
@@ -446,7 +470,9 @@ public class PostGetActivity extends ActionBarActivity  {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         String[] arduinoFiles = intent.getStringArrayExtra(MainActivity.EXTRA_FILES);
-        openArduinoFilePicker(arduinoFiles);
+       // convert items to arraylist
+
+                /*openArduinoFilePicker(arduinoFilesArrayList);*/
     }
 
     /* Checks if external storage is available for read and write */
@@ -517,53 +543,33 @@ public class PostGetActivity extends ActionBarActivity  {
             };
 
             String[] fList = path.list(filter);
-            fileList = new Item[fList.length];
+            fileList = new ArrayList<>();
+            //fileList = new Item[fList.length];
             for (int i = 0; i < fList.length; i++) {
-                fileList[i] = new Item(fList[i], R.drawable.file_icon);
+                //fileList[i] = new Item(fList[i], R.drawable.file_icon);
+                fileList.add(new Item(fList[i], R.drawable.file_icon)) ;
 
                 // Convert into file path
                 File sel = new File(path, fList[i]);
 
                 // Set drawables
                 if (sel.isDirectory()) {
-                    fileList[i].icon = R.drawable.directory_icon;
+                    fileList.get(i).icon = R.drawable.directory_icon;
                 } else {
 
                 }
             }
 
             if (!firstLvl) {
-                Item temp[] = new Item[fileList.length + 1];
-                for (int i = 0; i < fileList.length; i++) {
-                    temp[i + 1] = fileList[i];
-                }
-                temp[0] = new Item("Up", R.drawable.directory_up);
-                fileList = temp;
+                fileList.add(0,  new Item("Up", R.drawable.directory_up));
             }
+
+
+
         } else {
             // path does not exist
         }
 
-        adapter = new ArrayAdapter<Item>(PostGetActivity.this, android.R.layout.select_dialog_item,
-                android.R.id.text1, fileList) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                // creates view
-                View view = super.getView(position, convertView, parent);
-                TextView textView = (TextView) view
-                        .findViewById(android.R.id.text1);
 
-                // put the image on the text view
-                textView.setCompoundDrawablesWithIntrinsicBounds(
-                        fileList[position].icon, 0, 0, 0);
-
-                // add margin between image and text (support various screen
-                // densities)
-                int dp5 = (int) (5 * getResources().getDisplayMetrics().density + 0.5f);
-                textView.setCompoundDrawablePadding(dp5);
-
-                return view;
-            }
-        };
     }
 }

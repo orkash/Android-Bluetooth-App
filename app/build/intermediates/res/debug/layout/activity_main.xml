@@ -14,41 +14,49 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:layout_width="wrap_content"
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Search"
+            android:layout_weight="1"
+            android:text="@string/search_button"
             android:id="@+id/search_button"
-            android:gravity="center" />
+            />
 
-        <Button
-            android:layout_width="wrap_content"
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:layout_width="match_parent"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Stop"
-            android:id="@+id/stop_button"/>
+            android:text="@string/stop_button"
+            android:id="@+id/stop_button"
+            />
 
-        <ProgressBar
+        <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
             android:id="@+id/loading_panel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="gone" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            android:background="#4CAF50"/>
 
     </LinearLayout>
 
 
     <ListView
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/list_view" />
+        android:id="@+id/devices_list_view" />
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:indeterminate="true"
         android:id="@+id/connecting_panel"
         android:visibility="gone"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:background="#4CAF50"/>
 
 
-</LinearLayout><!-- From: file:/C:/Users/Madgijs/Desktop/Development/Programming/Projects/Java/Android%20Workspace/Android-Bluetooth-App/app/src/main/res/layout/activity_main.xml -->
+</LinearLayout><!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/layout/activity_main.xml -->

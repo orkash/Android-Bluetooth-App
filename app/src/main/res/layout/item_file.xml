@@ -2,14 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical">
+              android:orientation="horizontal"
+                android:gravity="center_vertical">
 
     <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"/>
+        android:layout_margin="10dp"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:id="@+id/file_icon"/>
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/file_string"
+        android:textSize="20sp"
+        />
 
 </LinearLayout>
