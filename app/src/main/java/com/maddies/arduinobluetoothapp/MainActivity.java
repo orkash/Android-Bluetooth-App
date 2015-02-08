@@ -44,28 +44,33 @@ public class MainActivity extends ActionBarActivity {
     public static int protocolState = 1;
 
     private static final int REQUEST_ENABLE_BT = 1;
-    public final static  String TAG = "Bluetooth App";
+    public final static String TAG = "Bluetooth App";
     public final static String EXTRA_DEVICE = "DEVICE";
     public final static String EXTRA_ENABLE_BLUETOOTH = "ENABLE_BLUETOOTH";
-    public static final String EXTRA_FILES = "FILES" ;
+    public static final String EXTRA_FILES = "FILES";
     public final static byte[] ASK_FILES_BYTES = {3};
     public final static String PUT_ARRAY = "ARRAY";
 
     public final static int FAILED_CONNECTING = 10;
-    public final static  int SUCCESS_CONNECTING = 20;
-    public final static  int GOT_DATA = 20;
+    public final static int SUCCESS_CONNECTING = 20;
+    public final static int GOT_DATA = 20;
 
     public static BluetoothAdapter mBluetoothAdapter;
     public static ConnectThread connectThread;
 
-    @InjectView(R.id.devices_list_view) ListView devicesListView;
+    @InjectView(R.id.devices_list_view)
+    ListView devicesListView;
     ArrayList<BluetoothDevice> devicesArrayList;
     BluetoothDevicesAdapter mBluetoothDevicesAdapter;
 
-    @InjectView(R.id.connecting_panel) ProgressBarCircularIndeterminate connectingProgressBar;
-    @InjectView(R.id.loading_panel) ProgressBarCircularIndeterminate loadingProgressBar;
-    @InjectView(R.id.search_button)  ButtonRectangle searchButton;
-    @InjectView(R.id.stop_button)  ButtonRectangle stopButton;
+    @InjectView(R.id.connecting_panel)
+    ProgressBarCircularIndeterminate connectingProgressBar;
+    @InjectView(R.id.loading_panel)
+    ProgressBarCircularIndeterminate loadingProgressBar;
+    @InjectView(R.id.search_button)
+    ButtonRectangle searchButton;
+    @InjectView(R.id.stop_button)
+    ButtonRectangle stopButton;
 
     String prefBluetoothMacAddress, prefBluetoothName, prefBluetoothUUID;
 
@@ -136,11 +141,10 @@ public class MainActivity extends ActionBarActivity {
         if (sharedPreferences.getBoolean("firstRunMainActivity", true)) {
             // Do first run stuff here then set 'firstrun' as false
             // using the following line to edit/commit prefs
-            displayShowCaseView(this ,getString(R.string.tutorial_search_button_header),
+            displayShowCaseView(this, getString(R.string.tutorial_search_button_header),
                     getString(R.string.tutorial_search_button_text), R.id.search_button);
             sharedPreferences.edit().putBoolean("firstRunMainActivity", false).apply();
         }
-
 
 
         // When the search button is clicked it will search for Bluetooth devices
@@ -240,6 +244,7 @@ public class MainActivity extends ActionBarActivity {
                             // nothings needs to be done if the cancel button tutorial
                         }
                     }
+
                     @Override
                     public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
                     }
@@ -272,12 +277,12 @@ public class MainActivity extends ActionBarActivity {
         showcaseViewBuilder.build();
     }
 
-    public void makeToast(Context context ,String message) {
+    public void makeToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     private void startBluetooth() {
-        if (mBluetoothAdapter.startDiscovery()){
+        if (mBluetoothAdapter.startDiscovery()) {
             Log.d(TAG, "you have started searching");
             loadingProgressBar.post(new Runnable() {
                 @Override
@@ -294,7 +299,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
         if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 // User succesfully enabled bluetooth
                 startBluetooth();
             }
@@ -355,9 +360,9 @@ public class MainActivity extends ActionBarActivity {
             }
 
             if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                final int intentState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
                         BluetoothAdapter.ERROR);
-                switch (state) {
+                switch (intentState) {
                     case BluetoothAdapter.STATE_OFF:
                         Log.d(TAG, "User turned Bluetooth off");
 
@@ -448,7 +453,7 @@ public class MainActivity extends ActionBarActivity {
 
     // will exit application but not close if user has bluetooth problems
     private void closeApplication(String message) {
-       new MaterialDialog.Builder(MainActivity.this)
+        new MaterialDialog.Builder(MainActivity.this)
                 .content(message)
                 .cancelable(false)
                 .title(getString(R.string.error))
@@ -462,7 +467,7 @@ public class MainActivity extends ActionBarActivity {
                         connectingProgressBar.setVisibility(View.GONE);
                     }
                 })
-               .show();
+                .show();
     }
 
 
@@ -495,7 +500,7 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             // developer button is pressed
             case R.id.action_bar_developers:
                 makeToast(MainActivity.this, getString(R.string.developers));

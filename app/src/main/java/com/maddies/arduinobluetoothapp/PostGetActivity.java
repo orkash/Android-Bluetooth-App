@@ -33,24 +33,30 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class PostGetActivity extends ActionBarActivity  {
+public class PostGetActivity extends ActionBarActivity {
 
-    @InjectView(R.id.connected_to_text_view) TextView connectedTo;
-    @InjectView(R.id.status_text_view) TextView statusTextView;
+    @InjectView(R.id.connected_to_text_view)
+    TextView connectedTo;
+    @InjectView(R.id.status_text_view)
+    TextView statusTextView;
 
-    @InjectView(R.id.get_button) ButtonRectangle getButton;
-    @InjectView(R.id.post_button) ButtonRectangle postButton;
-    @InjectView(R.id.cancel_button) ButtonRectangle cancelButton;
-    @InjectView(R.id.progressBar)   ProgressBarCircularIndeterminate progressBar;
+    @InjectView(R.id.get_button)
+    ButtonRectangle getButton;
+    @InjectView(R.id.post_button)
+    ButtonRectangle postButton;
+    @InjectView(R.id.cancel_button)
+    ButtonRectangle cancelButton;
+    @InjectView(R.id.progressBar)
+    ProgressBarCircularIndeterminate progressBar;
 
     SharedPreferences sharedPreferences;
     BluetoothDevice device;
-
 
 
     // Stores names of traversed directories
@@ -97,9 +103,9 @@ public class PostGetActivity extends ActionBarActivity  {
 
                 }*/
 
-                byte[] stateToBeSent = {2};
-                MainActivity.connectThread.connectedThread.write(stateToBeSent);
-                MainActivity.protocolState = 2;
+                //byte[] stateToBeSent = {2};
+              //  MainActivity.connectThread.connectedThread.write(stateToBeSent);
+               // MainActivity.protocolState = 2;
 
 
                 if (isExternalStorageReadable()) {
@@ -383,16 +389,13 @@ public class PostGetActivity extends ActionBarActivity  {
     }
 
 
-
     public void onAndroidFileClick(File file, Boolean again) {
-        // user chose an item
-
+        // An item is chosen
         if (again) {
-            // chose a directory
+            // A Directory is chosen
             openAndroidFilePicker();
         } else {
-            // chose a file
-
+            // A File is chosen
             statusTextView.setText("Sending File");
             progressBar.setVisibility(View.VISIBLE);
 
@@ -404,22 +407,52 @@ public class PostGetActivity extends ActionBarActivity  {
         }
     }
 
-
-
-
-
     public void sendFile(File file) throws IOException {
-        fileSent = false;
-        tempState = 0;
-
-        statusTextView.setText("sending");
-
-        while (!fileSent){
-            MainActivity.connectThread.connectedThread.write(readFile(file));
-        }
+        statusTextView.setText("Sending");
+        MainActivity.state = 1;
+        RandomAccessFile raFile = new RandomAccessFile(file, "r");
+        Log.i(MainActivity.TAG, "State when starting sending: " + MainActivity.state);
+        while (MainActivity.state != 1) ;
+        Log.i(MainActivity.TAG, "Sending Size");
+        MainActivity.connectThread.connectedThread.write(readFileSize(file));
+        while (MainActivity.state != 2) ;
+        Log.i(MainActivity.TAG, "Sending Name");
+        MainActivity.connectThread.connectedThread.write(readFileName(file));
+        while (MainActivity.state != 3) ;
+        Log.i(MainActivity.TAG, "Sending File");
+        MainActivity.connectThread.connectedThread.write(readFile2(raFile));
 
         statusTextView.setText("Done");
+        progressBar.setVisibility(View.INVISIBLE);
+    }
 
+    private byte[] readFileSize(File file) {
+        // Return length of file as byte array
+        return ByteBuffer.allocate(8).putLong(file.length()).array();
+    }
+
+    private byte[] readFileName(File file) {
+        // Return name of file as byte array
+        return file.getName().getBytes();
+    }
+
+    private byte[] readFile2(RandomAccessFile raFile) throws IOException {
+        // Get file size
+        long longLength = raFile.length();
+        int length = (int) longLength;
+
+        // Throw exception if size exceeds 2 GB
+        if (length != longLength)
+            throw new IOException("File size >= 2 GB");
+
+        Log.i(MainActivity.TAG, "Length of file: " + raFile.length());
+
+        // Read file data into byte array
+        byte[] data = new byte[length];
+        raFile.readFully(data);
+
+        // Return file data
+        return data;
     }
 
     static int tempState = 0;
@@ -427,7 +460,7 @@ public class PostGetActivity extends ActionBarActivity  {
 
     private byte[] readFile(File file) throws IOException {
         // Open file
-        RandomAccessFile f = new RandomAccessFile(file, "r");
+       /* RandomAccessFile f = new RandomAccessFile(file, "r");
         try {
             if (MainActivity.state == 1 && tempState == 0) {
                 tempState = 1;
@@ -459,7 +492,8 @@ public class PostGetActivity extends ActionBarActivity  {
             return null;
         } finally {
             f.close();
-        }
+        }*/
+        return null;
     }
 
     /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -470,7 +504,7 @@ public class PostGetActivity extends ActionBarActivity  {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         String[] arduinoFiles = intent.getStringArrayExtra(MainActivity.EXTRA_FILES);
-       // convert items to arraylist
+        // convert items to arraylist
 
                 /*openArduinoFilePicker(arduinoFilesArrayList);*/
     }
@@ -547,7 +581,7 @@ public class PostGetActivity extends ActionBarActivity  {
             //fileList = new Item[fList.length];
             for (int i = 0; i < fList.length; i++) {
                 //fileList[i] = new Item(fList[i], R.drawable.file_icon);
-                fileList.add(new Item(fList[i], R.drawable.file_icon)) ;
+                fileList.add(new Item(fList[i], R.drawable.file_icon));
 
                 // Convert into file path
                 File sel = new File(path, fList[i]);
@@ -561,9 +595,8 @@ public class PostGetActivity extends ActionBarActivity  {
             }
 
             if (!firstLvl) {
-                fileList.add(0,  new Item("Up", R.drawable.directory_up));
+                fileList.add(0, new Item("Up", R.drawable.directory_up));
             }
-
 
 
         } else {

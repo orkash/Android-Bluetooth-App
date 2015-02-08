@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 // this class is for the actual data transmission between the two devices when they are already connected
-class ConnectedThread extends Thread{
+class ConnectedThread extends Thread {
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
@@ -31,7 +31,8 @@ class ConnectedThread extends Thread{
         try {
             tmpIn = socket.getInputStream();
             tmpOut = socket.getOutputStream();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
 
         mmInStream = tmpIn;
         mmOutStream = tmpOut;
@@ -43,23 +44,18 @@ class ConnectedThread extends Thread{
         }
     }
 
-    static int counter = 0;
 
     public void write(byte[] bytes) {
         if (bytes == null) {
-            //Log.d(MainActivity.TAG, "Sent Empty File " + counter);
-            counter++;
+            Log.e(MainActivity.TAG, "ERROR: Sending empty bytes");
             return;
         }
 
         try {
-            for(byte b : bytes)
-                Log.i(MainActivity.TAG, b + "");
-            Log.i(MainActivity.TAG, "Working");
             mmOutStream.write(bytes);
 
         } catch (IOException e) {
-            Log.e(MainActivity.TAG, "ERROR");
+            Log.e(MainActivity.TAG, "ERROR: IOException while sending bytes");
         }
 
     }
@@ -76,9 +72,9 @@ class ConnectedThread extends Thread{
 
         }
 
-        if (/*you got the array of items*/  true) {
-            openDialog();
-        }
+      //  if (/*you got the array of items*/  true) {
+      //      openDialog();
+      //  }
     }
 
     private void openDialog() {
@@ -87,7 +83,7 @@ class ConnectedThread extends Thread{
             public void run() {
                 Intent i = new Intent(context, PostGetActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                String[] sampleArray = {"LOL","YO"};
+                String[] sampleArray = {"LOL", "YO"};
                 i.putExtra(MainActivity.EXTRA_FILES, sampleArray);
                 context.startActivity(i);
             }
@@ -99,6 +95,7 @@ class ConnectedThread extends Thread{
         try {
             mmSocket.close();
             // go to mainactivity
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
     }
 }
