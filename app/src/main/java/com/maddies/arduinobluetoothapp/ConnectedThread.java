@@ -9,6 +9,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 // this class is for the actual data transmission between the two devices when they are already connected
 class ConnectedThread extends Thread {
@@ -52,8 +53,24 @@ class ConnectedThread extends Thread {
         }
 
         try {
-            mmOutStream.write(bytes);
+            Log.i(MainActivity.TAG, "Length: " + bytes.length);
 
+            for (int i = 0; i < bytes.length; i += 64) {
+                Log.i(MainActivity.TAG, "Writing 64 bytes");
+                byte[] subBytes;
+                if (bytes.length < i + 64)
+                    subBytes = Arrays.copyOfRange(bytes, i, bytes.length);
+                else
+                    subBytes = Arrays.copyOfRange(bytes, i, i + 64);
+
+                mmOutStream.write(subBytes);
+
+                try {
+                    Thread.sleep(250);
+                } catch (InterruptedException e) {
+                    Log.e(MainActivity.TAG, "Error while waiting");
+                }
+            }
         } catch (IOException e) {
             Log.e(MainActivity.TAG, "ERROR: IOException while sending bytes");
         }
@@ -72,9 +89,9 @@ class ConnectedThread extends Thread {
 
         }
 
-      //  if (/*you got the array of items*/  true) {
-      //      openDialog();
-      //  }
+        //  if (/*you got the array of items*/  true) {
+        //      openDialog();
+        //  }
     }
 
     private void openDialog() {

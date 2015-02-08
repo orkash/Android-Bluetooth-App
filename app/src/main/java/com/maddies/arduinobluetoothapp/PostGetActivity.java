@@ -96,18 +96,6 @@ public class PostGetActivity extends ActionBarActivity {
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // checks if there is  a bluetooth connection with an Arduino
-                /*if (MainActivity.connectThread.connectedThread.isAlive()) {
-                    // there is a connection
-                    // open the explorer
-
-                }*/
-
-                //byte[] stateToBeSent = {2};
-              //  MainActivity.connectThread.connectedThread.write(stateToBeSent);
-               // MainActivity.protocolState = 2;
-
-
                 if (isExternalStorageReadable()) {
                     openAndroidFilePicker();
 
@@ -129,14 +117,6 @@ public class PostGetActivity extends ActionBarActivity {
         getButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // checks if there is  a bluetooth connection with an Arduino
-
-                /*ConnectThread.connectedThread.write(MainActivity.ASK_FILES_BYTES);*/
-
-                byte[] stateToBeSent = {3};
-                MainActivity.connectThread.connectedThread.write(stateToBeSent);
-                MainActivity.protocolState = 3;
-
                 if (isExternalStorageWritable()) {
 
                     statusTextView.setText("Asking for files list");
@@ -163,12 +143,6 @@ public class PostGetActivity extends ActionBarActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // cancel the current connection
-                // not tested yet
-                byte[] stateToBeSent = {1};
-                MainActivity.connectThread.connectedThread.write(stateToBeSent);
-                MainActivity.protocolState = 1;
-
                 ConnectThread.connectedThread.cancel();
                 // go back to mainactivity
                 finish();
@@ -409,18 +383,21 @@ public class PostGetActivity extends ActionBarActivity {
 
     public void sendFile(File file) throws IOException {
         statusTextView.setText("Sending");
+
+        Log.i(MainActivity.TAG, "State when starting sending: " + MainActivity.state);
         MainActivity.state = 1;
         RandomAccessFile raFile = new RandomAccessFile(file, "r");
-        Log.i(MainActivity.TAG, "State when starting sending: " + MainActivity.state);
         while (MainActivity.state != 1) ;
         Log.i(MainActivity.TAG, "Sending Size");
         MainActivity.connectThread.connectedThread.write(readFileSize(file));
+
         while (MainActivity.state != 2) ;
         Log.i(MainActivity.TAG, "Sending Name");
         MainActivity.connectThread.connectedThread.write(readFileName(file));
+
         while (MainActivity.state != 3) ;
         Log.i(MainActivity.TAG, "Sending File");
-        MainActivity.connectThread.connectedThread.write(readFile2(raFile));
+        MainActivity.connectThread.connectedThread.write(readFile(raFile));
 
         statusTextView.setText("Done");
         progressBar.setVisibility(View.INVISIBLE);
@@ -436,7 +413,7 @@ public class PostGetActivity extends ActionBarActivity {
         return file.getName().getBytes();
     }
 
-    private byte[] readFile2(RandomAccessFile raFile) throws IOException {
+    private byte[] readFile(RandomAccessFile raFile) throws IOException {
         // Get file size
         long longLength = raFile.length();
         int length = (int) longLength;
@@ -453,47 +430,6 @@ public class PostGetActivity extends ActionBarActivity {
 
         // Return file data
         return data;
-    }
-
-    static int tempState = 0;
-    static boolean fileSent = false;
-
-    private byte[] readFile(File file) throws IOException {
-        // Open file
-       /* RandomAccessFile f = new RandomAccessFile(file, "r");
-        try {
-            if (MainActivity.state == 1 && tempState == 0) {
-                tempState = 1;
-                Log.i(MainActivity.TAG, "Working1");
-
-                return ByteBuffer.allocate(8).putLong(file.length()).array();
-            } else if (MainActivity.state == 2 && tempState == 1) {
-                tempState = 2;
-                Log.i(MainActivity.TAG, "Working2");
-
-                return file.getName().getBytes();
-            } else if (MainActivity.state == 3 && tempState == 2) {
-                tempState = 3;
-                // Get and check length
-                long longLength = f.length();
-                int length = (int) longLength;
-                if (length != longLength)
-                    throw new IOException("File size >= 2 GB");
-                Log.i(MainActivity.TAG, f.length() + "TEST");
-                // Read file and return data
-                byte[] data = new byte[length];
-                f.readFully(data);
-                fileSent = true;
-                Log.i(MainActivity.TAG, "Working3");
-                statusTextView.setText("Done");
-
-                return data;
-            }
-            return null;
-        } finally {
-            f.close();
-        }*/
-        return null;
     }
 
     /*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
