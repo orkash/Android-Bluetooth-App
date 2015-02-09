@@ -109,7 +109,7 @@ class ConnectedThread extends Thread {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

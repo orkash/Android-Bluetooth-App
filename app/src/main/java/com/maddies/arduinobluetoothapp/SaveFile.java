@@ -16,24 +16,26 @@ public class SaveFile extends AsyncTask<Object, String, Void> {
         byte[] arduinoFileByteArray = (byte[]) params[0];
         String nameGetFile = (String) params[1];
 
+        Log.i(MainActivity.TAG, "" + arduinoFileByteArray.length);
+        for(byte b : arduinoFileByteArray){
+            Log.i(MainActivity.TAG, "" + b);
+        }
 
         File directory = new File(Environment.getExternalStorageDirectory(), "Communico");
-        if (!directory.mkdirs()) {
-            Log.e(MainActivity.TAG, "Directory not created");
-        } else {
-            File file = new File(directory, nameGetFile);
-            try {
-                FileOutputStream fileOutputStream =new FileOutputStream(file.getAbsolutePath());
+        directory.mkdirs();
 
-                fileOutputStream.write(arduinoFileByteArray[0]);
-                fileOutputStream.close();
-                Log.d(MainActivity.TAG, "File saved");
-            }
-            catch (java.io.IOException e) {
-                Log.e("PictureDemo", "Exception in photoCallback", e);
-            }
+        File file = new File(directory, nameGetFile);
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
 
+            fileOutputStream.write(arduinoFileByteArray);
+            fileOutputStream.close();
+            Log.i(MainActivity.TAG, "File saved");
+        } catch (java.io.IOException e) {
+            Log.e(MainActivity.TAG, "Exception in photoCallback", e);
         }
+
+
         return null;
     }
 }
