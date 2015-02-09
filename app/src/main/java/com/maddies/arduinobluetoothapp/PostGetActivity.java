@@ -97,11 +97,18 @@ public class PostGetActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (isExternalStorageReadable()) {
+                    MainActivity.protocolState = 0;
+                    byte[] protocolSent = {1};
+                    ConnectThread.connectedThread.write(protocolSent);
+
+                    while (MainActivity.protocolState == 0) ;
+
                     openAndroidFilePicker();
 
                     if (fileList == null) {
                         // no files loaded
                     }
+
 
                     /*DialogFragment dialog = new AndroidFileDialogFragment();
                     dialog.show(getSupportFragmentManager(), MainActivity.TAG + "AndroidFileDialogFragment");*/
@@ -122,13 +129,13 @@ public class PostGetActivity extends ActionBarActivity {
                     statusTextView.setText("Asking for files list");
                     progressBar.setVisibility(View.VISIBLE);
 
-                    ArrayList<Item> list = new ArrayList<>();
+                    MainActivity.protocolState = 0;
+                    byte[] protocolSent = {2};
+                    ConnectThread.connectedThread.write(protocolSent);
 
-                    list.add(new Item("LOl", R.drawable.file_icon));
-                    list.add(new Item("sup", R.drawable.file_icon));
+                    while (MainActivity.protocolState == 0) ;
 
-
-                    openArduinoFilePicker(list);
+                    openArduinoFilePicker();
 
                 } else {
                     // there is no connection
@@ -145,6 +152,9 @@ public class PostGetActivity extends ActionBarActivity {
             public void onClick(View v) {
                 ConnectThread.connectedThread.cancel();
                 // go back to mainactivity
+
+                MainActivity.protocolState = 0;
+
                 finish();
             }
         });
@@ -322,7 +332,7 @@ public class PostGetActivity extends ActionBarActivity {
         dialog.show();
     }
 
-    private void openArduinoFilePicker(ArrayList<Item> array) {
+    private void openArduinoFilePicker() {
 
         progressBar.setVisibility(View.GONE);
 
@@ -357,7 +367,7 @@ public class PostGetActivity extends ActionBarActivity {
 
             new MaterialDialog.Builder(PostGetActivity.this)
                     .title("Enter file name")
-                    .customView(input,true)
+                    .customView(input, true)
                     .positiveText("Get")
                     .negativeText("Cancel")
                     .callback(new MaterialDialog.ButtonCallback() {
@@ -366,7 +376,8 @@ public class PostGetActivity extends ActionBarActivity {
                             super.onPositive(dialog);
                             String value = input.getText().toString();
                             nameGetFile = value;
-                            if (value.length() > 12 ) {
+                            value = value.toUpperCase();
+                            if (value.length() > 12) {
                                 Toast.makeText(getApplicationContext(), "The file name may not be longer than 12 characters", Toast.LENGTH_SHORT).show();
                             } else {
                                 ConnectThread.connectedThread.write(value.getBytes());

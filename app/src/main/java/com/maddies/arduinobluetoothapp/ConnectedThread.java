@@ -72,10 +72,20 @@ class ConnectedThread extends Thread {
     public void readState() {
         try {
             if (mmInStream.available() > 0) {
-                if (MainActivity.protocolState == 1) {
+                if (MainActivity.protocolState == 0) {
+                    try {
+                        MainActivity.protocolState = mmInStream.read();
+                        Log.i(MainActivity.TAG, "Reading " + MainActivity.protocolState);
+
+                        if (MainActivity.protocolState == -1)
+                            MainActivity.protocolState = 0;
+                    } catch (IOException e) {
+
+                    }
+                } else if (MainActivity.protocolState == 1) {
                     try {
                         MainActivity.state = mmInStream.read();
-                        Log.d(MainActivity.TAG, "Reading " + MainActivity.state);
+                        Log.d(MainActivity.TAG, "Reading2 " + MainActivity.state);
 
                         if (MainActivity.state == -1)
                             MainActivity.state = 1;
