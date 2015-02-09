@@ -70,42 +70,46 @@ class ConnectedThread extends Thread {
     }
 
     public void readState() {
-        if (MainActivity.protocolState == 1) {
-            try {
-                MainActivity.state = mmInStream.read();
-                Log.d(MainActivity.TAG, "Reading " + MainActivity.state);
+        try {
+            if (mmInStream.available() > 0) {
+                if (MainActivity.protocolState == 1) {
+                    try {
+                        MainActivity.state = mmInStream.read();
+                        Log.d(MainActivity.TAG, "Reading " + MainActivity.state);
 
-                if (MainActivity.state == -1)
-                    MainActivity.state = 1;
-            } catch (IOException e) {
+                        if (MainActivity.state == -1)
+                            MainActivity.state = 1;
+                    } catch (IOException e) {
 
-            }
-        } else if (MainActivity.protocolState == 2) {
-            try {
-                ArrayList<Byte> incomingBytes = new ArrayList<>();
+                    }
+                } else if (MainActivity.protocolState == 2) {
 
-                while (mmInStream.available() > 0) {
-                    incomingBytes.add((byte) mmInStream.read());
+                    ArrayList<Byte> incomingBytes = new ArrayList<>();
 
-                    if (mmInStream.available() == 0) {
-                        for (int i = 0; i < 2000; i++) {
-                            try {
-                                Thread.sleep(1);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                    while (mmInStream.available() > 0) {
+                        incomingBytes.add((byte) mmInStream.read());
+
+                        if (mmInStream.available() == 0) {
+                            for (int i = 0; i < 2000; i++) {
+                                try {
+                                    Thread.sleep(1);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                if (mmInStream.available() > 0)
+                                    break;
                             }
-
-                            if (mmInStream.available() > 0)
-                                break;
                         }
+
                     }
 
-                }
+                    saveFile(convertToPrimitiveByteArray(incomingBytes));
 
-                saveFile(convertToPrimitiveByteArray(incomingBytes));
-            } catch (IOException e) {
-                e.printStackTrace();
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

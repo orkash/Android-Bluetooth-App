@@ -41,7 +41,7 @@ import butterknife.InjectView;
 public class MainActivity extends ActionBarActivity {
 
     public static int state = 1;
-    public static int protocolState = 1;
+    public static int protocolState = 2;
 
     private static final int REQUEST_ENABLE_BT = 1;
     public final static String TAG = "Bluetooth App";
