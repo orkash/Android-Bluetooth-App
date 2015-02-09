@@ -1,5 +1,6 @@
 package com.maddies.arduinobluetoothapp;
 
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -13,12 +14,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -58,6 +62,8 @@ public class PostGetActivity extends ActionBarActivity {
     SharedPreferences sharedPreferences;
     BluetoothDevice device;
 
+    String nameGetFile;
+
 
     // Stores names of traversed directories
     ArrayList<String> str = new ArrayList<>();
@@ -78,7 +84,7 @@ public class PostGetActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
         device = getIntent().getParcelableExtra(MainActivity.EXTRA_DEVICE);
-        connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());
+        //connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());
 
 
         // on first run
@@ -328,9 +334,10 @@ public class PostGetActivity extends ActionBarActivity {
 
         if (isExternalStorageWritable()) {
 
-            final MaterialDialog dialog = new MaterialDialog.Builder(PostGetActivity.this)
+           /* final MaterialDialog dialog = new MaterialDialog.Builder(PostGetActivity.this)
                     .title("Choose a File")
                     .adapter(new FileArrayAdapter(PostGetActivity.this, array))
+
 
                     .cancelListener(new DialogInterface.OnCancelListener() {
                         @Override
@@ -351,13 +358,39 @@ public class PostGetActivity extends ActionBarActivity {
                         dialog.dismiss();
                     }
                 });
-            }
+            }*/
+            final EditText input = new EditText(this);
+
+            new MaterialDialog.Builder(PostGetActivity.this)
+                    .title("Enter file name")
+                    .customView(input,true)
+                    .positiveText("Get")
+                    .negativeText("Cancel")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            super.onPositive(dialog);
+                            String value = input.getText().toString();
+                            nameGetFile = value;
+                            if (value.length() > 8 ) {
+                                Toast.makeText(getApplicationContext(), "The file name may not be longer than 8 characters", Toast.LENGTH_SHORT).show();
+                            } else {
+                                ConnectThread.connectedThread.write(value.getBytes());
+                            }
+                        }
+
+                        @Override
+                        public void onNegative(MaterialDialog dialog) {
+                            super.onNegative(dialog);
+                        }
+                    })
+                    .show();
 
         } else {
             // there is no connection
             // display message to user that there is no connection
             Toast.makeText(getApplicationContext(),
-                    "Could not open the file explorer", Toast.LENGTH_SHORT).show();
+                    "Not allowed to write files", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -439,11 +472,12 @@ public class PostGetActivity extends ActionBarActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        String[] arduinoFiles = intent.getStringArrayExtra(MainActivity.EXTRA_FILES);
-        // convert items to arraylist
+        byte[] arduinoFileByteArray = intent.getByteArrayExtra(MainActivity.EXTRA_FILES);
 
-                /*openArduinoFilePicker(arduinoFilesArrayList);*/
+        new SaveFile().execute(arduinoFileByteArray, nameGetFile);
+
     }
+
 
     /* Checks if external storage is available for read and write */
     public boolean isExternalStorageWritable() {
@@ -491,7 +525,6 @@ public class PostGetActivity extends ActionBarActivity {
     ------------------------------------------------------------------------
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
 
-
     private void loadFileList() {
         if (path.mkdirs() || path.isDirectory()) {
             // able to write to sd card
@@ -538,7 +571,5 @@ public class PostGetActivity extends ActionBarActivity {
         } else {
             // path does not exist
         }
-
-
     }
 }

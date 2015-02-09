@@ -65,11 +65,6 @@ class ConnectThread extends Thread {
 
             handler.obtainMessage(MainActivity.FAILED_CONNECTING).sendToTarget();
 
-           /*
-                    Just for Testing
-           */
-            handler.obtainMessage(MainActivity.SUCCESS_CONNECTING).sendToTarget();
-
             try {
                 mmSocket.close();
             } catch (IOException closeException) { }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <attr format="reference" name="drawerArrowStyle"/>
     <attr format="dimension" name="height"/>
     <attr format="boolean" name="isLightTheme"/>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.2.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.2.3/res/values/values.xml -->
     <eat-comment/>
     <attr format="color" name="md_background_color"/>
     <attr format="reference" name="md_btn_negative_selector"/>
@@ -23,7 +23,7 @@
     <attr format="color" name="md_neutral_color"/>
     <attr format="color" name="md_positive_color"/>
     <attr format="color" name="md_title_color"/>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <attr format="string" name="title"/>
     <bool name="abc_action_bar_embed_tabs">true</bool>
@@ -54,10 +54,10 @@
     <color name="dim_foreground_disabled_material_light">#80323232</color>
     <color name="dim_foreground_material_dark">#ffbebebe</color>
     <color name="dim_foreground_material_light">#ff323232</color>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.navasmdc/MaterialDesign/1.4/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.navasmdc/MaterialDesign/1.4/res/values/values.xml -->
     <eat-comment/>
     <color name="green">#00FF00</color>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
@@ -70,13 +70,13 @@
     <color name="material_blue_grey_950">#ff21272b</color>
     <color name="material_deep_teal_200">#ff80cbc4</color>
     <color name="material_deep_teal_500">#ff009688</color>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.2.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.2.3/res/values/values.xml -->
     <eat-comment/>
     <color name="md_divider_black">#10000000</color>
     <color name="md_divider_white">#10FFFFFF</color>
     <color name="md_material_blue_600">#1E88E5</color>
     <color name="md_material_blue_800">#1565C0</color>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <color name="primary_dark_material_dark">#ff000000</color>
     <color name="primary_dark_material_light">#ff757575</color>
@@ -94,7 +94,7 @@
     <color name="secondary_text_disabled_material_light">#24000000</color>
     <color name="switch_thumb_normal_material_dark">#ffbdbdbd</color>
     <color name="switch_thumb_normal_material_light">#fff1f1f1</color>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.navasmdc/MaterialDesign/1.4/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.navasmdc/MaterialDesign/1.4/res/values/values.xml -->
     <eat-comment/>
     <color name="thumbColor">#66aaaaaa</color>
     <declare-styleable name="ActionBar"><attr name="navigationMode"><enum name="normal" value="0"/><enum name="listMode" value="1"/><enum name="tabMode" value="2"/></attr><attr name="displayOptions"><flag name="none" value="0"/><flag name="useLogo" value="0x1"/><flag name="showHome" value="0x2"/><flag name="homeAsUp" value="0x4"/><flag name="showTitle" value="0x8"/><flag name="showCustom" value="0x10"/><flag name="disableHome" value="0x20"/></attr><attr name="title"/><attr format="string" name="subtitle"/><attr format="reference" name="titleTextStyle"/><attr format="reference" name="subtitleTextStyle"/><attr format="reference" name="icon"/><attr format="reference" name="logo"/><attr format="reference" name="divider"/><attr format="reference" name="background"/><attr format="reference|color" name="backgroundStacked"/><attr format="reference|color" name="backgroundSplit"/><attr format="reference" name="customNavigationLayout"/><attr name="height"/><attr format="reference" name="homeLayout"/><attr format="reference" name="progressBarStyle"/><attr format="reference" name="indeterminateProgressStyle"/><attr format="dimension" name="progressBarPadding"/><attr name="homeAsUpIndicator"/><attr format="dimension" name="itemPadding"/><attr format="boolean" name="hideOnContentScroll"/><attr format="dimension" name="contentInsetStart"/><attr format="dimension" name="contentInsetEnd"/><attr format="dimension" name="contentInsetLeft"/><attr format="dimension" name="contentInsetRight"/><attr format="dimension" name="elevation"/><attr format="reference" name="popupTheme"/></declare-styleable>
@@ -123,7 +123,7 @@
     <declare-styleable name="Toolbar"><attr format="reference" name="titleTextAppearance"/><attr format="reference" name="subtitleTextAppearance"/><attr name="title"/><attr name="subtitle"/><attr name="android:gravity"/><attr format="dimension" name="titleMargins"/><attr format="dimension" name="titleMarginStart"/><attr format="dimension" name="titleMarginEnd"/><attr format="dimension" name="titleMarginTop"/><attr format="dimension" name="titleMarginBottom"/><attr name="contentInsetStart"/><attr name="contentInsetEnd"/><attr name="contentInsetLeft"/><attr name="contentInsetRight"/><attr format="dimension" name="maxButtonHeight"/><attr format="reference" name="theme"/><attr format="reference" name="collapseIcon"/><attr format="string" name="collapseContentDescription"/><attr name="popupTheme"/><attr format="reference" name="navigationIcon"/><attr format="string" name="navigationContentDescription"/><attr name="android:minHeight"/></declare-styleable>
     <declare-styleable name="View"><attr format="dimension" name="paddingStart"/><attr format="dimension" name="paddingEnd"/><attr name="android:focusable"/></declare-styleable>
     <declare-styleable name="ViewStubCompat"><attr name="android:layout"/><attr name="android:inflatedId"/><attr name="android:id"/></declare-styleable>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <dimen name="abc_action_bar_default_height_material">56dp</dimen>
     <dimen name="abc_action_bar_default_padding_material">4dp</dimen>
@@ -162,17 +162,17 @@
     <dimen name="abc_text_size_subtitle_material_toolbar">16dp</dimen>
     <dimen name="abc_text_size_title_material">20sp</dimen>
     <dimen name="abc_text_size_title_material_toolbar">20dp</dimen>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
     <eat-comment/>
     <dimen name="action_bar_offset">66dp</dimen>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
     <eat-comment/>
     <dimen name="button_margin">12dp</dimen>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <item name="dialog_fixed_height_major" type="dimen">80%</item>
     <item name="dialog_fixed_height_minor" type="dimen">100%</item>
@@ -180,7 +180,7 @@
     <item name="dialog_fixed_width_minor" type="dimen">320dp</item>
     <item format="float" name="disabled_alpha_material_dark" type="dimen">0.30</item>
     <item format="float" name="disabled_alpha_material_light" type="dimen">0.26</item>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.2.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.2.3/res/values/values.xml -->
     <eat-comment/>
     <dimen name="md_action_corner_radius">2dp</dimen>
     <dimen name="md_button_frame_vertical_padding">8dp</dimen>
@@ -206,13 +206,13 @@
     <dimen name="md_title_frame_margin_bottom">16dp</dimen>
     <dimen name="md_title_frame_margin_bottom_list">4dp</dimen>
     <dimen name="md_title_textsize">20sp</dimen>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
     <eat-comment/>
     <dimen name="showcase_radius">94dp</dimen>
     <dimen name="showcase_radius_inner">96dp</dimen>
     <dimen name="showcase_radius_outer">128dp</dimen>
     <dimen name="text_padding">24dp</dimen>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <item name="action_bar_activity_content" type="id"/>
     <item name="action_bar_spinner" type="id"/>
@@ -221,12 +221,12 @@
     <item name="home" type="id"/>
     <item name="progress_circular" type="id"/>
     <item name="progress_horizontal" type="id"/>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
     <eat-comment/>
     <item name="showcase_button" type="id"/>
     <item name="showcase_sub_text" type="id"/>
     <item name="showcase_title_text" type="id"/>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <item name="split_action_bar" type="id"/>
     <item name="up" type="id"/>
@@ -247,7 +247,7 @@
     <string name="abc_shareactionprovider_share_with">Share with</string>
     <string name="abc_shareactionprovider_share_with_application">Share with %s</string>
     <string name="abc_toolbar_collapse_description">Collapse</string>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="action_bar_developers">Developers</string>
     <string name="action_bar_settings">Settings</string>
@@ -308,7 +308,7 @@
         Android will stop searching for new devices but will Bluetooth will stay on.
         The system will wait for further user input.</string>
     <string name="yes">Yes</string>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
@@ -321,7 +321,7 @@
         <item name="md_negative_color">#727272</item>
 
     </style>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <style name="Base.TextAppearance.AppCompat" parent="android:TextAppearance">
         <item name="android:textColor">?android:textColorPrimary</item>
@@ -1075,7 +1075,7 @@
         <item name="android:scaleType">center</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="CustomShowcaseThemeClose" parent="ShowcaseView.Light">
         <item name="sv_backgroundColor">#663d4353</item>
@@ -1094,7 +1094,7 @@
     <style name="CustomTitle" parent="TextAppearance.ShowcaseView.Title">
         <item name="android:textColor">#25467A</item>
     </style>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.2.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.2.3/res/values/values.xml -->
     <eat-comment/>
     <style name="MD_ActionButton">
         <item name="android:layout_width">wrap_content</item>
@@ -1144,7 +1144,7 @@
         <item name="md_btn_neutral_selector">@drawable/md_btn_selector</item>
         <item name="md_btn_negative_selector">@drawable/md_btn_selector</item>
     </style>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <style name="Platform.AppCompat" parent="android:Theme">
         <item name="android:windowNoTitle">true</item>
@@ -1312,7 +1312,7 @@
     <style name="RtlOverlay.Widget.AppCompat.SearchView.MagIcon" parent="android:Widget">
         <item name="android:layout_marginLeft">@dimen/abc_dropdownitem_text_padding_left</item>
     </style>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
     <eat-comment/>
     <style name="ShowcaseButton">
         <item name="android:layout_width">wrap_content</item>
@@ -1335,7 +1335,7 @@
         <item name="sv_backgroundColor">#3333B5E5</item>
         <item name="sv_buttonText">@string/ok</item>
     </style>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <style name="TextAppearance.AppCompat" parent="Base.TextAppearance.AppCompat"/>
     <style name="TextAppearance.AppCompat.Body1" parent="Base.TextAppearance.AppCompat.Body1"/>
@@ -1378,7 +1378,7 @@
     <style name="TextAppearance.AppCompat.Widget.PopupMenu.Large" parent="Base.TextAppearance.AppCompat.Widget.PopupMenu.Large"/>
     <style name="TextAppearance.AppCompat.Widget.PopupMenu.Small" parent="Base.TextAppearance.AppCompat.Widget.PopupMenu.Small"/>
     <style name="TextAppearance.AppCompat.Widget.Switch" parent="Base.TextAppearance.AppCompat.Widget.Switch"/>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.github.amlcurran.showcaseview/library/5.0.0/res/values/values.xml -->
     <eat-comment/>
     <style name="TextAppearance.ShowcaseView.Detail" parent="android:style/TextAppearance">
         <item name="android:textColor">#FFFFFF</item>
@@ -1394,7 +1394,7 @@
     <style name="TextAppearance.ShowcaseView.Title.Light">
         <item name="android:shadowRadius">0</item>
     </style>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <style name="TextAppearance.Widget.AppCompat.ExpandedMenu.Item" parent="Base.TextAppearance.Widget.AppCompat.ExpandedMenu.Item"/>
     <style name="TextAppearance.Widget.AppCompat.Toolbar.Subtitle" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Subtitle"/>
@@ -1420,7 +1420,7 @@
     <style name="ThemeOverlay.AppCompat.Dark" parent="Base.ThemeOverlay.AppCompat.Dark"/>
     <style name="ThemeOverlay.AppCompat.Dark.ActionBar" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="ThemeOverlay.AppCompat.Light" parent="Base.ThemeOverlay.AppCompat.Light"/>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.2.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.2.3/res/values/values.xml -->
     <eat-comment/>
     <style name="Theme_Light_Dialog" parent="android:Theme.Light">
         <item name="android:windowFrame">@null</item>
@@ -1429,7 +1429,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
-    <!-- From: file:/C:/Users/Madgijs/Development/Programming/Projects/Java/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
+    <!-- From: file:/C:/Users/Maarten/Documents/GitHub/Android-Bluetooth-App/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values/values.xml -->
     <eat-comment/>
     <style name="Widget.AppCompat.ActionBar" parent="Base.Widget.AppCompat.ActionBar"/>
     <style name="Widget.AppCompat.ActionBar.Solid" parent="Base.Widget.AppCompat.ActionBar.Solid"/>

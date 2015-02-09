@@ -88,20 +88,17 @@ class ConnectedThread extends Thread {
         } catch (IOException e) {
 
         }
+        // ergens hier moet saveFile geroepen worden met parameter een bye[]
 
-        //  if (/*you got the array of items*/  true) {
-        //      openDialog();
-        //  }
     }
 
-    private void openDialog() {
+    private void saveFile(final byte[] file) {
         handler.post(new Runnable() {
             @Override
             public void run() {
                 Intent i = new Intent(context, PostGetActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                String[] sampleArray = {"LOL", "YO"};
-                i.putExtra(MainActivity.EXTRA_FILES, sampleArray);
+                i.putExtra(MainActivity.EXTRA_FILES, file);
                 context.startActivity(i);
             }
         });
