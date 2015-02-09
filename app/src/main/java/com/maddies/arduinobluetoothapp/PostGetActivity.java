@@ -420,7 +420,6 @@ public class PostGetActivity extends ActionBarActivity {
         Log.i(MainActivity.TAG, "State when starting sending: " + MainActivity.state);
         MainActivity.state = 1;
         RandomAccessFile raFile = new RandomAccessFile(file, "r");
-
         while (MainActivity.state != 1) ;
         Log.i(MainActivity.TAG, "Sending Size");
         MainActivity.connectThread.connectedThread.write(readFileSize(file));
