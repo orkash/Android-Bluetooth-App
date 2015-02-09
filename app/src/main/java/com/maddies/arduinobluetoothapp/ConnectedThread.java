@@ -55,22 +55,16 @@ class ConnectedThread extends Thread {
         try {
             Log.i(MainActivity.TAG, "Length: " + bytes.length);
 
-            for (int i = 0; i < bytes.length; i += 64) {
-                Log.i(MainActivity.TAG, "Writing 64 bytes");
-                byte[] subBytes;
-                if (bytes.length < i + 64)
-                    subBytes = Arrays.copyOfRange(bytes, i, bytes.length);
-                else
-                    subBytes = Arrays.copyOfRange(bytes, i, i + 64);
 
-                mmOutStream.write(subBytes);
+            for (int i = 0; i < bytes.length; i++) {
+                if (i % 400 == 0)
+                    Log.i(MainActivity.TAG, "Writing byte");
 
-                try {
-                    Thread.sleep(250);
-                } catch (InterruptedException e) {
-                    Log.e(MainActivity.TAG, "Error while waiting");
-                }
+                mmOutStream.write(bytes[i]);
+
+
             }
+
         } catch (IOException e) {
             Log.e(MainActivity.TAG, "ERROR: IOException while sending bytes");
         }
