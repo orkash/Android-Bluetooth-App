@@ -366,7 +366,7 @@ public class PostGetActivity extends ActionBarActivity {
                             super.onPositive(dialog);
                             String value = input.getText().toString();
                             nameGetFile = value;
-                            if (value.length() > 8 ) {
+                            if (value.length() > 12 ) {
                                 Toast.makeText(getApplicationContext(), "The file name may not be longer than 8 characters", Toast.LENGTH_SHORT).show();
                             } else {
                                 ConnectThread.connectedThread.write(value.getBytes());

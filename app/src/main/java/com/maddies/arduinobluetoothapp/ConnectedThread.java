@@ -9,7 +9,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
 
 // this class is for the actual data transmission between the two devices when they are already connected
 class ConnectedThread extends Thread {
@@ -70,18 +70,52 @@ class ConnectedThread extends Thread {
     }
 
     public void readState() {
+        if (MainActivity.protocolState == 1) {
+            try {
+                MainActivity.state = mmInStream.read();
+                Log.d(MainActivity.TAG, "Reading " + MainActivity.state);
 
-        try {
-            MainActivity.state = mmInStream.read();
-            Log.d(MainActivity.TAG, "Reading " + MainActivity.state);
+                if (MainActivity.state == -1)
+                    MainActivity.state = 1;
+            } catch (IOException e) {
 
-            if (MainActivity.state == -1)
-                MainActivity.state = 1;
-        } catch (IOException e) {
+            }
+        } else if (MainActivity.protocolState == 2) {
+            try {
+                ArrayList<Byte> incomingBytes = new ArrayList<>();
 
+                while (mmInStream.available() > 0) {
+                    incomingBytes.add((byte) mmInStream.read());
+
+                    if (mmInStream.available() == 0) {
+                        for (int i = 0; i < 2000; i++) {
+                            try {
+                                Thread.sleep(1);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            if (mmInStream.available() > 0)
+                                break;
+                        }
+                    }
+
+                }
+
+                saveFile(convertToPrimitiveByteArray(incomingBytes));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        // ergens hier moet saveFile geroepen worden met parameter een bye[]
+    }
 
+    private byte[] convertToPrimitiveByteArray(ArrayList<Byte> in) {
+        final int n = in.size();
+        byte[] out = new byte[in.size()];
+        for (int i = 0; i < n; i++) {
+            out[i] = in.get(i);
+        }
+        return out;
     }
 
     private void saveFile(final byte[] file) {
