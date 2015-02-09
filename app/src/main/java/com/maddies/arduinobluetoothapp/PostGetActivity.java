@@ -1,6 +1,5 @@
 package com.maddies.arduinobluetoothapp;
 
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -14,13 +13,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -32,12 +28,10 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -84,7 +78,7 @@ public class PostGetActivity extends ActionBarActivity {
         ButterKnife.inject(this);
 
         device = getIntent().getParcelableExtra(MainActivity.EXTRA_DEVICE);
-        //connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());
+        connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());
 
 
         // on first run
