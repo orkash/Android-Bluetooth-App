@@ -216,9 +216,8 @@ public class MainActivity extends ActionBarActivity {
 
                         } else if (id == R.id.devices_list_view) {
                             return;
-                        } else if (id == 1) {
-                            return;
                         }
+
 
                         if (id == R.id.post_button) {
                             displayShowCaseView(context, context.getString(R.string.tutorial_get_button_header),
@@ -247,25 +246,15 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
 
-        if (id == R.id.stop_button) {
+        if (id == R.id.devices_list_view || id == R.id.status_text_view) {
             // no overflow, so last showcase view
-            showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeClose);
-        } else if (id == 1 || id == R.id.status_text_view) {
-            // the last image
             showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeClose);
         } else {
             // the last image
             showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeNext);
         }
 
-        if (id == 1) {
-            // the overflow
-            showcaseViewBuilder.setTarget(
-                    new ActionViewTarget((Activity) context, ActionViewTarget.Type.OVERFLOW));
-        } else {
-            // all other views
-            showcaseViewBuilder.setTarget(new ViewTarget(id, (Activity) context));
-        }
+        showcaseViewBuilder.setTarget(new ViewTarget(id, (Activity) context));
 
         showcaseViewBuilder.build();
     }

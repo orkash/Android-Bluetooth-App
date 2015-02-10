@@ -43,7 +43,7 @@ public class PostGetActivity extends ActionBarActivity {
 
     @InjectView(R.id.connected_to_text_view)
     TextView connectedTo;
-    static @InjectView(R.id.status_text_view)
+    @InjectView(R.id.status_text_view)
     TextView statusTextView;
 
     @InjectView(R.id.get_button)
@@ -604,7 +604,6 @@ public class PostGetActivity extends ActionBarActivity {
                 fileOutputStream.write(arduinoFileByteArray);
                 fileOutputStream.close();
 
-                PostGetActivity.statusTextView.setText("File Saved");
 
                 Log.i(MainActivity.TAG, "File saved");
             } catch (java.io.IOException e) {
@@ -619,10 +618,5 @@ public class PostGetActivity extends ActionBarActivity {
         protected void onPostExecute(String result) {
             statusTextView.setText(result);
         }
-
-
     }
-
-
-
 }

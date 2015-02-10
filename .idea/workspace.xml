@@ -21,11 +21,9 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.maddies.arduinobluetoothapp" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00b9b05e-c7b3-4f11-8836-205525c17024" name="Default" comment="fix">
-      <change type="DELETED" beforePath="C:\Users\Maarten\Documents\GitHub\Android-Bluetooth-App\app\src\main\java\com\maddies\arduinobluetoothapp\OnTaskCompleted.java" afterPath="" />
+    <list default="true" id="00b9b05e-c7b3-4f11-8836-205525c17024" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/SaveFile.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/SaveFile.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Android-Bluetooth-App.iws" />
@@ -52,13 +50,13 @@
       <file leaf-file-name="PostGetActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.30303" vertical-offset="12339" max-vertical-offset="13156">
-              <caret line="619" column="43" selection-start-line="619" selection-start-column="43" selection-end-line="619" selection-end-column="43" />
+            <state vertical-scroll-proportion="-90.27273" vertical-offset="9004" max-vertical-offset="13018">
+              <caret line="583" column="0" selection-start-line="583" selection-start-column="0" selection-end-line="583" selection-end-column="0" />
               <folding>
-                <element signature="e#8861#9301#0" expanded="true" />
-                <element signature="e#9282#9283#0" expanded="true" />
-                <element signature="e#22838#22839#0" expanded="true" />
-                <element signature="e#22892#22893#0" expanded="true" />
+                <element signature="e#8854#9294#0" expanded="true" />
+                <element signature="e#9275#9276#0" expanded="true" />
+                <element signature="e#22761#22762#0" expanded="true" />
+                <element signature="e#22815#22816#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -67,18 +65,28 @@
       <file leaf-file-name="SaveFile.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/SaveFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="1219">
+            <state vertical-scroll-proportion="0.0" vertical-offset="379" max-vertical-offset="1219">
               <caret line="15" column="29" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ConnectedThread.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="1.5607142" vertical-offset="0" max-vertical-offset="3427">
+              <caret line="66" column="54" selection-start-line="66" selection-start-column="54" selection-end-line="66" selection-end-column="54" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.31904763" vertical-offset="6678" max-vertical-offset="10488">
-              <caret line="354" column="40" selection-start-line="354" selection-start-column="40" selection-end-line="354" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10235">
+              <caret line="251" column="16" selection-start-line="251" selection-start-column="16" selection-end-line="251" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -1095,9 +1103,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectThread.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/OnTaskCompleted.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/SaveFile.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java" />
       </list>
     </option>
@@ -1495,7 +1503,11 @@
       <created>1423067687394</created>
       <updated>1423067687394</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="this should work">
+      <created>1423577534412</created>
+      <updated>1423577534412</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1557,7 +1569,8 @@
     <MESSAGE value="better android file dialog" />
     <MESSAGE value="lot of changes" />
     <MESSAGE value="small changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="small changes" />
+    <MESSAGE value="this should work" />
+    <option name="LAST_COMMIT_MESSAGE" value="this should work" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1880,23 +1893,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9035714" vertical-offset="552" max-vertical-offset="3427">
-          <caret line="66" column="54" selection-start-line="66" selection-start-column="54" selection-end-line="66" selection-end-column="54" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10235">
+          <caret line="251" column="16" selection-start-line="251" selection-start-column="16" selection-end-line="251" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/PostGetActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.30303" vertical-offset="12339" max-vertical-offset="13156">
-          <caret line="619" column="43" selection-start-line="619" selection-start-column="43" selection-end-line="619" selection-end-column="43" />
+        <state vertical-scroll-proportion="-90.27273" vertical-offset="9004" max-vertical-offset="13018">
+          <caret line="583" column="0" selection-start-line="583" selection-start-column="0" selection-end-line="583" selection-end-column="0" />
           <folding>
-            <element signature="e#8861#9301#0" expanded="true" />
-            <element signature="e#9282#9283#0" expanded="true" />
-            <element signature="e#22838#22839#0" expanded="true" />
-            <element signature="e#22892#22893#0" expanded="true" />
+            <element signature="e#8854#9294#0" expanded="true" />
+            <element signature="e#9275#9276#0" expanded="true" />
+            <element signature="e#22761#22762#0" expanded="true" />
+            <element signature="e#22815#22816#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1909,10 +1922,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/maddies/arduinobluetoothapp/ConnectedThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31904763" vertical-offset="6678" max-vertical-offset="10488">
-          <caret line="354" column="40" selection-start-line="354" selection-start-column="40" selection-end-line="354" selection-end-column="40" />
+        <state vertical-scroll-proportion="1.5607142" vertical-offset="0" max-vertical-offset="3427">
+          <caret line="66" column="54" selection-start-line="66" selection-start-column="54" selection-end-line="66" selection-end-column="54" />
           <folding />
         </state>
       </provider>
