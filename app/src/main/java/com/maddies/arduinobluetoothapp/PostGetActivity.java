@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
@@ -28,6 +29,7 @@ import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -37,11 +39,11 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class PostGetActivity extends ActionBarActivity implements OnTaskCompleted {
+public class PostGetActivity extends ActionBarActivity {
 
     @InjectView(R.id.connected_to_text_view)
     TextView connectedTo;
-    @InjectView(R.id.status_text_view)
+    static @InjectView(R.id.status_text_view)
     TextView statusTextView;
 
     @InjectView(R.id.get_button)
@@ -76,6 +78,7 @@ public class PostGetActivity extends ActionBarActivity implements OnTaskComplete
         setContentView(R.layout.activity_post_get);
 
         ButterKnife.inject(this);
+
 
         device = getIntent().getParcelableExtra(MainActivity.EXTRA_DEVICE);
         connectedTo.setText(getString(R.string.connected_to) + device.getName() + " - " + device.getAddress());
@@ -126,7 +129,7 @@ public class PostGetActivity extends ActionBarActivity implements OnTaskComplete
             public void onClick(View v) {
                 if (isExternalStorageWritable()) {
 
-                    statusTextView.setText("Asking for files list");
+                    statusTextView.setText("Receiving file");
                     progressBar.setVisibility(View.VISIBLE);
 
                     MainActivity.protocolState = 0;
@@ -479,12 +482,7 @@ public class PostGetActivity extends ActionBarActivity implements OnTaskComplete
         super.onNewIntent(intent);
         byte[] arduinoFileByteArray = intent.getByteArrayExtra(MainActivity.EXTRA_FILES);
 
-        new SaveFile(new OnTaskCompleted() {
-            @Override
-            public void onTaskCompleted() {
-                statusTextView.setText("Saved file");
-            }
-        }).execute(arduinoFileByteArray, nameGetFile);
+        new SaveFile().execute(arduinoFileByteArray, nameGetFile);
 
     }
 
@@ -583,8 +581,48 @@ public class PostGetActivity extends ActionBarActivity implements OnTaskComplete
         }
     }
 
-    @Override
-    public void onTaskCompleted() {
+    private class SaveFile extends AsyncTask<Object, Void, String> {
+
+        @Override
+        protected String doInBackground(Object... params) {
+            byte[] arduinoFileByteArray = (byte[]) params[0];
+            String nameGetFile = (String) params[1];
+
+            Log.i(MainActivity.TAG, "" + arduinoFileByteArray.length);
+            for(byte b : arduinoFileByteArray){
+                Log.i(MainActivity.TAG, "" + b);
+            }
+
+            File directory = new File(Environment.getExternalStorageDirectory(), "Communico");
+            directory.mkdirs();
+
+            File file = new File(directory, nameGetFile);
+            try {
+
+                FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
+
+                fileOutputStream.write(arduinoFileByteArray);
+                fileOutputStream.close();
+
+                PostGetActivity.statusTextView.setText("File Saved");
+
+                Log.i(MainActivity.TAG, "File saved");
+            } catch (java.io.IOException e) {
+                Log.e(MainActivity.TAG, "Exception in photoCallback", e);
+                return "Could not save file";
+            }
+
+            return "Saved File";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            statusTextView.setText(result);
+        }
+
 
     }
+
+
+
 }

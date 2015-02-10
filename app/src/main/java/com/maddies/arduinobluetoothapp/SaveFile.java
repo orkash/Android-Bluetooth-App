@@ -1,3 +1,4 @@
+/*
 package com.maddies.arduinobluetoothapp;
 
 import android.content.Context;
@@ -9,14 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 
-public class SaveFile extends AsyncTask<Object, String, Void> {
-
-    private OnTaskCompleted listener;
-
-    public SaveFile(OnTaskCompleted listener){
-        this.listener=listener;
-    }
-
+class SaveFile extends AsyncTask<Object, String, Void> {
 
     @Override
     protected Void doInBackground(Object... params) {
@@ -33,24 +27,21 @@ public class SaveFile extends AsyncTask<Object, String, Void> {
 
         File file = new File(directory, nameGetFile);
         try {
+
             FileOutputStream fileOutputStream = new FileOutputStream(file.getAbsolutePath());
 
             fileOutputStream.write(arduinoFileByteArray);
             fileOutputStream.close();
+
+            PostGetActivity.statusTextView.setText("File Saved");
+
             Log.i(MainActivity.TAG, "File saved");
         } catch (java.io.IOException e) {
             Log.e(MainActivity.TAG, "Exception in photoCallback", e);
         }
 
-
         return null;
     }
 
-    @Override
-    protected void onPostExecute(Void aVoid) {
-
-        // your stuff
-        listener.onTaskCompleted();
-
-    }
 }
+*/

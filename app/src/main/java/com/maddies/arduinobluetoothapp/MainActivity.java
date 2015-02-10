@@ -215,14 +215,7 @@ public class MainActivity extends ActionBarActivity {
                                     R.id.devices_list_view);
 
                         } else if (id == R.id.devices_list_view) {
-                            if (ViewConfiguration.get(context).hasPermanentMenuKey()) {
-                                Log.d(TAG, "has overflow button");
-                                return;
-                            } else {
-                                displayShowCaseView(context, context.getString(R.string.tutorial_overflow_header),
-                                        context.getString(R.string.tutorial_overflow_text),
-                                        1);
-                            }
+                            return;
                         } else if (id == 1) {
                             return;
                         }
@@ -254,7 +247,7 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
 
-        if (ViewConfiguration.get(context).hasPermanentMenuKey() && id == R.id.devices_list_view) {
+        if (id == R.id.stop_button) {
             // no overflow, so last showcase view
             showcaseViewBuilder.setStyle(R.style.CustomShowcaseThemeClose);
         } else if (id == 1 || id == R.id.status_text_view) {
