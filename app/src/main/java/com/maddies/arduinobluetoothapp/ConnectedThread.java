@@ -61,6 +61,11 @@ class ConnectedThread extends Thread {
 
                 mmOutStream.write(bytes[i]);
 
+                try {
+                    Thread.sleep(0, 500000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
         } catch (IOException e) {
