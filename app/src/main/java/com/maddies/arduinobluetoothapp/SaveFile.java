@@ -11,6 +11,13 @@ import java.io.FileOutputStream;
 
 public class SaveFile extends AsyncTask<Object, String, Void> {
 
+    private OnTaskCompleted listener;
+
+    public SaveFile(OnTaskCompleted listener){
+        this.listener=listener;
+    }
+
+
     @Override
     protected Void doInBackground(Object... params) {
         byte[] arduinoFileByteArray = (byte[]) params[0];
@@ -37,5 +44,13 @@ public class SaveFile extends AsyncTask<Object, String, Void> {
 
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+
+        // your stuff
+        listener.onTaskCompleted();
+
     }
 }

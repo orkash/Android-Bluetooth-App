@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class PostGetActivity extends ActionBarActivity {
+public class PostGetActivity extends ActionBarActivity implements OnTaskCompleted {
 
     @InjectView(R.id.connected_to_text_view)
     TextView connectedTo;
@@ -479,7 +479,12 @@ public class PostGetActivity extends ActionBarActivity {
         super.onNewIntent(intent);
         byte[] arduinoFileByteArray = intent.getByteArrayExtra(MainActivity.EXTRA_FILES);
 
-        new SaveFile().execute(arduinoFileByteArray, nameGetFile);
+        new SaveFile(new OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted() {
+                statusTextView.setText("Saved file");
+            }
+        }).execute(arduinoFileByteArray, nameGetFile);
 
     }
 
@@ -576,5 +581,10 @@ public class PostGetActivity extends ActionBarActivity {
         } else {
             // path does not exist
         }
+    }
+
+    @Override
+    public void onTaskCompleted() {
+
     }
 }
